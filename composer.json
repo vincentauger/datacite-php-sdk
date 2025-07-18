@@ -1,0 +1,55 @@
+{
+    "name": "vincentauger/datacite-php-sdk",
+    "description": "A modern PHP SDK for DataCite API",
+    "keywords": ["php", "datacite", "package", "api", "sdk", "open science"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent Auger",
+            "email": "vincent.auger@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.4.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.22.1",
+        "pestphp/pest": "^3.0.0",
+        "phpstan/phpstan": "^2.1.16",
+        "rector/rector": "^2.0.16",
+        "symfony/var-dumper": "^7.2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "VincentAuger\\DataCiteSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "lint": "pint",
+        "refactor": "rector",
+        "test:lint": "pint --test",
+        "test:unit": "pest",
+        "test:types": "phpstan",
+        "test:refactor": "rector --dry-run",
+        "test": [
+            "@test:lint",
+            "@test:unit",
+            "@test:types",
+            "@test:refactor"
+        ]
+    }
+}
