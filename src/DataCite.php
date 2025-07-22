@@ -49,7 +49,7 @@ final class DataCite extends Connector
         return [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-            'User-Agent' => 'DataCite-PHP-SDK PHP/' . PHP_VERSION,
+            'User-Agent' => 'DataCite-PHP-SDK PHP/'.PHP_VERSION,
         ];
     }
 }
