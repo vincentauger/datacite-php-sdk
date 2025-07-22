@@ -91,7 +91,8 @@ You must provide:
 
 | Parameter | Description |
 |-----------|-------------|
-| baseUrl | Base URL of the DataCite API (https://api.datacite.org) |
+| baseUrl | Base URL of the DataCite API (<https://api.datacite.org>) |
+| apiVersion | `public` or `member`, defaults to `public` |
 | username | DataCite repository ID |
 | password | DataCite repository password |
 
@@ -105,11 +106,21 @@ You must provide:
 ## Roadmap
 
 - [ ] Basic client and authentication
+- [ ] System Heartbeat endpoint `/heartbeat`
+
+### DOI Resource
+
 - [ ] Fetch DOI records `GET /dois/{id}`
 - [ ] Search DOI records `GET /dois`
 - [ ] Create DOI records `POST /dois`
-- [ ] Update DOI records `PATCH /dois/{id}`
+- [ ] Update DOI records `PUT /dois/{id}`
 - [ ] Delete DOI records `DELETE /dois/{id}`
+- [ ] Return DOI activities `GET /dois/{id}/activities`
+
+### DataCite Events
+
+- [ ] Return a list of events `GET /events`
+- [ ] Return an even `GET /events/{id}`
 
 ## Requirements
 
