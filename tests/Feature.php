@@ -17,7 +17,8 @@ it('can create a member API client with credentials', function (): void {
     $client = new DataCite(
         apiVersion: ApiVersion::MEMBER,
         username: 'test-user',
-        password: 'test-pass'
+        password: 'test-pass',
+        mailto: 'test@email.com'
     );
 
     expect($client->apiVersion)->toBe(ApiVersion::MEMBER);
