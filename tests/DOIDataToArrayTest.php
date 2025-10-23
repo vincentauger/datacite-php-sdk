@@ -46,6 +46,7 @@ test('Creator can be serialized to array', function (): void {
     $creator = new Creator(
         name: 'John Doe',
         nameType: 'Personal',
+        lang: null,
         givenName: 'John',
         familyName: 'Doe',
         affiliation: [$affiliation],

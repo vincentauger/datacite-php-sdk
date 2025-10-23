@@ -8,6 +8,7 @@ final readonly class PublisherData
 {
     public function __construct(
         public string $name,
+        public ?string $lang,
         public ?string $schemeUri,
         public ?string $publisherIdentifier,
         public ?string $publisherIdentifierScheme,
@@ -22,6 +23,7 @@ final readonly class PublisherData
 
         return new self(
             name: $data['name'],
+            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
             publisherIdentifier: isset($data['publisherIdentifier']) && is_string($data['publisherIdentifier']) ? $data['publisherIdentifier'] : null,
             publisherIdentifierScheme: isset($data['publisherIdentifierScheme']) && is_string($data['publisherIdentifierScheme']) ? $data['publisherIdentifierScheme'] : null,
@@ -34,6 +36,10 @@ final readonly class PublisherData
     public function toArray(): array
     {
         $array = ['name' => $this->name];
+
+        if ($this->lang !== null) {
+            $array['lang'] = $this->lang;
+        }
 
         if ($this->schemeUri !== null) {
             $array['schemeUri'] = $this->schemeUri;

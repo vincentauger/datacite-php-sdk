@@ -11,6 +11,8 @@ final readonly class Subject
         public ?string $subjectScheme = null,
         public ?string $schemeUri = null,
         public ?string $valueUri = null,
+        public ?string $classificationCode = null,
+        public ?string $lang = null,
     ) {}
 
     /**
@@ -25,6 +27,8 @@ final readonly class Subject
             subjectScheme: isset($data['subjectScheme']) && is_string($data['subjectScheme']) ? $data['subjectScheme'] : null,
             schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
             valueUri: isset($data['valueUri']) && is_string($data['valueUri']) ? $data['valueUri'] : null,
+            classificationCode: isset($data['classificationCode']) && is_string($data['classificationCode']) ? $data['classificationCode'] : null,
+            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
         );
     }
 
@@ -45,6 +49,14 @@ final readonly class Subject
 
         if ($this->valueUri !== null) {
             $array['valueUri'] = $this->valueUri;
+        }
+
+        if ($this->classificationCode !== null) {
+            $array['classificationCode'] = $this->classificationCode;
+        }
+
+        if ($this->lang !== null) {
+            $array['lang'] = $this->lang;
         }
 
         return $array;

@@ -8,6 +8,7 @@ final readonly class RightsList
 {
     public function __construct(
         public string $rights,
+        public ?string $lang = null,
         public ?string $rightsUri = null,
         public ?string $rightsIdentifier = null,
         public ?string $rightsIdentifierScheme = null,
@@ -23,6 +24,7 @@ final readonly class RightsList
 
         return new self(
             rights: $data['rights'],
+            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             rightsUri: isset($data['rightsUri']) && is_string($data['rightsUri']) ? $data['rightsUri'] : null,
             rightsIdentifier: isset($data['rightsIdentifier']) && is_string($data['rightsIdentifier']) ? $data['rightsIdentifier'] : null,
             rightsIdentifierScheme: isset($data['rightsIdentifierScheme']) && is_string($data['rightsIdentifierScheme']) ? $data['rightsIdentifierScheme'] : null,
@@ -36,6 +38,10 @@ final readonly class RightsList
     public function toArray(): array
     {
         $array = ['rights' => $this->rights];
+
+        if ($this->lang !== null) {
+            $array['lang'] = $this->lang;
+        }
 
         if ($this->rightsUri !== null) {
             $array['rightsUri'] = $this->rightsUri;

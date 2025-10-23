@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Metadata;
 
+use VincentAuger\DataCiteSdk\Data\Affiliations\Affiliation;
 use VincentAuger\DataCiteSdk\Data\Identifiers\NameIdentifier;
 
 final readonly class Contributor
 {
     /**
-     * @param  string[]  $affiliation
+     * @param  Affiliation[]  $affiliation
      * @param  NameIdentifier[]  $nameIdentifiers
      */
     public function __construct(
@@ -32,17 +33,29 @@ final readonly class Contributor
         assert(is_string($data['contributorType']));
         assert(is_array($data['nameIdentifiers']));
 
-        /** @var array<string> $affiliationData */
-        $affiliationData = $data['affiliation'];
         /** @var array<array<string, mixed>> $nameIdentifiersData */
         $nameIdentifiersData = $data['nameIdentifiers'];
+
+        $affiliations = array_map(
+            function (mixed $item): Affiliation {
+                if (is_array($item)) {
+                    /** @var array<string, mixed> $affiliationArray */
+                    $affiliationArray = $item;
+
+                    return Affiliation::fromArray($affiliationArray);
+                }
+
+                return new Affiliation(is_string($item) ? $item : '', null, null, null);
+            },
+            $data['affiliation']
+        );
 
         return new self(
             name: $data['name'],
             nameType: isset($data['nameType']) && is_string($data['nameType']) ? $data['nameType'] : null,
             givenName: isset($data['givenName']) && is_string($data['givenName']) ? $data['givenName'] : null,
             familyName: isset($data['familyName']) && is_string($data['familyName']) ? $data['familyName'] : null,
-            affiliation: $affiliationData,
+            affiliation: $affiliations,
             contributorType: $data['contributorType'],
             nameIdentifiers: array_map(
                 fn (array $item): NameIdentifier => NameIdentifier::fromArray($item),
@@ -74,7 +87,10 @@ final readonly class Contributor
         }
 
         if (count($this->affiliation) > 0) {
-            $array['affiliation'] = $this->affiliation;
+            $array['affiliation'] = array_map(
+                fn (Affiliation $affiliation): array => $affiliation->toArray(),
+                $this->affiliation
+            );
         }
 
         if (count($this->nameIdentifiers) > 0) {
