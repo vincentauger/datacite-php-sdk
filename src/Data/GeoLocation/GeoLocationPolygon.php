@@ -21,7 +21,7 @@ final readonly class GeoLocationPolygon
     {
         assert(is_array($data['polygonPoint']));
 
-        /** @var array<array<string, mixed>> $polygonPointData */
+        /** @var array<string, mixed> $polygonPointData */
         $polygonPointData = $data['polygonPoint'];
 
         $inPolygonPointData = null;
@@ -32,10 +32,7 @@ final readonly class GeoLocationPolygon
         }
 
         return new self(
-            polygonPoint: array_map(
-                fn (array $item): GeoLocationPoint => GeoLocationPoint::fromArray($item),
-                $polygonPointData
-            ),
+            polygonPoint: [GeoLocationPoint::fromArray($polygonPointData)],
             inPolygonPoint: $inPolygonPointData,
         );
     }

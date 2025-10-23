@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Data\Metadata;
 final readonly class Date
 {
     public function __construct(
-        public string $date,
+        public string|int $date,
         public string $dateType,
         public ?string $dateInformation,
     ) {}
@@ -17,7 +17,7 @@ final readonly class Date
      */
     public static function fromArray(array $data): self
     {
-        assert(is_string($data['date']));
+        assert(is_string($data['date']) || is_int($data['date']));
         assert(is_string($data['dateType']));
 
         return new self(

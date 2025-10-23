@@ -32,13 +32,17 @@ class BaseTest extends TestCase
 
     }
 
-    public function getPublicApiClient(?string $email = null): \VincentAuger\DataCiteSdk\DataCite
+    public function getPublicApiClient(?string $email = null, bool $prodApi = false): \VincentAuger\DataCiteSdk\DataCite
     {
-        return new \VincentAuger\DataCiteSdk\DataCite(mailto: $email);
+        $baseUrl = $_ENV['DATACITE_BASE_URL'] ?? 'https://api.test.datacite.org';
+        $baseUrl = $prodApi ? 'https://api.datacite.org' : $baseUrl;
+
+        return new \VincentAuger\DataCiteSdk\DataCite(baseUrl: $baseUrl, mailto: $email);
     }
 
     public function getMemberApiClient(): \VincentAuger\DataCiteSdk\DataCite
     {
+        $baseUrl = $_ENV['DATACITE_BASE_URL'] ?? 'https://api.test.datacite.org';
         $username = $_ENV['DATACITE_USERNAME'] ?? null;
         $password = $_ENV['DATACITE_PASSWORD'] ?? null;
         $mailto = $_ENV['DATACITE_MAILTO'] ?? null;
@@ -49,6 +53,7 @@ class BaseTest extends TestCase
 
         return new \VincentAuger\DataCiteSdk\DataCite(
             apiVersion: \VincentAuger\DataCiteSdk\Enums\ApiVersion::MEMBER,
+            baseUrl: $baseUrl,
             username: $username,
             password: $password,
             mailto: $mailto

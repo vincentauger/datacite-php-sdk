@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Data\Identifiers;
 final readonly class RelatedItemCreator
 {
     public function __construct(
-        public string $creatorName,
+        public string $name,
         public ?string $nameType = null,
         public ?string $lang = null,
         public ?string $givenName = null,
@@ -19,10 +19,10 @@ final readonly class RelatedItemCreator
      */
     public static function fromArray(array $data): self
     {
-        assert(is_string($data['creatorName']));
+        assert(is_string($data['name']));
 
         return new self(
-            creatorName: $data['creatorName'],
+            name: $data['name'],
             nameType: isset($data['nameType']) && is_string($data['nameType']) ? $data['nameType'] : null,
             lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             givenName: isset($data['givenName']) && is_string($data['givenName']) ? $data['givenName'] : null,
@@ -35,7 +35,7 @@ final readonly class RelatedItemCreator
      */
     public function toArray(): array
     {
-        $array = ['creatorName' => $this->creatorName];
+        $array = ['name' => $this->name];
 
         if ($this->nameType !== null) {
             $array['nameType'] = $this->nameType;

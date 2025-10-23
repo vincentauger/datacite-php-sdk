@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Data\Identifiers;
 final readonly class RelatedItemContributor
 {
     public function __construct(
-        public string $contributorName,
+        public string $name,
         public string $contributorType,
         public ?string $nameType = null,
         public ?string $lang = null,
@@ -20,11 +20,11 @@ final readonly class RelatedItemContributor
      */
     public static function fromArray(array $data): self
     {
-        assert(is_string($data['contributorName']));
+        assert(is_string($data['name']));
         assert(is_string($data['contributorType']));
 
         return new self(
-            contributorName: $data['contributorName'],
+            name: $data['name'],
             contributorType: $data['contributorType'],
             nameType: isset($data['nameType']) && is_string($data['nameType']) ? $data['nameType'] : null,
             lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
@@ -39,7 +39,7 @@ final readonly class RelatedItemContributor
     public function toArray(): array
     {
         $array = [
-            'contributorName' => $this->contributorName,
+            'name' => $this->name,
             'contributorType' => $this->contributorType,
         ];
 
