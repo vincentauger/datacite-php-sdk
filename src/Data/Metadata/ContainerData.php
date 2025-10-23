@@ -12,19 +12,25 @@ final readonly class ContainerData
         public ?string $firstPage = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
-        if (empty($data)) {
+        if ($data === []) {
             return new self;
         }
 
         return new self(
-            type: $data['type'] ?? null,
-            title: $data['title'] ?? null,
-            firstPage: $data['firstPage'] ?? null,
+            type: isset($data['type']) && is_string($data['type']) ? $data['type'] : null,
+            title: isset($data['title']) && is_string($data['title']) ? $data['title'] : null,
+            firstPage: isset($data['firstPage']) && is_string($data['firstPage']) ? $data['firstPage'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [];

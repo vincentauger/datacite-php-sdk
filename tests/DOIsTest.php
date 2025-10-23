@@ -101,7 +101,7 @@ it('can get a doi with affiliation and publisher info via the public API', funct
     $client = $this->getPublicApiClient();
     $client->withMockClient($mockClient);
 
-    $request = (new GetDOI('10.60825/xd80-gb65'))
+    $request = new GetDOI('10.60825/xd80-gb65')
         ->addAffiliation()
         ->addPublisher();
 

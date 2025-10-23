@@ -26,35 +26,77 @@ final readonly class RelationshipData
         public array $versionOf,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_array($data['client']));
+        assert(is_array($data['provider']));
+        assert(is_array($data['media']));
+        assert(is_array($data['references']));
+        assert(is_array($data['citations']));
+        assert(is_array($data['parts']));
+        assert(is_array($data['partOf']));
+        assert(is_array($data['versions']));
+        assert(is_array($data['versionOf']));
+
+        assert(is_array($data['client']['data']));
+        assert(is_array($data['provider']['data']));
+        assert(is_array($data['media']['data']));
+        assert(is_array($data['references']['data']));
+        assert(is_array($data['citations']['data']));
+        assert(is_array($data['parts']['data']));
+        assert(is_array($data['partOf']['data']));
+        assert(is_array($data['versions']['data']));
+        assert(is_array($data['versionOf']['data']));
+
+        /** @var array<string, mixed> $clientData */
+        $clientData = $data['client']['data'];
+        /** @var array<string, mixed> $providerData */
+        $providerData = $data['provider']['data'];
+        /** @var array<string, mixed> $mediaData */
+        $mediaData = $data['media']['data'];
+        /** @var array<array<string, mixed>> $referencesData */
+        $referencesData = $data['references']['data'];
+        /** @var array<array<string, mixed>> $citationsData */
+        $citationsData = $data['citations']['data'];
+        /** @var array<array<string, mixed>> $partsData */
+        $partsData = $data['parts']['data'];
+        /** @var array<array<string, mixed>> $partOfData */
+        $partOfData = $data['partOf']['data'];
+        /** @var array<array<string, mixed>> $versionsData */
+        $versionsData = $data['versions']['data'];
+        /** @var array<array<string, mixed>> $versionOfData */
+        $versionOfData = $data['versionOf']['data'];
+
         return new self(
-            client: RelationshipClient::fromArray($data['client']['data']),
-            provider: RelationshipProvider::fromArray($data['provider']['data']),
-            media: RelationshipMedia::fromArray($data['media']['data']),
+            client: RelationshipClient::fromArray($clientData),
+            provider: RelationshipProvider::fromArray($providerData),
+            media: RelationshipMedia::fromArray($mediaData),
             references: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['references']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $referencesData
             ),
             citations: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['citations']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $citationsData
             ),
             parts: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['parts']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $partsData
             ),
             partOf: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['partOf']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $partOfData
             ),
             versions: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['versions']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $versionsData
             ),
             versionOf: array_map(
-                fn (array $item) => RelationshipItem::fromArray($item),
-                $data['versionOf']['data']
+                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                $versionOfData
             ),
         );
     }

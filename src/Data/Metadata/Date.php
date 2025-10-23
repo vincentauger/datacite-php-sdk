@@ -12,15 +12,24 @@ final readonly class Date
         public ?string $dateInformation,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['date']));
+        assert(is_string($data['dateType']));
+
         return new self(
             date: $data['date'],
             dateType: $data['dateType'],
-            dateInformation: $data['dateInformation'] ?? null,
+            dateInformation: isset($data['dateInformation']) && is_string($data['dateInformation']) ? $data['dateInformation'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [

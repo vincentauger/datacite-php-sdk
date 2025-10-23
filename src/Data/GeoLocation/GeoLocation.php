@@ -12,19 +12,35 @@ final readonly class GeoLocation
         public ?GeoLocationBox $geoLocationBox = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        $geoLocationPointData = null;
+        if (isset($data['geoLocationPoint']) && is_array($data['geoLocationPoint'])) {
+            /** @var array<string, mixed> $pointArray */
+            $pointArray = $data['geoLocationPoint'];
+            $geoLocationPointData = GeoLocationPoint::fromArray($pointArray);
+        }
+
+        $geoLocationBoxData = null;
+        if (isset($data['geoLocationBox']) && is_array($data['geoLocationBox'])) {
+            /** @var array<string, mixed> $boxArray */
+            $boxArray = $data['geoLocationBox'];
+            $geoLocationBoxData = GeoLocationBox::fromArray($boxArray);
+        }
+
         return new self(
-            geoLocationPlace: $data['geoLocationPlace'] ?? null,
-            geoLocationPoint: isset($data['geoLocationPoint'])
-                ? GeoLocationPoint::fromArray($data['geoLocationPoint'])
-                : null,
-            geoLocationBox: isset($data['geoLocationBox'])
-                ? GeoLocationBox::fromArray($data['geoLocationBox'])
-                : null,
+            geoLocationPlace: isset($data['geoLocationPlace']) && is_string($data['geoLocationPlace']) ? $data['geoLocationPlace'] : null,
+            geoLocationPoint: $geoLocationPointData,
+            geoLocationBox: $geoLocationBoxData,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [];
@@ -33,11 +49,11 @@ final readonly class GeoLocation
             $array['geoLocationPlace'] = $this->geoLocationPlace;
         }
 
-        if ($this->geoLocationPoint !== null) {
+        if ($this->geoLocationPoint instanceof \VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocationPoint) {
             $array['geoLocationPoint'] = $this->geoLocationPoint->toArray();
         }
 
-        if ($this->geoLocationBox !== null) {
+        if ($this->geoLocationBox instanceof \VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocationBox) {
             $array['geoLocationBox'] = $this->geoLocationBox->toArray();
         }
 

@@ -13,16 +13,24 @@ final readonly class Subject
         public ?string $valueUri = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['subject']));
+
         return new self(
             subject: $data['subject'],
-            subjectScheme: $data['subjectScheme'] ?? null,
-            schemeUri: $data['schemeUri'] ?? null,
-            valueUri: $data['valueUri'] ?? null,
+            subjectScheme: isset($data['subjectScheme']) && is_string($data['subjectScheme']) ? $data['subjectScheme'] : null,
+            schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
+            valueUri: isset($data['valueUri']) && is_string($data['valueUri']) ? $data['valueUri'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = ['subject' => $this->subject];

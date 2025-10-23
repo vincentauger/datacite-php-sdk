@@ -15,18 +15,26 @@ final readonly class FundingReference
         public ?string $awardTitle = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['funderName']));
+
         return new self(
             funderName: $data['funderName'],
-            funderIdentifier: $data['funderIdentifier'] ?? null,
-            funderIdentifierType: $data['funderIdentifierType'] ?? null,
-            awardNumber: $data['awardNumber'] ?? null,
-            awardUri: $data['awardUri'] ?? null,
-            awardTitle: $data['awardTitle'] ?? null,
+            funderIdentifier: isset($data['funderIdentifier']) && is_string($data['funderIdentifier']) ? $data['funderIdentifier'] : null,
+            funderIdentifierType: isset($data['funderIdentifierType']) && is_string($data['funderIdentifierType']) ? $data['funderIdentifierType'] : null,
+            awardNumber: isset($data['awardNumber']) && is_string($data['awardNumber']) ? $data['awardNumber'] : null,
+            awardUri: isset($data['awardUri']) && is_string($data['awardUri']) ? $data['awardUri'] : null,
+            awardTitle: isset($data['awardTitle']) && is_string($data['awardTitle']) ? $data['awardTitle'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = ['funderName' => $this->funderName];

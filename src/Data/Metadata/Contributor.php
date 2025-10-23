@@ -22,22 +22,38 @@ final readonly class Contributor
         public array $nameIdentifiers,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['name']));
+        assert(is_array($data['affiliation']));
+        assert(is_string($data['contributorType']));
+        assert(is_array($data['nameIdentifiers']));
+
+        /** @var array<string> $affiliationData */
+        $affiliationData = $data['affiliation'];
+        /** @var array<array<string, mixed>> $nameIdentifiersData */
+        $nameIdentifiersData = $data['nameIdentifiers'];
+
         return new self(
             name: $data['name'],
-            nameType: $data['nameType'] ?? null,
-            givenName: $data['givenName'] ?? null,
-            familyName: $data['familyName'] ?? null,
-            affiliation: $data['affiliation'],
+            nameType: isset($data['nameType']) && is_string($data['nameType']) ? $data['nameType'] : null,
+            givenName: isset($data['givenName']) && is_string($data['givenName']) ? $data['givenName'] : null,
+            familyName: isset($data['familyName']) && is_string($data['familyName']) ? $data['familyName'] : null,
+            affiliation: $affiliationData,
             contributorType: $data['contributorType'],
             nameIdentifiers: array_map(
-                fn (array $item) => NameIdentifier::fromArray($item),
-                $data['nameIdentifiers']
+                fn (array $item): NameIdentifier => NameIdentifier::fromArray($item),
+                $nameIdentifiersData
             ),
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [
@@ -63,7 +79,7 @@ final readonly class Contributor
 
         if (count($this->nameIdentifiers) > 0) {
             $array['nameIdentifiers'] = array_map(
-                fn (NameIdentifier $nameIdentifier) => $nameIdentifier->toArray(),
+                fn (NameIdentifier $nameIdentifier): array => $nameIdentifier->toArray(),
                 $this->nameIdentifiers
             );
         }

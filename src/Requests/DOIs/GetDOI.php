@@ -25,7 +25,10 @@ final class GetDOI extends Request
 
     public function createDtoFromResponse(Response $response): DOIData
     {
-        return DOIData::fromArray($response->json('data'));
+        /** @var array<string, mixed> $data */
+        $data = $response->json('data');
+
+        return DOIData::fromArray($data);
     }
 
     /**

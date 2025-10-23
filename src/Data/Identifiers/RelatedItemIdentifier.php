@@ -11,14 +11,23 @@ final readonly class RelatedItemIdentifier
         public string $relatedItemIdentifierType,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['relatedItemIdentifier']));
+        assert(is_string($data['relatedItemIdentifierType']));
+
         return new self(
             relatedItemIdentifier: $data['relatedItemIdentifier'],
             relatedItemIdentifierType: $data['relatedItemIdentifierType'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

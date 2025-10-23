@@ -11,8 +11,14 @@ final readonly class RelationshipMedia
         public string $type,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['id']));
+        assert(is_string($data['type']));
+
         return new self(
             id: $data['id'],
             type: $data['type'],

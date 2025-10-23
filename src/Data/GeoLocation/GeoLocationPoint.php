@@ -11,14 +11,23 @@ final readonly class GeoLocationPoint
         public float $pointLongitude,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_numeric($data['pointLatitude']));
+        assert(is_numeric($data['pointLongitude']));
+
         return new self(
-            pointLatitude: $data['pointLatitude'],
-            pointLongitude: $data['pointLongitude'],
+            pointLatitude: (float) $data['pointLatitude'],
+            pointLongitude: (float) $data['pointLongitude'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

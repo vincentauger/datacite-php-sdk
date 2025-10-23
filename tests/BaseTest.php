@@ -32,12 +32,12 @@ class BaseTest extends TestCase
 
     }
 
-    public function getPublicApiClient(?string $email = null)
+    public function getPublicApiClient(?string $email = null): \VincentAuger\DataCiteSdk\DataCite
     {
         return new \VincentAuger\DataCiteSdk\DataCite(mailto: $email);
     }
 
-    public function getMemberApiClient()
+    public function getMemberApiClient(): \VincentAuger\DataCiteSdk\DataCite
     {
         $username = $_ENV['DATACITE_USERNAME'] ?? null;
         $password = $_ENV['DATACITE_PASSWORD'] ?? null;

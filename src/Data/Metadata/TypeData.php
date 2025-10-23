@@ -15,18 +15,30 @@ final readonly class TypeData
         public string $resourceTypeGeneral,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['ris']));
+        assert(is_string($data['bibtex']));
+        assert(is_string($data['citeproc']));
+        assert(is_string($data['schemaOrg']));
+        assert(is_string($data['resourceTypeGeneral']));
+
         return new self(
             ris: $data['ris'],
             bibtex: $data['bibtex'],
             citeproc: $data['citeproc'],
             schemaOrg: $data['schemaOrg'],
-            resourceType: $data['resourceType'] ?? null,
+            resourceType: isset($data['resourceType']) && is_string($data['resourceType']) ? $data['resourceType'] : null,
             resourceTypeGeneral: $data['resourceTypeGeneral'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [

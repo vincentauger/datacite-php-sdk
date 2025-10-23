@@ -13,16 +13,24 @@ final readonly class Affiliation
         public ?string $affiliationIdentifierScheme,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['name']));
+
         return new self(
             name: $data['name'],
-            schemeUri: $data['schemeUri'] ?? null,
-            affiliationIdentifier: $data['affiliationIdentifier'] ?? null,
-            affiliationIdentifierScheme: $data['affiliationIdentifierScheme'] ?? null,
+            schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
+            affiliationIdentifier: isset($data['affiliationIdentifier']) && is_string($data['affiliationIdentifier']) ? $data['affiliationIdentifier'] : null,
+            affiliationIdentifierScheme: isset($data['affiliationIdentifierScheme']) && is_string($data['affiliationIdentifierScheme']) ? $data['affiliationIdentifierScheme'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = ['name' => $this->name];

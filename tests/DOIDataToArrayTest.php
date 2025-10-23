@@ -8,10 +8,10 @@ use VincentAuger\DataCiteSdk\Data\Identifiers\NameIdentifier;
 use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
 
-test('it can serialize a simple DOI to array', function () {
+test('it can serialize a simple DOI to array', function (): void {
     $fixtureJson = file_get_contents(__DIR__.'/Fixtures/Saloon/getdoi.json');
     $fixtureData = json_decode($fixtureJson, true);
-    $responseData = json_decode($fixtureData['data'], true);
+    $responseData = json_decode((string) $fixtureData['data'], true);
 
     $doiData = DOIData::fromArray($responseData['data']);
 
@@ -29,7 +29,7 @@ test('it can serialize a simple DOI to array', function () {
         ->and($serialized['data']['attributes'])->toHaveKey('publicationYear');
 });
 
-test('Creator can be serialized to array', function () {
+test('Creator can be serialized to array', function (): void {
     $affiliation = new Affiliation(
         name: 'Example University',
         schemeUri: 'https://ror.org',
@@ -77,7 +77,7 @@ test('Creator can be serialized to array', function () {
     ]);
 });
 
-test('Title can be serialized to array', function () {
+test('Title can be serialized to array', function (): void {
     $title = new Title(
         lang: 'en',
         title: 'Test Title',
@@ -93,10 +93,10 @@ test('Title can be serialized to array', function () {
     ]);
 });
 
-test('DOIData toArray omits empty arrays', function () {
+test('DOIData toArray omits empty arrays', function (): void {
     $fixtureJson = file_get_contents(__DIR__.'/Fixtures/Saloon/getdoi.json');
     $fixtureData = json_decode($fixtureJson, true);
-    $responseData = json_decode($fixtureData['data'], true);
+    $responseData = json_decode((string) $fixtureData['data'], true);
 
     $doiData = DOIData::fromArray($responseData['data']);
 

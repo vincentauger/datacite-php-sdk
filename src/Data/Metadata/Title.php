@@ -12,15 +12,23 @@ final readonly class Title
         public ?string $titleType,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['title']));
+
         return new self(
-            lang: $data['lang'] ?? null,
+            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             title: $data['title'],
-            titleType: $data['titleType'] ?? null,
+            titleType: isset($data['titleType']) && is_string($data['titleType']) ? $data['titleType'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = ['title' => $this->title];

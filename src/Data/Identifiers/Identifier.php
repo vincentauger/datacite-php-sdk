@@ -11,14 +11,23 @@ final readonly class Identifier
         public string $identifierType,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['identifier']));
+        assert(is_string($data['identifierType']));
+
         return new self(
             identifier: $data['identifier'],
             identifierType: $data['identifierType'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

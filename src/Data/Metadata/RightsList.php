@@ -14,17 +14,25 @@ final readonly class RightsList
         public ?string $schemeUri = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['rights']));
+
         return new self(
             rights: $data['rights'],
-            rightsUri: $data['rightsUri'] ?? null,
-            rightsIdentifier: $data['rightsIdentifier'] ?? null,
-            rightsIdentifierScheme: $data['rightsIdentifierScheme'] ?? null,
-            schemeUri: $data['schemeUri'] ?? null,
+            rightsUri: isset($data['rightsUri']) && is_string($data['rightsUri']) ? $data['rightsUri'] : null,
+            rightsIdentifier: isset($data['rightsIdentifier']) && is_string($data['rightsIdentifier']) ? $data['rightsIdentifier'] : null,
+            rightsIdentifierScheme: isset($data['rightsIdentifierScheme']) && is_string($data['rightsIdentifierScheme']) ? $data['rightsIdentifierScheme'] : null,
+            schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = ['rights' => $this->rights];

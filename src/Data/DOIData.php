@@ -99,9 +99,111 @@ final readonly class DOIData
         public RelationshipData $relationships,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['id']));
+        assert(is_string($data['type']));
+        assert(is_array($data['attributes']));
+        assert(is_array($data['relationships']));
+
         $attributes = $data['attributes'];
+
+        assert(is_string($attributes['doi']));
+        assert(is_string($attributes['prefix']));
+        assert(is_string($attributes['suffix']));
+        assert(is_array($attributes['identifiers']));
+        assert(is_array($attributes['alternateIdentifiers']));
+        assert(is_array($attributes['creators']));
+        assert(is_array($attributes['titles']));
+        assert(is_array($attributes['container']));
+        assert(is_numeric($attributes['publicationYear']));
+        assert(is_array($attributes['subjects']));
+        assert(is_array($attributes['contributors']));
+        assert(is_array($attributes['dates']));
+        assert(is_array($attributes['types']));
+        assert(is_array($attributes['relatedIdentifiers']));
+        assert(is_array($attributes['relatedItems']));
+        assert(is_array($attributes['sizes']));
+        assert(is_array($attributes['formats']));
+        assert(is_array($attributes['rightsList']));
+        assert(is_array($attributes['descriptions']));
+        assert(is_array($attributes['geoLocations']));
+        assert(is_array($attributes['fundingReferences']));
+        assert(is_string($attributes['xml']));
+        assert(is_string($attributes['url']));
+        assert(is_numeric($attributes['metadataVersion']));
+        assert(is_string($attributes['schemaVersion']));
+        assert(is_string($attributes['source']));
+        assert(is_bool($attributes['isActive']));
+        assert(is_string($attributes['state']));
+        assert(is_numeric($attributes['viewCount']));
+        assert(is_array($attributes['viewsOverTime']));
+        assert(is_numeric($attributes['downloadCount']));
+        assert(is_array($attributes['downloadsOverTime']));
+        assert(is_numeric($attributes['referenceCount']));
+        assert(is_numeric($attributes['citationCount']));
+        assert(is_array($attributes['citationsOverTime']));
+        assert(is_numeric($attributes['partCount']));
+        assert(is_numeric($attributes['partOfCount']));
+        assert(is_numeric($attributes['versionCount']));
+        assert(is_numeric($attributes['versionOfCount']));
+        assert(is_string($attributes['created']));
+        assert(is_string($attributes['registered']));
+        assert(is_string($attributes['published']));
+        assert(is_string($attributes['updated']));
+
+        /** @var array<array<string, mixed>> $identifiersData */
+        $identifiersData = $attributes['identifiers'];
+        /** @var array<array<string, mixed>> $alternateIdentifiersData */
+        $alternateIdentifiersData = $attributes['alternateIdentifiers'];
+        /** @var array<array<string, mixed>> $creatorsData */
+        $creatorsData = $attributes['creators'];
+        /** @var array<array<string, mixed>> $titlesData */
+        $titlesData = $attributes['titles'];
+        /** @var array<string, mixed> $containerData */
+        $containerData = $attributes['container'];
+        /** @var array<array<string, mixed>> $subjectsData */
+        $subjectsData = $attributes['subjects'];
+        /** @var array<array<string, mixed>> $contributorsData */
+        $contributorsData = $attributes['contributors'];
+        /** @var array<array<string, mixed>> $datesData */
+        $datesData = $attributes['dates'];
+        /** @var array<string, mixed> $typesData */
+        $typesData = $attributes['types'];
+        /** @var array<array<string, mixed>> $relatedIdentifiersData */
+        $relatedIdentifiersData = $attributes['relatedIdentifiers'];
+        /** @var array<array<string, mixed>> $relatedItemsData */
+        $relatedItemsData = $attributes['relatedItems'];
+        /** @var array<string> $sizesData */
+        $sizesData = $attributes['sizes'];
+        /** @var array<string> $formatsData */
+        $formatsData = $attributes['formats'];
+        /** @var array<array<string, mixed>> $rightsListData */
+        $rightsListData = $attributes['rightsList'];
+        /** @var array<array<string, mixed>> $descriptionsData */
+        $descriptionsData = $attributes['descriptions'];
+        /** @var array<array<string, mixed>> $geoLocationsData */
+        $geoLocationsData = $attributes['geoLocations'];
+        /** @var array<array<string, mixed>> $fundingReferencesData */
+        $fundingReferencesData = $attributes['fundingReferences'];
+        /** @var array<string, int> $viewsOverTimeData */
+        $viewsOverTimeData = $attributes['viewsOverTime'];
+        /** @var array<string, int> $downloadsOverTimeData */
+        $downloadsOverTimeData = $attributes['downloadsOverTime'];
+        /** @var array<string, int> $citationsOverTimeData */
+        $citationsOverTimeData = $attributes['citationsOverTime'];
+        /** @var array<string, mixed> $relationshipsData */
+        $relationshipsData = $data['relationships'];
+
+        $publisherData = null;
+        if (is_array($attributes['publisher'])) {
+            /** @var array<string, mixed> $publisherArray */
+            $publisherArray = $attributes['publisher'];
+            $publisherData = PublisherData::fromArray($publisherArray);
+        }
 
         return new self(
             id: $data['id'],
@@ -110,101 +212,102 @@ final readonly class DOIData
             prefix: $attributes['prefix'],
             suffix: $attributes['suffix'],
             identifiers: array_map(
-                fn (array $item) => Identifier::fromArray($item),
-                $attributes['identifiers']
+                fn (array $item): Identifier => Identifier::fromArray($item),
+                $identifiersData
             ),
             alternateIdentifiers: array_map(
-                fn (array $item) => AlternateIdentifier::fromArray($item),
-                $attributes['alternateIdentifiers']
+                fn (array $item): AlternateIdentifier => AlternateIdentifier::fromArray($item),
+                $alternateIdentifiersData
             ),
             creators: array_map(
-                fn (array $item) => Creator::fromArray($item),
-                $attributes['creators']
+                fn (array $item): Creator => Creator::fromArray($item),
+                $creatorsData
             ),
             titles: array_map(
-                fn (array $item) => Title::fromArray($item),
-                $attributes['titles']
+                fn (array $item): Title => Title::fromArray($item),
+                $titlesData
             ),
-            publisher: is_array($attributes['publisher'])
-                ? PublisherData::fromArray($attributes['publisher'])
-                : $attributes['publisher'],
-            container: ContainerData::fromArray($attributes['container']),
-            publicationYear: $attributes['publicationYear'],
+            publisher: $publisherData ?? (is_string($attributes['publisher']) ? $attributes['publisher'] : ''),
+            container: ContainerData::fromArray($containerData),
+            publicationYear: (int) $attributes['publicationYear'],
             subjects: array_map(
-                fn (array $item) => Subject::fromArray($item),
-                $attributes['subjects']
+                fn (array $item): Subject => Subject::fromArray($item),
+                $subjectsData
             ),
             contributors: array_map(
-                fn (array $item) => Contributor::fromArray($item),
-                $attributes['contributors']
+                fn (array $item): Contributor => Contributor::fromArray($item),
+                $contributorsData
             ),
             dates: array_map(
-                fn (array $item) => Date::fromArray($item),
-                $attributes['dates']
+                fn (array $item): Date => Date::fromArray($item),
+                $datesData
             ),
-            language: $attributes['language'],
-            types: TypeData::fromArray($attributes['types']),
+            language: isset($attributes['language']) && is_string($attributes['language']) ? $attributes['language'] : null,
+            types: TypeData::fromArray($typesData),
             relatedIdentifiers: array_map(
-                fn (array $item) => RelatedIdentifier::fromArray($item),
-                $attributes['relatedIdentifiers']
+                fn (array $item): RelatedIdentifier => RelatedIdentifier::fromArray($item),
+                $relatedIdentifiersData
             ),
             relatedItems: array_map(
-                fn (array $item) => RelatedItem::fromArray($item),
-                $attributes['relatedItems']
+                fn (array $item): RelatedItem => RelatedItem::fromArray($item),
+                $relatedItemsData
             ),
-            sizes: $attributes['sizes'],
-            formats: $attributes['formats'],
-            version: $attributes['version'],
+            sizes: $sizesData,
+            formats: $formatsData,
+            version: isset($attributes['version']) && is_string($attributes['version']) ? $attributes['version'] : null,
             rightsList: array_map(
-                fn (array $item) => RightsList::fromArray($item),
-                $attributes['rightsList']
+                fn (array $item): RightsList => RightsList::fromArray($item),
+                $rightsListData
             ),
             descriptions: array_map(
-                fn (array $item) => Description::fromArray($item),
-                $attributes['descriptions']
+                fn (array $item): Description => Description::fromArray($item),
+                $descriptionsData
             ),
             geoLocations: array_map(
-                fn (array $item) => GeoLocation::fromArray($item),
-                $attributes['geoLocations']
+                fn (array $item): GeoLocation => GeoLocation::fromArray($item),
+                $geoLocationsData
             ),
             fundingReferences: array_map(
-                fn (array $item) => FundingReference::fromArray($item),
-                $attributes['fundingReferences']
+                fn (array $item): FundingReference => FundingReference::fromArray($item),
+                $fundingReferencesData
             ),
             xml: $attributes['xml'],
             url: $attributes['url'],
-            contentUrl: $attributes['contentUrl'],
-            metadataVersion: $attributes['metadataVersion'],
+            contentUrl: isset($attributes['contentUrl']) && is_string($attributes['contentUrl']) ? $attributes['contentUrl'] : null,
+            metadataVersion: (int) $attributes['metadataVersion'],
             schemaVersion: $attributes['schemaVersion'],
             source: $attributes['source'],
             isActive: $attributes['isActive'],
             state: $attributes['state'],
-            reason: $attributes['reason'],
-            viewCount: $attributes['viewCount'],
-            viewsOverTime: $attributes['viewsOverTime'],
-            downloadCount: $attributes['downloadCount'],
-            downloadsOverTime: $attributes['downloadsOverTime'],
-            referenceCount: $attributes['referenceCount'],
-            citationCount: $attributes['citationCount'],
-            citationsOverTime: $attributes['citationsOverTime'],
-            partCount: $attributes['partCount'],
-            partOfCount: $attributes['partOfCount'],
-            versionCount: $attributes['versionCount'],
-            versionOfCount: $attributes['versionOfCount'],
+            reason: isset($attributes['reason']) && is_string($attributes['reason']) ? $attributes['reason'] : null,
+            viewCount: (int) $attributes['viewCount'],
+            viewsOverTime: $viewsOverTimeData,
+            downloadCount: (int) $attributes['downloadCount'],
+            downloadsOverTime: $downloadsOverTimeData,
+            referenceCount: (int) $attributes['referenceCount'],
+            citationCount: (int) $attributes['citationCount'],
+            citationsOverTime: $citationsOverTimeData,
+            partCount: (int) $attributes['partCount'],
+            partOfCount: (int) $attributes['partOfCount'],
+            versionCount: (int) $attributes['versionCount'],
+            versionOfCount: (int) $attributes['versionOfCount'],
             created: new DateTimeImmutable($attributes['created']),
             registered: new DateTimeImmutable($attributes['registered']),
             published: $attributes['published'],
             updated: new DateTimeImmutable($attributes['updated']),
-            relationships: RelationshipData::fromArray($data['relationships']),
+            relationships: RelationshipData::fromArray($relationshipsData),
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $attributes = [
             'doi' => $this->doi,
-            'creators' => array_map(fn (Creator $creator) => $creator->toArray(), $this->creators),
-            'titles' => array_map(fn (Title $title) => $title->toArray(), $this->titles),
+            'creators' => array_map(fn (Creator $creator): array => $creator->toArray(), $this->creators),
+            'titles' => array_map(fn (Title $title): array => $title->toArray(), $this->titles),
             'publisher' => $this->publisher instanceof PublisherData
                 ? $this->publisher->toArray()
                 : $this->publisher,
@@ -212,49 +315,49 @@ final readonly class DOIData
             'types' => $this->types->toArray(),
         ];
 
-        if ($this->url) {
+        if ($this->url !== '' && $this->url !== '0') {
             $attributes['url'] = $this->url;
         }
 
-        if ($this->prefix) {
+        if ($this->prefix !== '' && $this->prefix !== '0') {
             $attributes['prefix'] = $this->prefix;
         }
 
-        if ($this->suffix) {
+        if ($this->suffix !== '' && $this->suffix !== '0') {
             $attributes['suffix'] = $this->suffix;
         }
 
         if (count($this->identifiers) > 0) {
             $attributes['identifiers'] = array_map(
-                fn (Identifier $identifier) => $identifier->toArray(),
+                fn (Identifier $identifier): array => $identifier->toArray(),
                 $this->identifiers
             );
         }
 
         if (count($this->alternateIdentifiers) > 0) {
             $attributes['alternateIdentifiers'] = array_map(
-                fn (AlternateIdentifier $identifier) => $identifier->toArray(),
+                fn (AlternateIdentifier $identifier): array => $identifier->toArray(),
                 $this->alternateIdentifiers
             );
         }
 
         if (count($this->subjects) > 0) {
             $attributes['subjects'] = array_map(
-                fn (Subject $subject) => $subject->toArray(),
+                fn (Subject $subject): array => $subject->toArray(),
                 $this->subjects
             );
         }
 
         if (count($this->contributors) > 0) {
             $attributes['contributors'] = array_map(
-                fn (Contributor $contributor) => $contributor->toArray(),
+                fn (Contributor $contributor): array => $contributor->toArray(),
                 $this->contributors
             );
         }
 
         if (count($this->dates) > 0) {
             $attributes['dates'] = array_map(
-                fn (Date $date) => $date->toArray(),
+                fn (Date $date): array => $date->toArray(),
                 $this->dates
             );
         }
@@ -265,14 +368,14 @@ final readonly class DOIData
 
         if (count($this->relatedIdentifiers) > 0) {
             $attributes['relatedIdentifiers'] = array_map(
-                fn (RelatedIdentifier $identifier) => $identifier->toArray(),
+                fn (RelatedIdentifier $identifier): array => $identifier->toArray(),
                 $this->relatedIdentifiers
             );
         }
 
         if (count($this->relatedItems) > 0) {
             $attributes['relatedItems'] = array_map(
-                fn (RelatedItem $item) => $item->toArray(),
+                fn (RelatedItem $item): array => $item->toArray(),
                 $this->relatedItems
             );
         }
@@ -291,33 +394,33 @@ final readonly class DOIData
 
         if (count($this->rightsList) > 0) {
             $attributes['rightsList'] = array_map(
-                fn (RightsList $rights) => $rights->toArray(),
+                fn (RightsList $rights): array => $rights->toArray(),
                 $this->rightsList
             );
         }
 
         if (count($this->descriptions) > 0) {
             $attributes['descriptions'] = array_map(
-                fn (Description $description) => $description->toArray(),
+                fn (Description $description): array => $description->toArray(),
                 $this->descriptions
             );
         }
 
         if (count($this->geoLocations) > 0) {
             $attributes['geoLocations'] = array_map(
-                fn (GeoLocation $geoLocation) => $geoLocation->toArray(),
+                fn (GeoLocation $geoLocation): array => $geoLocation->toArray(),
                 $this->geoLocations
             );
         }
 
         if (count($this->fundingReferences) > 0) {
             $attributes['fundingReferences'] = array_map(
-                fn (FundingReference $reference) => $reference->toArray(),
+                fn (FundingReference $reference): array => $reference->toArray(),
                 $this->fundingReferences
             );
         }
 
-        if ($this->schemaVersion) {
+        if ($this->schemaVersion !== '' && $this->schemaVersion !== '0') {
             $attributes['schemaVersion'] = $this->schemaVersion;
         }
 

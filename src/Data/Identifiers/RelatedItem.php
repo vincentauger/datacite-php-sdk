@@ -18,30 +18,48 @@ final readonly class RelatedItem
         public ?RelatedItemIdentifier $relatedItemIdentifier = null,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_array($data['titles']));
+        assert(is_string($data['relationType']));
+        assert(is_string($data['relatedItemType']));
+
+        /** @var array<array<string, mixed>> $titlesData */
+        $titlesData = $data['titles'];
+
+        $relatedItemIdentifierData = null;
+        if (isset($data['relatedItemIdentifier']) && is_array($data['relatedItemIdentifier'])) {
+            /** @var array<string, mixed> $identifierArray */
+            $identifierArray = $data['relatedItemIdentifier'];
+            $relatedItemIdentifierData = RelatedItemIdentifier::fromArray($identifierArray);
+        }
+
         return new self(
             titles: array_map(
-                fn (array $item) => Title::fromArray($item),
-                $data['titles']
+                fn (array $item): Title => Title::fromArray($item),
+                $titlesData
             ),
             relationType: $data['relationType'],
             relatedItemType: $data['relatedItemType'],
-            relatedItemIdentifier: isset($data['relatedItemIdentifier'])
-                ? RelatedItemIdentifier::fromArray($data['relatedItemIdentifier'])
-                : null,
+            relatedItemIdentifier: $relatedItemIdentifierData,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [
-            'titles' => array_map(fn (Title $title) => $title->toArray(), $this->titles),
+            'titles' => array_map(fn (Title $title): array => $title->toArray(), $this->titles),
             'relationType' => $this->relationType,
             'relatedItemType' => $this->relatedItemType,
         ];
 
-        if ($this->relatedItemIdentifier !== null) {
+        if ($this->relatedItemIdentifier instanceof \VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItemIdentifier) {
             $array['relatedItemIdentifier'] = $this->relatedItemIdentifier->toArray();
         }
 

@@ -12,15 +12,24 @@ final readonly class NameIdentifier
         public string $nameIdentifierScheme,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['nameIdentifier']));
+        assert(is_string($data['nameIdentifierScheme']));
+
         return new self(
-            schemeUri: $data['schemeUri'] ?? null,
+            schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
             nameIdentifier: $data['nameIdentifier'],
             nameIdentifierScheme: $data['nameIdentifierScheme'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [

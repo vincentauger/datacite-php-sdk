@@ -16,19 +16,29 @@ final readonly class RelatedIdentifier
         public ?string $relatedMetadataScheme,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_string($data['relationType']));
+        assert(is_string($data['relatedIdentifier']));
+        assert(is_string($data['relatedIdentifierType']));
+
         return new self(
-            schemeUri: $data['schemeUri'] ?? null,
-            schemeType: $data['schemeType'] ?? null,
+            schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
+            schemeType: isset($data['schemeType']) && is_string($data['schemeType']) ? $data['schemeType'] : null,
             relationType: $data['relationType'],
             relatedIdentifier: $data['relatedIdentifier'],
-            resourceTypeGeneral: $data['resourceTypeGeneral'] ?? null,
+            resourceTypeGeneral: isset($data['resourceTypeGeneral']) && is_string($data['resourceTypeGeneral']) ? $data['resourceTypeGeneral'] : null,
             relatedIdentifierType: $data['relatedIdentifierType'],
-            relatedMetadataScheme: $data['relatedMetadataScheme'] ?? null,
+            relatedMetadataScheme: isset($data['relatedMetadataScheme']) && is_string($data['relatedMetadataScheme']) ? $data['relatedMetadataScheme'] : null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $array = [

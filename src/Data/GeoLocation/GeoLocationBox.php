@@ -13,16 +13,27 @@ final readonly class GeoLocationBox
         public float $northBoundLatitude,
     ) {}
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public static function fromArray(array $data): self
     {
+        assert(is_numeric($data['westBoundLongitude']));
+        assert(is_numeric($data['eastBoundLongitude']));
+        assert(is_numeric($data['southBoundLatitude']));
+        assert(is_numeric($data['northBoundLatitude']));
+
         return new self(
-            westBoundLongitude: $data['westBoundLongitude'],
-            eastBoundLongitude: $data['eastBoundLongitude'],
-            southBoundLatitude: $data['southBoundLatitude'],
-            northBoundLatitude: $data['northBoundLatitude'],
+            westBoundLongitude: (float) $data['westBoundLongitude'],
+            eastBoundLongitude: (float) $data['eastBoundLongitude'],
+            southBoundLatitude: (float) $data['southBoundLatitude'],
+            northBoundLatitude: (float) $data['northBoundLatitude'],
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
