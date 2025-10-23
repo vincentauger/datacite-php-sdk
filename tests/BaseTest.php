@@ -31,4 +31,27 @@ class BaseTest extends TestCase
         }
 
     }
+
+    public function getPublicApiClient(?string $email = null)
+    {
+        return new \VincentAuger\DataCiteSdk\DataCite(mailto: $email);
+    }
+
+    public function getMemberApiClient()
+    {
+        $username = $_ENV['DATACITE_USERNAME'] ?? null;
+        $password = $_ENV['DATACITE_PASSWORD'] ?? null;
+        $mailto = $_ENV['DATACITE_MAILTO'] ?? null;
+
+        if (! $username || ! $password) {
+            self::fail('DATACITE_USERNAME and DATACITE_PASSWORD must be set in the .env file for member API tests.');
+        }
+
+        return new \VincentAuger\DataCiteSdk\DataCite(
+            apiVersion: \VincentAuger\DataCiteSdk\Enums\ApiVersion::MEMBER,
+            username: $username,
+            password: $password,
+            mailto: $mailto
+        );
+    }
 }
