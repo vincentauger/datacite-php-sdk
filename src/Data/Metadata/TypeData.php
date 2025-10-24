@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Metadata;
 
+use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
+
 final readonly class TypeData
 {
     public function __construct(
@@ -12,7 +14,7 @@ final readonly class TypeData
         public string $citeproc,
         public string $schemaOrg,
         public ?string $resourceType,
-        public string $resourceTypeGeneral,
+        public ResourceTypeGeneral $resourceTypeGeneral,
     ) {}
 
     /**
@@ -32,7 +34,7 @@ final readonly class TypeData
             citeproc: $data['citeproc'],
             schemaOrg: $data['schemaOrg'],
             resourceType: isset($data['resourceType']) && is_string($data['resourceType']) ? $data['resourceType'] : null,
-            resourceTypeGeneral: $data['resourceTypeGeneral'],
+            resourceTypeGeneral: ResourceTypeGeneral::from($data['resourceTypeGeneral']),
         );
     }
 
@@ -46,7 +48,7 @@ final readonly class TypeData
             'bibtex' => $this->bibtex,
             'citeproc' => $this->citeproc,
             'schemaOrg' => $this->schemaOrg,
-            'resourceTypeGeneral' => $this->resourceTypeGeneral,
+            'resourceTypeGeneral' => $this->resourceTypeGeneral->value,
         ];
 
         if ($this->resourceType !== null) {

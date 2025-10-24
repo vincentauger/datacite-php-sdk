@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
 use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOI;
 
 it('can get a doi via the public API', function (): void {
@@ -23,6 +24,7 @@ it('can get a doi via the public API', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.5438/0012');
 
+    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -64,6 +66,7 @@ it('can get a doi via the public API with email', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.5438/0012');
 
+    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -86,10 +89,12 @@ it('cant get a doi via the member API', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.82785/1989de32-bc5d-c696-879c-54d422438e64');
 
+    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
     expect($doi->doi)->toBe('10.82785/1989de32-bc5d-c696-879c-54d422438e64');
+    expect($doi->types->resourceTypeGeneral)->toBe(ResourceTypeGeneral::DATASET);
 });
 
 it('can get a doi with affiliation and publisher info via the public API', function (): void {
@@ -111,6 +116,7 @@ it('can get a doi with affiliation and publisher info via the public API', funct
     expect($response->json('data.id'))->toBe('10.60825/xd80-gb65');
     expect($response->json('data.attributes.publisher.publisherIdentifier'))->toBe('https://ror.org/02qa1x782');
 
+    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -139,6 +145,7 @@ it('can parse a doi with all fields', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.82433/b09z-4k37');
 
+    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
