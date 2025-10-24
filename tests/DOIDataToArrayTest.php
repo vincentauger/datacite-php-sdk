@@ -50,7 +50,6 @@ test('Creator can be serialized to array', function (): void {
         familyName: 'Doe',
         affiliation: [$affiliation],
         nameIdentifiers: [$nameIdentifier],
-        lang: null
     );
 
     $array = $creator->toArray();

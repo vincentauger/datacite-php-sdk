@@ -6,6 +6,9 @@ namespace VincentAuger\DataCiteSdk\Requests\DOIs;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
+use Saloon\Traits\Request\CreatesDtoFromResponse;
+use VincentAuger\DataCiteSdk\Data\ListDOIData;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Traits\Requests\HasAdditionalInformation;
 use VincentAuger\DataCiteSdk\Traits\Requests\HasPaginationParams;
@@ -14,6 +17,7 @@ use VincentAuger\DataCiteSdk\Traits\Requests\HasSortParams;
 
 final class ListDOIs extends Request
 {
+    use CreatesDtoFromResponse;
     use HasAdditionalInformation;
     use HasPaginationParams;
     use HasSamplingParams;
@@ -149,6 +153,14 @@ final class ListDOIs extends Request
     public function resolveEndpoint(): string
     {
         return '/dois';
+    }
+
+    public function createDtoFromResponse(Response $response): ListDOIData
+    {
+        /** @var array<string, mixed> $data */
+        $data = $response->json();
+
+        return ListDOIData::fromArray($data);
     }
 
     /** @return array<string, mixed> */

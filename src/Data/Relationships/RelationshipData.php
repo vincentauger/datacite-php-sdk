@@ -16,14 +16,14 @@ final readonly class RelationshipData
      */
     public function __construct(
         public RelationshipClient $client,
-        public RelationshipProvider $provider,
-        public RelationshipMedia $media,
-        public array $references,
-        public array $citations,
-        public array $parts,
-        public array $partOf,
-        public array $versions,
-        public array $versionOf,
+        public ?RelationshipProvider $provider = null,
+        public ?RelationshipMedia $media = null,
+        public array $references = [],
+        public array $citations = [],
+        public array $parts = [],
+        public array $partOf = [],
+        public array $versions = [],
+        public array $versionOf = [],
     ) {}
 
     /**
@@ -42,38 +42,31 @@ final readonly class RelationshipData
         assert(is_array($data['versionOf']));
 
         assert(is_array($data['client']['data']));
-        assert(is_array($data['provider']['data']));
-        assert(is_array($data['media']['data']));
-        assert(is_array($data['references']['data']));
-        assert(is_array($data['citations']['data']));
-        assert(is_array($data['parts']['data']));
-        assert(is_array($data['partOf']['data']));
-        assert(is_array($data['versions']['data']));
-        assert(is_array($data['versionOf']['data']));
+        // Provider, media, references, citations, parts, partOf, versions, versionOf are optional
 
         /** @var array<string, mixed> $clientData */
         $clientData = $data['client']['data'];
         /** @var array<string, mixed> $providerData */
-        $providerData = $data['provider']['data'];
+        $providerData = $data['provider']['data'] ?? null;
         /** @var array<string, mixed> $mediaData */
-        $mediaData = $data['media']['data'];
+        $mediaData = $data['media']['data'] ?? null;
         /** @var array<array<string, mixed>> $referencesData */
-        $referencesData = $data['references']['data'];
+        $referencesData = $data['references']['data'] ?? [];
         /** @var array<array<string, mixed>> $citationsData */
-        $citationsData = $data['citations']['data'];
+        $citationsData = $data['citations']['data'] ?? [];
         /** @var array<array<string, mixed>> $partsData */
-        $partsData = $data['parts']['data'];
+        $partsData = $data['parts']['data'] ?? [];
         /** @var array<array<string, mixed>> $partOfData */
-        $partOfData = $data['partOf']['data'];
+        $partOfData = $data['partOf']['data'] ?? [];
         /** @var array<array<string, mixed>> $versionsData */
-        $versionsData = $data['versions']['data'];
+        $versionsData = $data['versions']['data'] ?? [];
         /** @var array<array<string, mixed>> $versionOfData */
-        $versionOfData = $data['versionOf']['data'];
+        $versionOfData = $data['versionOf']['data'] ?? [];
 
         return new self(
             client: RelationshipClient::fromArray($clientData),
-            provider: RelationshipProvider::fromArray($providerData),
-            media: RelationshipMedia::fromArray($mediaData),
+            provider: $providerData ? RelationshipProvider::fromArray($providerData) : null,
+            media: $mediaData ? RelationshipMedia::fromArray($mediaData) : null,
             references: array_map(
                 fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
                 $referencesData

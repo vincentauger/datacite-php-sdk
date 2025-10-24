@@ -49,8 +49,8 @@ final readonly class DOIData
         public string $id,
         public string $type,
         public string $doi,
-        public string $prefix,
-        public string $suffix,
+        public ?string $prefix,
+        public ?string $suffix,
         public array $identifiers,
         public array $alternateIdentifiers,
         public array $creators,
@@ -72,11 +72,11 @@ final readonly class DOIData
         public array $descriptions,
         public array $geoLocations,
         public array $fundingReferences,
-        public string $xml,
+        public ?string $xml,
         public string $url,
         public ?string $contentUrl,
         public int $metadataVersion,
-        public string $schemaVersion,
+        public ?string $schemaVersion,
         public string $source,
         public bool $isActive,
         public string $state,
@@ -94,7 +94,7 @@ final readonly class DOIData
         public int $versionOfCount,
         public DateTimeImmutable $created,
         public DateTimeImmutable $registered,
-        public string $published,
+        public ?string $published,
         public DateTimeImmutable $updated,
         public RelationshipData $relationships,
     ) {}
@@ -112,10 +112,10 @@ final readonly class DOIData
         $attributes = $data['attributes'];
 
         assert(is_string($attributes['doi']));
-        assert(is_string($attributes['prefix']));
-        assert(is_string($attributes['suffix']));
+        assert(is_string($attributes['prefix']) || $attributes['prefix'] === null);
+        assert(is_string($attributes['suffix']) || $attributes['suffix'] === null);
         assert(is_array($attributes['identifiers']));
-        assert(is_array($attributes['alternateIdentifiers']));
+        assert(is_array($attributes['alternateIdentifiers']) || $attributes['alternateIdentifiers'] === null);
         assert(is_array($attributes['creators']));
         assert(is_array($attributes['titles']));
         assert(is_array($attributes['container']));
@@ -132,33 +132,32 @@ final readonly class DOIData
         assert(is_array($attributes['descriptions']));
         assert(is_array($attributes['geoLocations']));
         assert(is_array($attributes['fundingReferences']));
-        assert(is_string($attributes['xml']));
+        assert(is_string($attributes['xml']) || $attributes['xml'] === null);
         assert(is_string($attributes['url']));
         assert(is_numeric($attributes['metadataVersion']));
-        assert(is_string($attributes['schemaVersion']));
+        assert(is_string($attributes['schemaVersion']) || $attributes['schemaVersion'] === null);
         assert(is_string($attributes['source']));
         assert(is_bool($attributes['isActive']));
         assert(is_string($attributes['state']));
         assert(is_numeric($attributes['viewCount']));
-        assert(is_array($attributes['viewsOverTime']));
+        assert(is_array($attributes['viewsOverTime']) || ! array_key_exists('viewsOverTime', $attributes));
         assert(is_numeric($attributes['downloadCount']));
-        assert(is_array($attributes['downloadsOverTime']));
+        assert(is_array($attributes['downloadsOverTime']) || ! array_key_exists('downloadsOverTime', $attributes));
         assert(is_numeric($attributes['referenceCount']));
-        assert(is_numeric($attributes['citationCount']));
-        assert(is_array($attributes['citationsOverTime']));
+        assert(is_array($attributes['citationsOverTime']) || ! array_key_exists('citationsOverTime', $attributes));
         assert(is_numeric($attributes['partCount']));
         assert(is_numeric($attributes['partOfCount']));
         assert(is_numeric($attributes['versionCount']));
         assert(is_numeric($attributes['versionOfCount']));
         assert(is_string($attributes['created']));
         assert(is_string($attributes['registered']));
-        assert(is_string($attributes['published']));
+        assert(is_string($attributes['published']) || $attributes['published'] === null);
         assert(is_string($attributes['updated']));
 
         /** @var array<array<string, mixed>> $identifiersData */
         $identifiersData = $attributes['identifiers'];
         /** @var array<array<string, mixed>> $alternateIdentifiersData */
-        $alternateIdentifiersData = $attributes['alternateIdentifiers'];
+        $alternateIdentifiersData = $attributes['alternateIdentifiers'] ?? [];
         /** @var array<array<string, mixed>> $creatorsData */
         $creatorsData = $attributes['creators'];
         /** @var array<array<string, mixed>> $titlesData */
@@ -190,11 +189,11 @@ final readonly class DOIData
         /** @var array<array<string, mixed>> $fundingReferencesData */
         $fundingReferencesData = $attributes['fundingReferences'];
         /** @var array<string, int> $viewsOverTimeData */
-        $viewsOverTimeData = $attributes['viewsOverTime'];
+        $viewsOverTimeData = $attributes['viewsOverTime'] ?? [];
         /** @var array<string, int> $downloadsOverTimeData */
-        $downloadsOverTimeData = $attributes['downloadsOverTime'];
+        $downloadsOverTimeData = $attributes['downloadsOverTime'] ?? [];
         /** @var array<string, int> $citationsOverTimeData */
-        $citationsOverTimeData = $attributes['citationsOverTime'];
+        $citationsOverTimeData = $attributes['citationsOverTime'] ?? [];
         /** @var array<string, mixed> $relationshipsData */
         $relationshipsData = $data['relationships'];
 
@@ -209,8 +208,8 @@ final readonly class DOIData
             id: $data['id'],
             type: $data['type'],
             doi: $attributes['doi'],
-            prefix: $attributes['prefix'],
-            suffix: $attributes['suffix'],
+            prefix: $attributes['prefix'] ?? null,
+            suffix: $attributes['suffix'] ?? null,
             identifiers: array_map(
                 fn (array $item): Identifier => Identifier::fromArray($item),
                 $identifiersData
@@ -271,21 +270,21 @@ final readonly class DOIData
                 fn (array $item): FundingReference => FundingReference::fromArray($item),
                 $fundingReferencesData
             ),
-            xml: $attributes['xml'],
+            xml: $attributes['xml'] ?? null,
             url: $attributes['url'],
             contentUrl: isset($attributes['contentUrl']) && is_string($attributes['contentUrl']) ? $attributes['contentUrl'] : null,
             metadataVersion: (int) $attributes['metadataVersion'],
-            schemaVersion: $attributes['schemaVersion'],
+            schemaVersion: $attributes['schemaVersion'] ?? null,
             source: $attributes['source'],
             isActive: $attributes['isActive'],
             state: $attributes['state'],
             reason: isset($attributes['reason']) && is_string($attributes['reason']) ? $attributes['reason'] : null,
             viewCount: (int) $attributes['viewCount'],
             viewsOverTime: $viewsOverTimeData,
-            downloadCount: (int) $attributes['downloadCount'],
+            downloadCount: isset($attributes['downloadCount']) ? (int) $attributes['downloadCount'] : 0,
             downloadsOverTime: $downloadsOverTimeData,
-            referenceCount: (int) $attributes['referenceCount'],
-            citationCount: (int) $attributes['citationCount'],
+            referenceCount: isset($attributes['referenceCount']) ? (int) $attributes['referenceCount'] : 0,
+            citationCount: isset($attributes['citationCount']) && is_numeric($attributes['citationCount']) ? (int) $attributes['citationCount'] : 0,
             citationsOverTime: $citationsOverTimeData,
             partCount: (int) $attributes['partCount'],
             partOfCount: (int) $attributes['partOfCount'],
@@ -293,7 +292,7 @@ final readonly class DOIData
             versionOfCount: (int) $attributes['versionOfCount'],
             created: new DateTimeImmutable($attributes['created']),
             registered: new DateTimeImmutable($attributes['registered']),
-            published: $attributes['published'],
+            published: $attributes['published'] ?? null,
             updated: new DateTimeImmutable($attributes['updated']),
             relationships: RelationshipData::fromArray($relationshipsData),
         );

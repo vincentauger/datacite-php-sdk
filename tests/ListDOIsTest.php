@@ -21,10 +21,15 @@ it('can list dois via the public API', function (): void {
 
     $response = $client->send($request);
 
-    expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
 
-    // dd($response->json());
+    expect($response->status())->toBe(200);
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(25);
+    expect($dto->meta->total)->toBeGreaterThan(0);
+    expect($dto->links->self)->toBeString();
+    expect($dto->meta->page)->toBe(1);
 
 });
 
@@ -241,5 +246,42 @@ it('can list dois with random sampling', function (): void {
 
     expect($response->status())->toBe(200);
     expect($response->json('data'))->toBeArray();
+
+});
+
+it('can list dois with DTO and metadata', function (): void {
+
+    $mockClient = new MockClient([
+        ListDOIs::class => MockResponse::fixture('listdois.sorting'),
+    ]);
+
+    $client = $this->getPublicApiClient();
+    $client->withMockClient($mockClient);
+
+    $request = new ListDOIs()
+        ->withSortDesc(SortOption::CREATED)
+        ->withPageSize(10);
+
+    $response = $client->send($request);
+    $dto = $response->dto();
+
+    expect($response->status())->toBe(200);
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+
+    // Test data array
+    expect($dto->data)->toBeArray();
+    expect(count($dto->data))->toBeGreaterThan(0);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Test metadata
+    expect($dto->meta->total)->toBeGreaterThan(0);
+    expect($dto->meta->totalPages)->toBeGreaterThan(0);
+    expect($dto->meta->page)->toBe(1);
+    expect($dto->meta->states)->toBeArray();
+    expect($dto->meta->resourceTypes)->toBeArray();
+
+    // Test links
+    expect($dto->links->self)->toBeString();
+    expect($dto->links->next)->toBeString();
 
 });
