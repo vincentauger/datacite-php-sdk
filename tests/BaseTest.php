@@ -43,8 +43,8 @@ class BaseTest extends TestCase
     public function getMemberApiClient(): \VincentAuger\DataCiteSdk\DataCite
     {
         $baseUrl = $_ENV['DATACITE_BASE_URL'] ?? 'https://api.test.datacite.org';
-        $username = $_ENV['DATACITE_USERNAME'] ?? null;
-        $password = $_ENV['DATACITE_PASSWORD'] ?? null;
+        $username = $_ENV['DATACITE_USERNAME'] ?? 'username';
+        $password = $_ENV['DATACITE_PASSWORD'] ?? 'password';
         $mailto = $_ENV['DATACITE_MAILTO'] ?? null;
 
         if (! $username || ! $password) {
