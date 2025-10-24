@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Requests\DOIs;
 
+use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Traits\Requests\HasAdditionalInformation;
@@ -17,6 +18,8 @@ final class ListDOIs extends Request
     use HasPaginationParams;
     use HasSamplingParams;
     use HasSortParams;
+
+    protected Method $method = Method::GET;
 
     private ?QueryBuilder $queryBuilder = null;
 
