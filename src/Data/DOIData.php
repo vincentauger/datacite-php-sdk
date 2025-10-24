@@ -26,8 +26,8 @@ use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipData;
 final readonly class DOIData
 {
     /**
-     * @param  Creator[]  $creators
-     * @param  Title[]  $titles
+     * @param  non-empty-array<Creator>  $creators  Mandatory: At least one creator required per DataCite schema
+     * @param  non-empty-array<Title>  $titles  Mandatory: At least one title required per DataCite schema
      * @param  Identifier[]  $identifiers
      * @param  AlternateIdentifier[]  $alternateIdentifiers
      * @param  Subject[]  $subjects
@@ -48,21 +48,21 @@ final readonly class DOIData
     public function __construct(
         public string $id,
         public string $type,
-        public string $doi,
+        public string $doi, // Mandatory: DataCite Property 1 (Identifier)
         public ?string $prefix,
         public ?string $suffix,
         public array $identifiers,
         public array $alternateIdentifiers,
-        public array $creators,
-        public array $titles,
-        public PublisherData|string $publisher,
+        public array $creators, // Mandatory: DataCite Property 2 (Creator) - must be non-empty
+        public array $titles, // Mandatory: DataCite Property 3 (Title) - must be non-empty
+        public PublisherData|string $publisher, // Mandatory: DataCite Property 4 (Publisher)
         public ContainerData $container,
-        public int $publicationYear,
+        public int $publicationYear, // Mandatory: DataCite Property 5 (PublicationYear)
         public array $subjects,
         public array $contributors,
         public array $dates,
         public ?string $language,
-        public TypeData $types,
+        public TypeData $types, // Mandatory: DataCite Property 10 (ResourceType)
         public array $relatedIdentifiers,
         public array $relatedItems,
         public array $sizes,
