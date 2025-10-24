@@ -52,8 +52,8 @@ class BaseTest extends TestCase
         }
 
         return new \VincentAuger\DataCiteSdk\DataCite(
-            apiVersion: \VincentAuger\DataCiteSdk\Enums\ApiVersion::MEMBER,
             baseUrl: $baseUrl,
+            apiVersion: \VincentAuger\DataCiteSdk\Enums\ApiVersion::MEMBER,
             username: $username,
             password: $password,
             mailto: $mailto

@@ -102,8 +102,8 @@ it('can get a doi with affiliation and publisher info via the public API', funct
     $client->withMockClient($mockClient);
 
     $request = new GetDOI('10.60825/xd80-gb65')
-        ->addAffiliation()
-        ->addPublisher();
+        ->withAffiliation()
+        ->withPublisher();
 
     $response = $client->send($request);
 
@@ -132,7 +132,7 @@ it('can parse a doi with all fields', function (): void {
     $client = $this->getPublicApiClient();
     $client->withMockClient($mockClient);
 
-    $request = new GetDOI('10.82433/b09z-4k37')->addPublisher()->addAffiliation();
+    $request = new GetDOI('10.82433/b09z-4k37')->withPublisher()->withAffiliation();
 
     $response = $client->send($request);
 

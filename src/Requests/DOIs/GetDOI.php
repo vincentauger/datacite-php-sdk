@@ -9,10 +9,12 @@ use Saloon\Http\Request;
 use Saloon\Http\Response;
 use Saloon\Traits\Request\CreatesDtoFromResponse;
 use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Traits\Requests\HasAdditionalInformation;
 
 final class GetDOI extends Request
 {
     use CreatesDtoFromResponse;
+    use HasAdditionalInformation;
 
     protected Method $method = Method::GET;
 
@@ -29,27 +31,5 @@ final class GetDOI extends Request
         $data = $response->json('data');
 
         return DOIData::fromArray($data);
-    }
-
-    /**
-     * Set affiliation=true to see additional affiliation
-     * information such as the affiliation identifier.
-     */
-    public function addAffiliation(bool $flag = true): self
-    {
-        $this->query()->add('affiliation', $flag ? 'true' : 'false');
-
-        return $this;
-    }
-
-    /**
-     * Set publisher=true to see additional publisher
-     * information such as the publisher identifier.
-     */
-    public function addPublisher(bool $flag = true): self
-    {
-        $this->query()->add('publisher', $flag ? 'true' : 'false');
-
-        return $this;
     }
 }
