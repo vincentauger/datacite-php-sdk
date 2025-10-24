@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Data\Metadata;
 final readonly class RightsList
 {
     public function __construct(
-        public string $rights,
+        public ?string $rights = null,
         public ?string $lang = null,
         public ?string $rightsUri = null,
         public ?string $rightsIdentifier = null,
@@ -20,10 +20,8 @@ final readonly class RightsList
      */
     public static function fromArray(array $data): self
     {
-        assert(is_string($data['rights']));
-
         return new self(
-            rights: $data['rights'],
+            rights: isset($data['rights']) && is_string($data['rights']) ? $data['rights'] : null,
             lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             rightsUri: isset($data['rightsUri']) && is_string($data['rightsUri']) ? $data['rightsUri'] : null,
             rightsIdentifier: isset($data['rightsIdentifier']) && is_string($data['rightsIdentifier']) ? $data['rightsIdentifier'] : null,
@@ -37,7 +35,11 @@ final readonly class RightsList
      */
     public function toArray(): array
     {
-        $array = ['rights' => $this->rights];
+        $array = [];
+
+        if ($this->rights !== null) {
+            $array['rights'] = $this->rights;
+        }
 
         if ($this->lang !== null) {
             $array['lang'] = $this->lang;
