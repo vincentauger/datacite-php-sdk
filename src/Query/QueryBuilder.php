@@ -108,6 +108,42 @@ final class QueryBuilder
         return $this;
     }
 
+    public function whereWildcard(string $field, string $pattern): self
+    {
+        $this->clauses[] = "{$field}:{$pattern}";
+
+        return $this;
+    }
+
+    public function whereWildcardExact(string $field, string $value, string $suffix = ''): self
+    {
+        // Escape spaces for wildcard + exact match combinations
+        $escapedValue = str_replace(' ', '\ ', $value);
+        $this->clauses[] = "{$field}:{$escapedValue}{$suffix}";
+
+        return $this;
+    }
+
+    public function whereContainsWildcard(string $field, string $value): self
+    {
+        return $this->whereWildcard($field, "*{$value}*");
+    }
+
+    public function whereStartsWithWildcard(string $field, string $value): self
+    {
+        return $this->whereWildcard($field, "{$value}*");
+    }
+
+    public function whereEndsWithWildcard(string $field, string $value): self
+    {
+        return $this->whereWildcard($field, "*{$value}");
+    }
+
+    public function whereSingleCharacterWildcard(string $field, string $pattern): self
+    {
+        return $this->whereWildcard($field, $pattern);
+    }
+
     public function raw(string $clause): self
     {
         $this->clauses[] = $clause;
