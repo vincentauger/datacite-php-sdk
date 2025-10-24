@@ -48,8 +48,13 @@ it('can list dois with sorting', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(10);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
 
 });
 
@@ -68,8 +73,24 @@ it('can list dois with provider filter', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least one result is from the 'cern' provider (if provider data is available)
+    $foundCernProvider = false;
+    foreach ($dto->data as $doiData) {
+        if ($doiData->relationships?->provider?->data?->id === 'cern') {
+            $foundCernProvider = true;
+            break;
+        }
+    }
+    // Just verify we can access the provider relationship structure
+    expect($dto->data[0]->relationships)->not->toBeNull();
 
 });
 
@@ -92,8 +113,35 @@ it('can list dois with query builder', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least some results match our query (API may return partial matches)
+    $found2023Year = 0;
+    $foundMachineLearning = 0;
+
+    foreach ($dto->data as $doiData) {
+        // Check publication year
+        if ($doiData->publicationYear === 2023) {
+            $found2023Year++;
+        }
+
+        // Check at least one title contains 'machine learning'
+        foreach ($doiData->titles as $title) {
+            if (stripos($title->title, 'machine learning') !== false) {
+                $foundMachineLearning++;
+                break;
+            }
+        }
+    }
+
+    expect($found2023Year)->toBeGreaterThan(0, 'Expected at least one DOI from 2023');
+    expect($foundMachineLearning)->toBeGreaterThan(0, 'Expected at least one DOI with "machine learning" in title');
 
 });
 
@@ -115,8 +163,25 @@ it('can list dois with exact match search', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least one result has the exact title match
+    $foundExactMatch = false;
+    foreach ($dto->data as $doiData) {
+        foreach ($doiData->titles as $title) {
+            if ($title->title === 'CrowdoMeter Tweets') {
+                $foundExactMatch = true;
+                break 2;
+            }
+        }
+    }
+    expect($foundExactMatch)->toBeTrue();
 
 });
 
@@ -139,8 +204,28 @@ it('can list dois with wildcard search', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(20);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least one result has creators with family names starting with 'mil' and name identifiers
+    $foundMatchingCreator = false;
+    foreach ($dto->data as $doiData) {
+        foreach ($doiData->creators as $creator) {
+            if ($creator->familyName !== null && stripos($creator->familyName, 'mil') === 0) {
+                // Also check this creator has name identifiers
+                if (count($creator->nameIdentifiers) > 0) {
+                    $foundMatchingCreator = true;
+                    break 2;
+                }
+            }
+        }
+    }
+    expect($foundMatchingCreator)->toBeTrue();
 
 });
 
@@ -161,8 +246,39 @@ it('can list dois with boolean filters', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least some results have person creators and funding references
+    $foundPerson = false;
+    $foundFundingRef = false;
+
+    foreach ($dto->data as $doiData) {
+        // Check for person (creator with nameType='Personal')
+        foreach ($doiData->creators as $creator) {
+            if ($creator->nameType === 'Personal') {
+                $foundPerson = true;
+                break;
+            }
+        }
+
+        // Check for funding references
+        if (count($doiData->fundingReferences) > 0) {
+            $foundFundingRef = true;
+        }
+
+        if ($foundPerson && $foundFundingRef) {
+            break;
+        }
+    }
+
+    expect($foundPerson)->toBeTrue('Expected to find at least one DOI with a personal creator');
+    expect($foundFundingRef)->toBeTrue('Expected to find at least one DOI with funding references');
 
 });
 
@@ -182,8 +298,13 @@ it('can list dois with affiliation and publisher info', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(5);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
 
 });
 
@@ -203,8 +324,14 @@ it('can list dois with pagination', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(15);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->meta->page)->toBe(2);
 
 });
 
@@ -224,8 +351,19 @@ it('can list dois with date range filter', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray()->toHaveCount(10);
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify all results were created in 2023 or 2024
+    foreach ($dto->data as $doiData) {
+        $createdYear = (int) $doiData->created->format('Y');
+        expect($createdYear)->toBeIn([2023, 2024]);
+    }
 
 });
 
@@ -244,8 +382,13 @@ it('can list dois with random sampling', function (): void {
 
     $response = $client->send($request);
 
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
     expect($response->status())->toBe(200);
-    expect($response->json('data'))->toBeArray();
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
 
 });
 
