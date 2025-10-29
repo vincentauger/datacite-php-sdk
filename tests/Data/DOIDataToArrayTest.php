@@ -9,7 +9,7 @@ use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
 
 test('it can serialize a simple DOI to array', function (): void {
-    $fixtureJson = file_get_contents(__DIR__.'/Fixtures/Saloon/getdoi.json');
+    $fixtureJson = file_get_contents(dirname(__DIR__).'/Fixtures/Saloon/getdoi.json');
     $fixtureData = json_decode($fixtureJson, true);
     $responseData = json_decode((string) $fixtureData['data'], true);
 
@@ -94,7 +94,7 @@ test('Title can be serialized to array', function (): void {
 });
 
 test('DOIData toArray omits empty arrays', function (): void {
-    $fixtureJson = file_get_contents(__DIR__.'/Fixtures/Saloon/getdoi.json');
+    $fixtureJson = file_get_contents(dirname(__DIR__).'/Fixtures/Saloon/getdoi.json');
     $fixtureData = json_decode($fixtureJson, true);
     $responseData = json_decode((string) $fixtureData['data'], true);
 
