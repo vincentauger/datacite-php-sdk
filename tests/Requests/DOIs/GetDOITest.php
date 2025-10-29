@@ -171,7 +171,7 @@ it('can parse a doi with all fields', function (): void {
     // Creators
     expect($doi->creators)->toHaveCount(2);
     expect($doi->creators[0]->name)->toBe('ExampleFamilyName, ExampleGivenName');
-    expect($doi->creators[0]->nameType)->toBe('Personal');
+    expect($doi->creators[0]->nameType)->toBe(\VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL);
     expect($doi->creators[0]->givenName)->toBe('ExampleGivenName');
     expect($doi->creators[0]->familyName)->toBe('ExampleFamilyName');
     expect($doi->creators[0]->affiliation)->toHaveCount(1);
@@ -186,7 +186,7 @@ it('can parse a doi with all fields', function (): void {
 
     // Second creator (organizational)
     expect($doi->creators[1]->name)->toBe('ExampleOrganization');
-    expect($doi->creators[1]->nameType)->toBe('Organizational');
+    expect($doi->creators[1]->nameType)->toBe(\VincentAuger\DataCiteSdk\Enums\NameType::ORGANIZATIONAL);
     expect($doi->creators[1]->affiliation)->toBeEmpty();
     expect($doi->creators[1]->nameIdentifiers)->toHaveCount(1);
     expect($doi->creators[1]->nameIdentifiers[0]->schemeUri)->toBe('https://ror.org');
@@ -198,12 +198,12 @@ it('can parse a doi with all fields', function (): void {
     expect($doi->titles[0]->title)->toBe('Example Title');
     expect($doi->titles[0]->lang)->toBe('en');
     expect($doi->titles[1]->title)->toBe('Example Subtitle');
-    expect($doi->titles[1]->titleType)->toBe('Subtitle');
+    expect($doi->titles[1]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::SUBTITLE);
     expect($doi->titles[2]->title)->toBe('Example TranslatedTitle');
-    expect($doi->titles[2]->titleType)->toBe('TranslatedTitle');
+    expect($doi->titles[2]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::TRANSLATED_TITLE);
     expect($doi->titles[2]->lang)->toBe('fr');
     expect($doi->titles[3]->title)->toBe('Example AlternativeTitle');
-    expect($doi->titles[3]->titleType)->toBe('AlternativeTitle');
+    expect($doi->titles[3]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::ALTERNATIVE_TITLE);
 
     // Publisher
     expect($doi->publisher)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Affiliations\PublisherData::class);

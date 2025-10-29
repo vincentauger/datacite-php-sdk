@@ -216,13 +216,18 @@ it('can list dois with wildcard search', function (): void {
     $foundMatchingCreator = false;
     foreach ($dto->data as $doiData) {
         foreach ($doiData->creators as $creator) {
-            if ($creator->familyName !== null && stripos($creator->familyName, 'mil') === 0) {
-                // Also check this creator has name identifiers
-                if (count($creator->nameIdentifiers) > 0) {
-                    $foundMatchingCreator = true;
-                    break 2;
-                }
+            if ($creator->familyName === null) {
+                continue;
             }
+            if (stripos((string) $creator->familyName, 'mil') !== 0) {
+                continue;
+            }
+            // Also check this creator has name identifiers
+            if (count($creator->nameIdentifiers) <= 0) {
+                continue;
+            }
+            $foundMatchingCreator = true;
+            break 2;
         }
     }
     expect($foundMatchingCreator)->toBeTrue();
@@ -261,7 +266,7 @@ it('can list dois with boolean filters', function (): void {
     foreach ($dto->data as $doiData) {
         // Check for person (creator with nameType='Personal')
         foreach ($doiData->creators as $creator) {
-            if ($creator->nameType === 'Personal') {
+            if ($creator->nameType === \VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL) {
                 $foundPerson = true;
                 break;
             }

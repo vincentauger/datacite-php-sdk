@@ -73,10 +73,7 @@ final class DataCite extends Connector
     public function heartbeat(): bool
     {
         $response = $this->send(new Requests\GetHeartbeat);
-        if ($response->status() === 200) {
-            return true;
-        }
 
-        return false;
+        return $response->status() === 200;
     }
 }

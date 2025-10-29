@@ -10,17 +10,17 @@ use VincentAuger\DataCiteSdk\Data\Identifiers\NameIdentifier;
 final readonly class Contributor
 {
     /**
-     * @param  Affiliation[]  $affiliation
-     * @param  NameIdentifier[]  $nameIdentifiers
+     * @param  Affiliation[]|null  $affiliation
+     * @param  NameIdentifier[]|null  $nameIdentifiers
      */
     public function __construct(
         public string $name,
-        public ?string $nameType,
-        public ?string $givenName,
-        public ?string $familyName,
-        public array $affiliation,
         public string $contributorType,
-        public array $nameIdentifiers,
+        public ?string $nameType = null,
+        public ?string $givenName = null,
+        public ?string $familyName = null,
+        public ?array $affiliation = null,
+        public ?array $nameIdentifiers = null,
     ) {}
 
     /**
@@ -52,11 +52,11 @@ final readonly class Contributor
 
         return new self(
             name: $data['name'],
+            contributorType: $data['contributorType'],
             nameType: isset($data['nameType']) && is_string($data['nameType']) ? $data['nameType'] : null,
             givenName: isset($data['givenName']) && is_string($data['givenName']) ? $data['givenName'] : null,
             familyName: isset($data['familyName']) && is_string($data['familyName']) ? $data['familyName'] : null,
             affiliation: $affiliations,
-            contributorType: $data['contributorType'],
             nameIdentifiers: array_map(
                 fn (array $item): NameIdentifier => NameIdentifier::fromArray($item),
                 $nameIdentifiersData
@@ -86,14 +86,14 @@ final readonly class Contributor
             $array['familyName'] = $this->familyName;
         }
 
-        if (count($this->affiliation) > 0) {
+        if ($this->affiliation !== null && count($this->affiliation) > 0) {
             $array['affiliation'] = array_map(
                 fn (Affiliation $affiliation): array => $affiliation->toArray(),
                 $this->affiliation
             );
         }
 
-        if (count($this->nameIdentifiers) > 0) {
+        if ($this->nameIdentifiers !== null && count($this->nameIdentifiers) > 0) {
             $array['nameIdentifiers'] = array_map(
                 fn (NameIdentifier $nameIdentifier): array => $nameIdentifier->toArray(),
                 $this->nameIdentifiers

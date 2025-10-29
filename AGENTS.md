@@ -29,6 +29,7 @@ This is a modern PHP SDK for the DataCite REST API platform, built for maintaina
 - Requests are `final`
 - Enums are backed enums with string or int values
 - Use traits for shared functionality (see `Traits/` directory)
+- Member-only requests must use `RequiresMemberAuth` trait
 
 ## Architecture
 
@@ -54,4 +55,39 @@ Run these commands before committing:
 - Implement request traits for shared parameters (HasPaginationParams, HasFieldParams, HasIdParams)
 - Follow existing naming conventions in Data/ classes
 - Use typed arrays in DocBlocks: `@var DoiObject[]`
+
+## Member API Authentication
+
+The DataCite API has two access levels:
+
+1. **Public API** (default) - Read-only access, no auth required (GET endpoints)
+2. **Member API** - Full access including create/update/delete (POST/PUT/DELETE endpoints)
+
+### When to Require Member Auth
+
+Add the `RequiresMemberAuth` trait to any request class that:
+- Uses POST, PUT, or DELETE methods
+- Accesses member-specific data
+- Modifies DOI records
+
+### Example
+
+```php
+use VincentAuger\DataCiteSdk\Traits\Requests\RequiresMemberAuth;
+
+/**
+ * Create a new DOI
+ * 
+ * This endpoint requires member API authentication.
+ */
+final class CreateDOI extends Request
+{
+    use RequiresMemberAuth;  // Enforces member auth requirement
+    
+    protected Method $method = Method::POST;
+    // ...
+}
+```
+
+See [docs/member-api-authentication.md](docs/member-api-authentication.md) for complete details.
 

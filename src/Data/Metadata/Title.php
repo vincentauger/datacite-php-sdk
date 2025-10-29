@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Metadata;
 
+use VincentAuger\DataCiteSdk\Enums\TitleType;
+
 final readonly class Title
 {
     public function __construct(
-        public ?string $lang,
         public string $title,
-        public ?string $titleType,
+        public ?string $lang = null,
+        public ?TitleType $titleType = null,
     ) {}
 
     /**
@@ -19,10 +21,14 @@ final readonly class Title
     {
         assert(is_string($data['title']));
 
+        $titleType = isset($data['titleType']) && is_string($data['titleType'])
+            ? TitleType::tryFrom($data['titleType'])
+            : null;
+
         return new self(
-            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
             title: $data['title'],
-            titleType: isset($data['titleType']) && is_string($data['titleType']) ? $data['titleType'] : null,
+            lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,
+            titleType: $titleType,
         );
     }
 
@@ -37,8 +43,8 @@ final readonly class Title
             $array['lang'] = $this->lang;
         }
 
-        if ($this->titleType !== null) {
-            $array['titleType'] = $this->titleType;
+        if ($this->titleType instanceof \VincentAuger\DataCiteSdk\Enums\TitleType) {
+            $array['titleType'] = $this->titleType->value;
         }
 
         return $array;

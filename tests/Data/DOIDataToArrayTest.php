@@ -45,7 +45,7 @@ test('Creator can be serialized to array', function (): void {
 
     $creator = new Creator(
         name: 'John Doe',
-        nameType: 'Personal',
+        nameType: \VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL,
         givenName: 'John',
         familyName: 'Doe',
         affiliation: [$affiliation],
@@ -79,9 +79,9 @@ test('Creator can be serialized to array', function (): void {
 
 test('Title can be serialized to array', function (): void {
     $title = new Title(
-        lang: 'en',
         title: 'Test Title',
-        titleType: 'MainTitle'
+        lang: 'en',
+        titleType: \VincentAuger\DataCiteSdk\Enums\TitleType::SUBTITLE
     );
 
     $array = $title->toArray();
@@ -89,7 +89,7 @@ test('Title can be serialized to array', function (): void {
     expect($array)->toBe([
         'title' => 'Test Title',
         'lang' => 'en',
-        'titleType' => 'MainTitle',
+        'titleType' => 'Subtitle',
     ]);
 });
 

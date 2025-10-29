@@ -6,7 +6,7 @@ use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use VincentAuger\DataCiteSdk\Requests\GetHeartbeat;
 
-it('can get a heartbeat', function () {
+it('can get a heartbeat', function (): void {
 
     $mockClient = new MockClient([
         GetHeartbeat::class => MockResponse::fixture('getheartbeat'),
@@ -24,7 +24,7 @@ it('can get a heartbeat', function () {
 
 });
 
-it('can get a heartbeat via connector', function () {
+it('can get a heartbeat via connector', function (): void {
 
     $mockClient = new MockClient([
         GetHeartbeat::class => MockResponse::fixture('getheartbeat'),

@@ -87,14 +87,39 @@ $createdDoi = $request->createDtoFromResponse($response);
 
 ## Configuration
 
-You must provide:
+### Public API (Read-Only)
+
+```php
+use VincentAuger\DataCiteSdk\DataCite;
+
+// No credentials needed for public API
+$datacite = new DataCite();
+```
+
+### Member API (Full Access)
+
+```php
+use VincentAuger\DataCiteSdk\DataCite;
+use VincentAuger\DataCiteSdk\Enums\ApiVersion;
+
+// Credentials required for member API (create, update, delete operations)
+$datacite = new DataCite(
+    apiVersion: ApiVersion::MEMBER,
+    username: 'your-repository-id',
+    password: 'your-repository-password',
+    mailto: 'your-email@example.com'
+);
+```
 
 | Parameter | Description |
 |-----------|-------------|
-| baseUrl | Base URL of the DataCite API (<https://api.datacite.org>) |
-| apiVersion | `public` or `member`, defaults to `public` |
-| username | DataCite repository ID |
-| password | DataCite repository password |
+| baseUrl | Base URL of the DataCite API (defaults to `https://api.datacite.org`) |
+| apiVersion | `ApiVersion::PUBLIC` (default) or `ApiVersion::MEMBER` |
+| username | DataCite repository ID (required for member API) |
+| password | DataCite repository password (required for member API) |
+| mailto | Your email for User-Agent header (optional but recommended) |
+
+**Note:** Some endpoints (POST, PUT, DELETE) require member API authentication. The SDK will throw a clear exception if you attempt to use these endpoints without proper credentials. See [Member API Authentication](docs/member-api-authentication.md) for details.
 
 ## Structure
 
@@ -105,13 +130,13 @@ You must provide:
 
 ## Roadmap
 
-- [ ] Basic client and authentication
-- [ ] System Heartbeat endpoint `/heartbeat`
+- [x] Basic client and authentication
+- [x] System Heartbeat endpoint `/heartbeat`
 
 ### DOI Resource
 
-- [ ] Fetch DOI records `GET /dois/{id}`
-- [ ] Search DOI records `GET /dois`
+- [x] Fetch DOI records `GET /dois/{id}`
+- [x] Search DOI records `GET /dois`
 - [ ] Create DOI records `POST /dois`
 - [ ] Update DOI records `PUT /dois/{id}`
 - [ ] Delete DOI records `DELETE /dois/{id}`

@@ -1,0 +1,27 @@
+{
+    "statusCode": 400,
+    "headers": {
+        "Date": "Wed, 29 Oct 2025 16:45:14 GMT",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Status": "400 Bad Request",
+        "Cache-Control": "no-cache",
+        "Vary": "Accept,Accept-Encoding",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "X-XSS-Protection": "0",
+        "X-Request-Id": "253a396f-d4a7-44a5-923f-671cb00aaf92",
+        "X-Runtime": "0.018063",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "X-Powered-By": "Phusion Passenger(R) 6.1.0",
+        "Server": "nginx\/1.24.0 + Phusion Passenger(R) 6.1.0",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Accept,Access-Control-Allow-Origin,Access-Control-Expose-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With",
+        "Access-Control-Expose-Headers": "Authorization"
+    },
+    "data": "{\"errors\":[{\"status\":\"400\",\"title\":\"You need to provide a payload following the JSONAPI spec\"}]}",
+    "context": []
+}
