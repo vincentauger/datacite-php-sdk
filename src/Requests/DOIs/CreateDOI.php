@@ -37,7 +37,12 @@ final class CreateDOI extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return $this->doiInput->toArray();
+        return [
+            'data' => [
+                'type' => 'dois',
+                'attributes' => $this->doiInput->toArray(),
+            ],
+        ];
     }
 
     public function createDtoFromResponse(Response $response): DOIData

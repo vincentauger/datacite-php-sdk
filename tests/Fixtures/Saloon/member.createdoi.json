@@ -1,19 +1,22 @@
 {
-    "statusCode": 400,
+    "statusCode": 201,
     "headers": {
-        "Date": "Wed, 29 Oct 2025 16:45:14 GMT",
+        "Date": "Wed, 29 Oct 2025 17:38:38 GMT",
         "Content-Type": "application\/json; charset=utf-8",
         "Transfer-Encoding": "chunked",
         "Connection": "keep-alive",
-        "Status": "400 Bad Request",
-        "Cache-Control": "no-cache",
+        "Status": "201 Created",
+        "Cache-Control": "max-age=0, private, must-revalidate",
         "Vary": "Accept,Accept-Encoding",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "X-Permitted-Cross-Domain-Policies": "none",
         "X-XSS-Protection": "0",
-        "X-Request-Id": "253a396f-d4a7-44a5-923f-671cb00aaf92",
-        "X-Runtime": "0.018063",
+        "X-Credential-Username": "mpqm.qldnec",
+        "X-Request-Id": "470a6ecf-f5eb-4ed8-81bc-9fa9f813cdfa",
+        "Location": "https:\/\/api.test.datacite.org\/dois\/18211566",
+        "ETag": "W\/\"86d725e91e9366a94b8cf4199bc6ef1f\"",
         "X-Frame-Options": "SAMEORIGIN",
+        "X-Runtime": "0.169550",
         "X-Content-Type-Options": "nosniff",
         "X-Powered-By": "Phusion Passenger(R) 6.1.0",
         "Server": "nginx\/1.24.0 + Phusion Passenger(R) 6.1.0",
@@ -22,6 +25,6 @@
         "Access-Control-Allow-Headers": "Accept,Access-Control-Allow-Origin,Access-Control-Expose-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With",
         "Access-Control-Expose-Headers": "Authorization"
     },
-    "data": "{\"errors\":[{\"status\":\"400\",\"title\":\"You need to provide a payload following the JSONAPI spec\"}]}",
+    "data": "{\"data\":{\"id\":\"10.82785\/jjye-nx41\",\"type\":\"dois\",\"attributes\":{\"doi\":\"10.82785\/jjye-nx41\",\"prefix\":\"10.82785\",\"suffix\":\"jjye-nx41\",\"identifiers\":[],\"alternateIdentifiers\":[],\"creators\":[{\"nameType\":\"Personal\",\"nameIdentifiers\":[{\"nameIdentifier\":\"https:\/\/orcid.org\/0000-0002-0595-6576\",\"nameIdentifierScheme\":\"ORCID\",\"schemeUri\":\"https:\/\/orcid.org\/\"}],\"name\":\"Vincent Auger\",\"givenName\":\"Vincent\",\"familyName\":\"Auger\",\"affiliation\":[]}],\"titles\":[{\"title\":\"An example title\",\"lang\":\"en\"}],\"publisher\":\"test publisher\",\"container\":{},\"publicationYear\":2025,\"subjects\":[],\"contributors\":[],\"dates\":[],\"language\":null,\"types\":{\"schemaOrg\":\"ScholarlyArticle\",\"citeproc\":\"article-journal\",\"bibtex\":\"article\",\"ris\":\"RPRT\",\"resourceTypeGeneral\":\"Text\",\"resourceType\":\"test data\"},\"relatedIdentifiers\":[],\"relatedItems\":[],\"sizes\":[],\"formats\":[],\"version\":null,\"rightsList\":[],\"descriptions\":[],\"geoLocations\":[],\"fundingReferences\":[],\"xml\":\"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHJlc291cmNlIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vZGF0YWNpdGUub3JnL3NjaGVtYS9rZXJuZWwtNCBodHRwOi8vc2NoZW1hLmRhdGFjaXRlLm9yZy9tZXRhL2tlcm5lbC00L21ldGFkYXRhLnhzZCI+CiAgPGlkZW50aWZpZXIgaWRlbnRpZmllclR5cGU9IkRPSSI+MTAuODI3ODUvSkpZRS1OWDQxPC9pZGVudGlmaWVyPgogIDxjcmVhdG9ycz4KICAgIDxjcmVhdG9yPgogICAgICA8Y3JlYXRvck5hbWUgbmFtZVR5cGU9IlBlcnNvbmFsIj5BdWdlciwgVmluY2VudDwvY3JlYXRvck5hbWU+CiAgICAgIDxnaXZlbk5hbWU+VmluY2VudDwvZ2l2ZW5OYW1lPgogICAgICA8ZmFtaWx5TmFtZT5BdWdlcjwvZmFtaWx5TmFtZT4KICAgICAgPG5hbWVJZGVudGlmaWVyIG5hbWVJZGVudGlmaWVyU2NoZW1lPSJPUkNJRCIgc2NoZW1lVVJJPSJodHRwczovL29yY2lkLm9yZy8iPmh0dHBzOi8vb3JjaWQub3JnLzAwMDAtMDAwMi0wNTk1LTY1NzY8L25hbWVJZGVudGlmaWVyPgogICAgPC9jcmVhdG9yPgogIDwvY3JlYXRvcnM+CiAgPHRpdGxlcz4KICAgIDx0aXRsZSB4bWw6bGFuZz0iZW4iPkFuIGV4YW1wbGUgdGl0bGU8L3RpdGxlPgogIDwvdGl0bGVzPgogIDxwdWJsaXNoZXI+dGVzdCBwdWJsaXNoZXI8L3B1Ymxpc2hlcj4KICA8cHVibGljYXRpb25ZZWFyPjIwMjU8L3B1YmxpY2F0aW9uWWVhcj4KICA8cmVzb3VyY2VUeXBlIHJlc291cmNlVHlwZUdlbmVyYWw9IlRleHQiPnRlc3QgZGF0YTwvcmVzb3VyY2VUeXBlPgogIDxzaXplcy8+CiAgPGZvcm1hdHMvPgogIDx2ZXJzaW9uLz4KPC9yZXNvdXJjZT4K\",\"url\":\"https:\/\/example.com\",\"contentUrl\":null,\"metadataVersion\":0,\"schemaVersion\":null,\"source\":\"api\",\"isActive\":false,\"state\":\"draft\",\"reason\":null,\"landingPage\":null,\"viewCount\":0,\"viewsOverTime\":[],\"downloadCount\":0,\"downloadsOverTime\":[],\"referenceCount\":0,\"citationCount\":0,\"citationsOverTime\":[],\"partCount\":0,\"partOfCount\":0,\"versionCount\":0,\"versionOfCount\":0,\"created\":\"2025-10-29T17:38:38.000Z\",\"registered\":null,\"published\":\"2025\",\"updated\":\"2025-10-29T17:38:38.000Z\"},\"relationships\":{\"client\":{\"data\":{\"id\":\"mpqm.qldnec\",\"type\":\"clients\"}},\"provider\":{\"data\":{\"id\":\"mpqm\",\"type\":\"providers\"}},\"media\":{\"data\":{\"id\":\"10.82785\/jjye-nx41\",\"type\":\"media\"}},\"references\":{\"data\":[]},\"citations\":{\"data\":[]},\"parts\":{\"data\":[]},\"partOf\":{\"data\":[]},\"versions\":{\"data\":[]},\"versionOf\":{\"data\":[]}}}}",
     "context": []
 }

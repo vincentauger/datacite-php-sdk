@@ -76,6 +76,7 @@ it('can create a doi via the member API endpoint', function (): void {
         publisher: 'test publisher',
         types: new TypeData(
             resourceTypeGeneral: ResourceTypeGeneral::TEXT,
+            resourceType: 'test data'
         ),
         url: 'https://example.com',
     );

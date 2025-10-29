@@ -84,6 +84,12 @@ final readonly class CreateDOIInput
     {
         $data = [];
 
+        if ($this->event !== null) {
+            $data['event'] = $this->event;
+        }
+
+        $data['prefix'] = $this->prefix;
+
         if ($this->doi !== null) {
             $data['doi'] = $this->doi;
         }

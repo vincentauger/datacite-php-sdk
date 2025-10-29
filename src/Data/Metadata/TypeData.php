@@ -8,6 +8,12 @@ use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
 
 final readonly class TypeData
 {
+    /**
+     * While the datacite documentation states that resourceType is required,
+     * it is often null in responses. Thus, we make it optional here.
+     *
+     * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/resourcetype/#
+     */
     public function __construct(
         public ResourceTypeGeneral $resourceTypeGeneral,
         public ?string $resourceType = null,
