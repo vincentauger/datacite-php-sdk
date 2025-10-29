@@ -204,6 +204,18 @@ final readonly class DOIData
             $publisherData = PublisherData::fromArray($publisherArray);
         }
 
+        $creators = array_map(
+            fn (array $item): Creator => Creator::fromArray($item),
+            $creatorsData
+        );
+        assert($creators !== [], 'At least one creator is required');
+
+        $titles = array_map(
+            fn (array $item): Title => Title::fromArray($item),
+            $titlesData
+        );
+        assert($titles !== [], 'At least one title is required');
+
         return new self(
             id: $data['id'],
             type: $data['type'],
@@ -218,14 +230,8 @@ final readonly class DOIData
                 fn (array $item): AlternateIdentifier => AlternateIdentifier::fromArray($item),
                 $alternateIdentifiersData
             ),
-            creators: array_map(
-                fn (array $item): Creator => Creator::fromArray($item),
-                $creatorsData
-            ),
-            titles: array_map(
-                fn (array $item): Title => Title::fromArray($item),
-                $titlesData
-            ),
+            creators: $creators,
+            titles: $titles,
             publisher: $publisherData ?? (is_string($attributes['publisher']) ? $attributes['publisher'] : ''),
             container: ContainerData::fromArray($containerData),
             publicationYear: (int) $attributes['publicationYear'],
