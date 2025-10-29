@@ -66,4 +66,17 @@ final class DataCite extends Connector
             'User-Agent' => $userAgent,
         ];
     }
+
+    /**
+     * Check if the DataCite API is alive
+     */
+    public function heartbeat(): bool
+    {
+        $response = $this->send(new Requests\GetHeartbeat);
+        if ($response->status() === 200) {
+            return true;
+        }
+
+        return false;
+    }
 }
