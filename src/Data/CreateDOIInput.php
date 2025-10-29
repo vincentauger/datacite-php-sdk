@@ -20,6 +20,7 @@ use VincentAuger\DataCiteSdk\Data\Metadata\RightsList;
 use VincentAuger\DataCiteSdk\Data\Metadata\Subject;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
 use VincentAuger\DataCiteSdk\Data\Metadata\TypeData;
+use VincentAuger\DataCiteSdk\Enums\DOIEvent;
 
 /**
  * Input DTO for creating  DOI metadata.
@@ -53,7 +54,7 @@ final readonly class CreateDOIInput
         public PublisherData|string $publisher,
         public TypeData $types,
         public string $url,
-        public ?string $event = null, // when not set, a draft DOI is created
+        public ?DOIEvent $event = null, // when not set, a draft DOI is created
         public ?string $doi = null,
         public ?array $identifiers = null,
         public ?array $alternateIdentifiers = null,
@@ -84,8 +85,8 @@ final readonly class CreateDOIInput
     {
         $data = [];
 
-        if ($this->event !== null) {
-            $data['event'] = $this->event;
+        if ($this->event instanceof \VincentAuger\DataCiteSdk\Enums\DOIEvent) {
+            $data['event'] = $this->event->value;
         }
 
         $data['prefix'] = $this->prefix;
