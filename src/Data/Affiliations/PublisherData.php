@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Affiliations;
 
+use VincentAuger\DataCiteSdk\Exceptions\DataCiteValidationException;
+
 final readonly class PublisherData
 {
     public function __construct(
@@ -32,9 +34,24 @@ final readonly class PublisherData
 
     /**
      * @return array<string, mixed>
+     *
+     * @throws DataCiteValidationException If publisherIdentifier is provided without publisherIdentifierScheme
      */
     public function toArray(): array
     {
+        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        if ($this->publisherIdentifier !== null && $this->publisherIdentifierScheme === null) {
+            throw new DataCiteValidationException(
+                'If publisherIdentifier is used, publisherIdentifierScheme is mandatory.'
+            );
+        }
+
+        if ($this->publisherIdentifierScheme !== null && $this->publisherIdentifier === null) {
+            throw new DataCiteValidationException(
+                'publisherIdentifierScheme cannot be used without publisherIdentifier.'
+            );
+        }
+
         $array = ['name' => $this->name];
 
         if ($this->lang !== null) {

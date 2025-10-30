@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Metadata;
 
+use VincentAuger\DataCiteSdk\Exceptions\DataCiteValidationException;
+
 final readonly class FundingReference
 {
     public function __construct(
@@ -34,9 +36,24 @@ final readonly class FundingReference
 
     /**
      * @return array<string, mixed>
+     *
+     * @throws DataCiteValidationException If funderIdentifier is provided without funderIdentifierType
      */
     public function toArray(): array
     {
+        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        if ($this->funderIdentifier !== null && $this->funderIdentifierType === null) {
+            throw new DataCiteValidationException(
+                'If funderIdentifier is used, funderIdentifierType is mandatory.'
+            );
+        }
+
+        if ($this->funderIdentifierType !== null && $this->funderIdentifier === null) {
+            throw new DataCiteValidationException(
+                'funderIdentifierType cannot be used without funderIdentifier.'
+            );
+        }
+
         $array = ['funderName' => $this->funderName];
 
         if ($this->funderIdentifier !== null) {

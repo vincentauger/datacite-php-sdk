@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace VincentAuger\DataCiteSdk\Data\Identifiers;
 
+use VincentAuger\DataCiteSdk\Enums\RelatedIdentifierType;
+use VincentAuger\DataCiteSdk\Enums\RelationType;
+use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
+
 final readonly class RelatedIdentifier
 {
     public function __construct(
         public ?string $schemeUri,
         public ?string $schemeType,
-        public string $relationType,
+        public RelationType $relationType,
         public string $relatedIdentifier,
-        public ?string $resourceTypeGeneral,
-        public string $relatedIdentifierType,
+        public ?ResourceTypeGeneral $resourceTypeGeneral,
+        public RelatedIdentifierType $relatedIdentifierType,
         public ?string $relatedMetadataScheme,
     ) {}
 
@@ -28,10 +32,10 @@ final readonly class RelatedIdentifier
         return new self(
             schemeUri: isset($data['schemeUri']) && is_string($data['schemeUri']) ? $data['schemeUri'] : null,
             schemeType: isset($data['schemeType']) && is_string($data['schemeType']) ? $data['schemeType'] : null,
-            relationType: $data['relationType'],
+            relationType: RelationType::from($data['relationType']),
             relatedIdentifier: $data['relatedIdentifier'],
-            resourceTypeGeneral: isset($data['resourceTypeGeneral']) && is_string($data['resourceTypeGeneral']) ? $data['resourceTypeGeneral'] : null,
-            relatedIdentifierType: $data['relatedIdentifierType'],
+            resourceTypeGeneral: isset($data['resourceTypeGeneral']) && is_string($data['resourceTypeGeneral']) ? ResourceTypeGeneral::from($data['resourceTypeGeneral']) : null,
+            relatedIdentifierType: RelatedIdentifierType::from($data['relatedIdentifierType']),
             relatedMetadataScheme: isset($data['relatedMetadataScheme']) && is_string($data['relatedMetadataScheme']) ? $data['relatedMetadataScheme'] : null,
         );
     }
@@ -42,9 +46,9 @@ final readonly class RelatedIdentifier
     public function toArray(): array
     {
         $array = [
-            'relationType' => $this->relationType,
+            'relationType' => $this->relationType->value,
             'relatedIdentifier' => $this->relatedIdentifier,
-            'relatedIdentifierType' => $this->relatedIdentifierType,
+            'relatedIdentifierType' => $this->relatedIdentifierType->value,
         ];
 
         if ($this->schemeUri !== null) {
@@ -55,8 +59,8 @@ final readonly class RelatedIdentifier
             $array['schemeType'] = $this->schemeType;
         }
 
-        if ($this->resourceTypeGeneral !== null) {
-            $array['resourceTypeGeneral'] = $this->resourceTypeGeneral;
+        if ($this->resourceTypeGeneral instanceof \VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral) {
+            $array['resourceTypeGeneral'] = $this->resourceTypeGeneral->value;
         }
 
         if ($this->relatedMetadataScheme !== null) {
