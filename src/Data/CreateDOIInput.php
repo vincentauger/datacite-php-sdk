@@ -16,10 +16,10 @@ use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Date;
 use VincentAuger\DataCiteSdk\Data\Metadata\Description;
 use VincentAuger\DataCiteSdk\Data\Metadata\FundingReference;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
 use VincentAuger\DataCiteSdk\Data\Metadata\RightsList;
 use VincentAuger\DataCiteSdk\Data\Metadata\Subject;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
-use VincentAuger\DataCiteSdk\Data\Metadata\TypeData;
 use VincentAuger\DataCiteSdk\Enums\DOIEvent;
 
 /**
@@ -52,7 +52,7 @@ final readonly class CreateDOIInput
         public array $titles,
         public int $publicationYear,
         public PublisherData|string $publisher,
-        public TypeData $types,
+        public ResourceType $types,
         public string $url,
         public ?DOIEvent $event = null, // when not set, a draft DOI is created
         public ?string $doi = null,

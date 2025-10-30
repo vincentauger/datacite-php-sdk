@@ -5,7 +5,17 @@ declare(strict_types=1);
 namespace VincentAuger\DataCiteSdk\Data\Identifiers;
 
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
+use VincentAuger\DataCiteSdk\Enums\RelationType;
+use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
 
+/**
+ * Information about a resource related to the one being registered.
+ *
+ * Note: The properties relatedMetadataScheme, schemeURI, and schemeType in RelatedItemIdentifier
+ * should only be used when relationType is HasMetadata or IsMetadataFor.
+ *
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/relateditem/
+ */
 final readonly class RelatedItem
 {
     /**
@@ -15,8 +25,8 @@ final readonly class RelatedItem
      */
     public function __construct(
         public array $titles,
-        public string $relationType,
-        public string $relatedItemType,
+        public RelationType $relationType,
+        public ResourceTypeGeneral $relatedItemType,
         public ?RelatedItemIdentifier $relatedItemIdentifier = null,
         public array $creators = [],
         public ?int $publicationYear = null,
@@ -37,8 +47,8 @@ final readonly class RelatedItem
     public static function fromArray(array $data): self
     {
         assert(is_array($data['titles']));
-        assert(is_string($data['relationType']));
-        assert(is_string($data['relatedItemType']));
+        assert(is_string($data['relationType']) || $data['relationType'] instanceof RelationType);
+        assert(is_string($data['relatedItemType']) || $data['relatedItemType'] instanceof ResourceTypeGeneral);
 
         /** @var array<array<string, mixed>> $titlesData */
         $titlesData = $data['titles'];
@@ -75,8 +85,8 @@ final readonly class RelatedItem
                 fn (array $item): Title => Title::fromArray($item),
                 $titlesData
             ),
-            relationType: $data['relationType'],
-            relatedItemType: $data['relatedItemType'],
+            relationType: $data['relationType'] instanceof RelationType ? $data['relationType'] : RelationType::from($data['relationType']),
+            relatedItemType: $data['relatedItemType'] instanceof ResourceTypeGeneral ? $data['relatedItemType'] : ResourceTypeGeneral::from($data['relatedItemType']),
             relatedItemIdentifier: $relatedItemIdentifierData,
             creators: $creatorsData,
             publicationYear: isset($data['publicationYear']) && is_numeric($data['publicationYear']) ? (int) $data['publicationYear'] : null,
@@ -99,12 +109,23 @@ final readonly class RelatedItem
     {
         $array = [
             'titles' => array_map(fn (Title $title): array => $title->toArray(), $this->titles),
-            'relationType' => $this->relationType,
-            'relatedItemType' => $this->relatedItemType,
+            'relationType' => $this->relationType->value,
+            'relatedItemType' => $this->relatedItemType->value,
         ];
 
         if ($this->relatedItemIdentifier instanceof \VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItemIdentifier) {
-            $array['relatedItemIdentifier'] = $this->relatedItemIdentifier->toArray();
+            $identifierArray = $this->relatedItemIdentifier->toArray();
+
+            // Validate that relatedMetadataScheme, schemeURI, and schemeType are only used with HasMetadata/IsMetadataFor
+            $isMetadataRelation = $this->relationType === RelationType::HAS_METADATA
+                || $this->relationType === RelationType::IS_METADATA_FOR;
+
+            if (! $isMetadataRelation) {
+                // Remove metadata scheme properties if they exist but shouldn't be used
+                unset($identifierArray['relatedMetadataScheme'], $identifierArray['schemeURI'], $identifierArray['schemeType']);
+            }
+
+            $array['relatedItemIdentifier'] = $identifierArray;
         }
 
         if (count($this->creators) > 0) {

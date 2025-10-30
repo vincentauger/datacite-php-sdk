@@ -7,8 +7,8 @@ use Saloon\Http\Faking\MockResponse;
 use VincentAuger\DataCiteSdk\Data\CreateDOIInput;
 use VincentAuger\DataCiteSdk\Data\Identifiers\NameIdentifier;
 use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
-use VincentAuger\DataCiteSdk\Data\Metadata\TypeData;
 use VincentAuger\DataCiteSdk\DataCite;
 use VincentAuger\DataCiteSdk\Enums\ApiVersion;
 use VincentAuger\DataCiteSdk\Enums\NameType;
@@ -29,7 +29,7 @@ it('throws exception when using public API for member-only endpoint', function (
         titles: [$title],
         publicationYear: 2025,
         publisher: 'Test Publisher',
-        types: new TypeData(resourceTypeGeneral: ResourceTypeGeneral::TEXT),
+        types: new ResourceType(resourceTypeGeneral: ResourceTypeGeneral::TEXT),
         url: 'https://example.com'
     );
 
@@ -74,7 +74,7 @@ it('can create a doi via the member API endpoint', function (): void {
         titles: [$title],
         publicationYear: 2025,
         publisher: 'test publisher',
-        types: new TypeData(
+        types: new ResourceType(
             resourceTypeGeneral: ResourceTypeGeneral::TEXT,
             resourceType: 'test data'
         ),

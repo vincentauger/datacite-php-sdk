@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite ResourceTypeGeneral controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/resourcetype/#resourcetypegeneral
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/appendices/appendix-1/resourceTypeGeneral/
  */
 enum ResourceTypeGeneral: string
 {

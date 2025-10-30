@@ -6,13 +6,19 @@ namespace VincentAuger\DataCiteSdk\Data\Metadata;
 
 use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
 
-final readonly class TypeData
+/**
+ * Represents DataCite Property 10: ResourceType
+ *
+ * A description of the resource. The recommended content is a single term
+ * paired with resourceTypeGeneral (e.g., "Census Data" + "Dataset" = "Dataset/Census Data").
+ *
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/resourcetype/
+ */
+final readonly class ResourceType
 {
     /**
-     * While the datacite documentation states that resourceType is required,
-     * it is often null in responses. Thus, we make it optional here.
-     *
-     * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/resourcetype/#
+     * @param  ResourceTypeGeneral  $resourceTypeGeneral  The general type of the resource (mandatory).
+     * @param  string|null  $resourceType  A specific description of the resource type. While the DataCite documentation states this is required, it is often null in API responses, so it's optional here.
      */
     public function __construct(
         public ResourceTypeGeneral $resourceTypeGeneral,

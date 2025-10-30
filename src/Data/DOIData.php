@@ -17,10 +17,10 @@ use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Date;
 use VincentAuger\DataCiteSdk\Data\Metadata\Description;
 use VincentAuger\DataCiteSdk\Data\Metadata\FundingReference;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
 use VincentAuger\DataCiteSdk\Data\Metadata\RightsList;
 use VincentAuger\DataCiteSdk\Data\Metadata\Subject;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
-use VincentAuger\DataCiteSdk\Data\Metadata\TypeData;
 use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipData;
 
 final readonly class DOIData
@@ -62,7 +62,7 @@ final readonly class DOIData
         public array $contributors,
         public array $dates,
         public ?string $language,
-        public TypeData $types, // Mandatory: DataCite Property 10 (ResourceType)
+        public ResourceType $types, // Mandatory: DataCite Property 10 (ResourceType)
         public array $relatedIdentifiers,
         public array $relatedItems,
         public array $sizes,
@@ -248,7 +248,7 @@ final readonly class DOIData
                 $datesData
             ),
             language: isset($attributes['language']) && is_string($attributes['language']) ? $attributes['language'] : null,
-            types: TypeData::fromArray($typesData),
+            types: ResourceType::fromArray($typesData),
             relatedIdentifiers: array_map(
                 fn (array $item): RelatedIdentifier => RelatedIdentifier::fromArray($item),
                 $relatedIdentifiersData

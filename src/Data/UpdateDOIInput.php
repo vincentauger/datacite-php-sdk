@@ -16,10 +16,10 @@ use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Date;
 use VincentAuger\DataCiteSdk\Data\Metadata\Description;
 use VincentAuger\DataCiteSdk\Data\Metadata\FundingReference;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
 use VincentAuger\DataCiteSdk\Data\Metadata\RightsList;
 use VincentAuger\DataCiteSdk\Data\Metadata\Subject;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
-use VincentAuger\DataCiteSdk\Data\Metadata\TypeData;
 use VincentAuger\DataCiteSdk\Enums\DOIEvent;
 
 /**
@@ -52,7 +52,7 @@ final readonly class UpdateDOIInput
         public ?array $titles = null,
         public ?int $publicationYear = null,
         public PublisherData|string|null $publisher = null,
-        public ?TypeData $types = null,
+        public ?ResourceType $types = null,
         public ?string $url = null,
         public ?DOIEvent $event = null,
         public ?array $identifiers = null,
@@ -138,7 +138,7 @@ final readonly class UpdateDOIInput
             $data['language'] = $this->language;
         }
 
-        if ($this->types instanceof \VincentAuger\DataCiteSdk\Data\Metadata\TypeData) {
+        if ($this->types instanceof \VincentAuger\DataCiteSdk\Data\Metadata\ResourceType) {
             $data['types'] = $this->types->toArray();
         }
 

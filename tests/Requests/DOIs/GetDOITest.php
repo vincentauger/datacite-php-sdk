@@ -235,7 +235,7 @@ it('can parse a doi with all fields', function (): void {
     expect($doi->language)->toBeString();
 
     // Types
-    expect($doi->types)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\TypeData::class);
+    expect($doi->types)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\ResourceType::class);
 
     // Related identifiers
     expect($doi->relatedIdentifiers)->not->toBeEmpty();
