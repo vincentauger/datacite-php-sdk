@@ -2,6 +2,8 @@
 
 A modern PHP SDK for the [DataCite REST API](https://support.datacite.org/docs/api), built for maintainability and clarity using [Saloon](https://docs.saloon.dev) for HTTP integration.
 
+[![Tests](https://github.com/vincentauger/datacite-php-sdk/actions/workflows/tests.yml/badge.svg)](https://github.com/vincentauger/datacite-php-sdk/actions/workflows/tests.yml)
+
 ## Features
 
 - ✅ **Modern PHP 8.4+** - Typed properties, readonly classes, enums, and constructor property promotion
@@ -22,6 +24,7 @@ composer require vincentauger/datacite-php-sdk
 ```
 
 **Requirements:**
+
 - PHP 8.4+
 - Composer
 
@@ -258,11 +261,13 @@ $datacite->getEvent(string $eventId): Response
 ```
 
 **When to use convenience methods:**
+
 - ✅ Quick, simple operations
 - ✅ Getting started with the SDK
 - ✅ Straightforward single-resource retrieval
 
 **When to use request objects:**
+
 - ✅ Complex queries with filters
 - ✅ Pagination and sorting
 - ✅ Using the QueryBuilder
@@ -291,6 +296,7 @@ $query = (new QueryBuilder)
 ```
 
 **Available Methods:**
+
 - `whereEquals()`, `whereNotEquals()` - Exact matching
 - `whereContains()` - Case-insensitive contains search
 - `whereStartsWith()`, `whereEndsWith()` - Wildcard prefix/suffix
@@ -320,6 +326,7 @@ $request = (new ListDOIs)
 ```
 
 **DOI Sort Options:**
+
 - `RELEVANCE` - Search relevance (default)
 - `NAME` - DOI name
 - `CREATED` - Creation date
@@ -328,6 +335,7 @@ $request = (new ListDOIs)
 - `REGISTERED` - Registration date
 
 **Event Sort Options:**
+
 - `RELEVANCE` - Search relevance
 - `OBJ_ID` - Object ID
 - `TOTAL` - Total occurrences
@@ -435,9 +443,11 @@ Endpoints that modify data (POST, PUT, DELETE) use the `RequiresMemberAuth` trai
 ## API Coverage
 
 ### System
+
 - ✅ `GET /heartbeat` - Check API status
 
 ### DOIs
+
 - ✅ `GET /dois` - List DOIs with advanced filtering
 - ✅ `GET /dois/{id}` - Get a single DOI
 - ✅ `POST /dois` - Create a new DOI (member only)
@@ -446,77 +456,16 @@ Endpoints that modify data (POST, PUT, DELETE) use the `RequiresMemberAuth` trai
 - ✅ `GET /dois/{id}/activities` - Get DOI activity log
 
 ### Events
+
 - ✅ `GET /events` - List events with filtering
 - ✅ `GET /events/{id}` - Get a single event
-
----
-
-## Project Structure
-
-```
-src/
-├── DataCite.php              # Main client
-├── Requests/                 # API endpoint classes
-│   ├── DOIs/                 # DOI operations
-│   ├── Events/               # Event operations
-│   └── GetHeartbeat.php      # System heartbeat
-├── Data/                     # Response DTOs
-│   ├── DOIData.php           # DOI response
-│   ├── ListDOIData.php       # DOI list response
-│   ├── EventData.php         # Event response
-│   ├── ListEventData.php     # Event list response
-│   └── Metadata/             # Metadata DTOs
-├── Enums/                    # Type-safe enumerations
-├── Query/                    # Query builder
-└── Traits/                   # Shared functionality
-```
-
----
-
-## Testing
-
-Run the full test suite:
-
-```bash
-composer test          # Run all tests (lint, unit, types, refactor)
-composer test:unit     # Run Pest unit tests only
-composer test:types    # Run PHPStan static analysis
-composer lint          # Run Laravel Pint formatter
-composer refactor      # Run Rector code improvements
-```
-
----
-
-## Development
-
-### Code Quality
-
-This project follows strict PHP standards:
-
-- **PHP 8.4+** syntax only
-- `declare(strict_types=1)` in every file
-- All classes are `final` unless inheritance is required
-- DTOs use `readonly` properties with constructor property promotion
-- PSR-12 coding standards
-- Level max PHPStan static analysis
-
-### Quality Tools
-
-```bash
-composer test          # Run all checks
-composer test:unit     # Pest unit tests
-composer test:types    # PHPStan static analysis (level max)
-composer lint          # Laravel Pint code formatting
-composer refactor      # Rector automated refactoring
-```
-
-All quality checks must pass before committing.
 
 ---
 
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
 - Development environment setup
 - Coding standards and guidelines
 - Testing requirements
