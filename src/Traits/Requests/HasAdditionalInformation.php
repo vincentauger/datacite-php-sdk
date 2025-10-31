@@ -6,6 +6,9 @@ namespace VincentAuger\DataCiteSdk\Traits\Requests;
 
 trait HasAdditionalInformation
 {
+    /**
+     * Show additional affiliation information on the DOI
+     */
     public function withAffiliation(bool $flag = true): self
     {
         $this->query()->add('affiliation', $flag ? 'true' : 'false');
@@ -13,6 +16,9 @@ trait HasAdditionalInformation
         return $this;
     }
 
+    /**
+     * Show additional publisher information on the DOI
+     */
     public function withPublisher(bool $flag = true): self
     {
         $this->query()->add('publisher', $flag ? 'true' : 'false');
