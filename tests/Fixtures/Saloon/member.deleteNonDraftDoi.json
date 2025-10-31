@@ -1,0 +1,29 @@
+{
+    "statusCode": 405,
+    "headers": {
+        "Date": "Thu, 30 Oct 2025 18:04:31 GMT",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Status": "405 Method Not Allowed",
+        "Cache-Control": "no-cache",
+        "Vary": "Accept,Accept-Encoding",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "X-XSS-Protection": "0",
+        "X-Credential-Username": "mpqm.qldnec",
+        "X-Request-Id": "bbbdcf01-5a95-4c97-a6fb-6d2605392362",
+        "X-Runtime": "0.017854",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "Allow": "HEAD, GET, POST, PATCH, PUT, OPTIONS",
+        "X-Powered-By": "Phusion Passenger(R) 6.1.0",
+        "Server": "nginx\/1.24.0 + Phusion Passenger(R) 6.1.0",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Accept,Access-Control-Allow-Origin,Access-Control-Expose-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With",
+        "Access-Control-Expose-Headers": "Authorization"
+    },
+    "data": "{\"errors\":[{\"status\":\"405\",\"title\":\"Method not allowed\"}]}",
+    "context": []
+}

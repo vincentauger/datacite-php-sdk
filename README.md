@@ -137,9 +137,9 @@ $datacite = new DataCite(
 
 - [x] Fetch DOI records `GET /dois/{id}`
 - [x] Search DOI records `GET /dois`
-- [ ] Create DOI records `POST /dois`
-- [ ] Update DOI records `PUT /dois/{id}`
-- [ ] Delete DOI records `DELETE /dois/{id}`
+- [x] Create DOI records `POST /dois`
+- [x] Update DOI records `PUT /dois/{id}`
+- [x] Delete DOI records `DELETE /dois/{id}`
 - [ ] Return DOI activities `GET /dois/{id}/activities`
 
 ### DataCite Events
