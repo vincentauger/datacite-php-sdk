@@ -33,13 +33,23 @@ final readonly class Contributor
     ) {}
 
     /**
+     * Create from array, lenient parsing for API responses.
+     * Returns null if required fields are missing (name or contributorType).
+     *
      * @param  array<string, mixed>  $data
      */
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): ?self
     {
-        assert(is_string($data['name']));
+        // Skip invalid contributors from API responses (legacy/incomplete data)
+        if (! isset($data['name']) || ! is_string($data['name']) || $data['name'] === '') {
+            return null;
+        }
+
+        if (! isset($data['contributorType']) || ! is_string($data['contributorType']) || $data['contributorType'] === '') {
+            return null;
+        }
+
         assert(is_array($data['affiliation']));
-        assert(is_string($data['contributorType']));
         assert(is_array($data['nameIdentifiers']));
 
         /** @var array<array<string, mixed>> $nameIdentifiersData */

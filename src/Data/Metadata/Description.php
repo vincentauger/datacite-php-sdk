@@ -30,12 +30,21 @@ final readonly class Description
     ) {}
 
     /**
+     * Create from array, lenient parsing for API responses.
+     * Returns null if required fields are missing (description or descriptionType).
+     *
      * @param  array<string, mixed>  $data
      */
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): ?self
     {
-        assert(is_string($data['description']));
-        assert(is_string($data['descriptionType']));
+        // Skip invalid descriptions from API responses (legacy/incomplete data)
+        if (! isset($data['description']) || ! is_string($data['description']) || $data['description'] === '') {
+            return null;
+        }
+
+        if (! isset($data['descriptionType']) || ! is_string($data['descriptionType']) || $data['descriptionType'] === '') {
+            return null;
+        }
 
         return new self(
             lang: isset($data['lang']) && is_string($data['lang']) ? $data['lang'] : null,

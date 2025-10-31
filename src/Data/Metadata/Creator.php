@@ -24,11 +24,18 @@ final readonly class Creator
     ) {}
 
     /**
+     * Create from array, lenient parsing for API responses.
+     * Returns null if required name field is missing.
+     *
      * @param  array<string, mixed>  $data
      */
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): ?self
     {
-        assert(is_string($data['name']));
+        // Skip invalid creators from API responses (legacy/incomplete data)
+        if (! isset($data['name']) || ! is_string($data['name']) || $data['name'] === '') {
+            return null;
+        }
+
         assert(is_array($data['affiliation']));
         assert(is_array($data['nameIdentifiers']));
 

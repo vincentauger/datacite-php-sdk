@@ -93,7 +93,7 @@ final readonly class DOIData
         public int $versionCount,
         public int $versionOfCount,
         public DateTimeImmutable $created,
-        public DateTimeImmutable $registered,
+        public ?DateTimeImmutable $registered,
         public ?string $published,
         public DateTimeImmutable $updated,
         public RelationshipData $relationships,
@@ -204,10 +204,13 @@ final readonly class DOIData
             $publisherData = PublisherData::fromArray($publisherArray);
         }
 
-        $creators = array_map(
-            fn (array $item): Creator => Creator::fromArray($item),
-            $creatorsData
-        );
+        $creators = array_values(array_filter(
+            array_map(
+                fn (array $item): ?Creator => Creator::fromArray($item),
+                $creatorsData
+            ),
+            fn (?Creator $creator): bool => $creator instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Creator
+        ));
         assert($creators !== [], 'At least one creator is required');
 
         $titles = array_map(
@@ -239,10 +242,13 @@ final readonly class DOIData
                 fn (array $item): Subject => Subject::fromArray($item),
                 $subjectsData
             ),
-            contributors: array_map(
-                fn (array $item): Contributor => Contributor::fromArray($item),
-                $contributorsData
-            ),
+            contributors: array_values(array_filter(
+                array_map(
+                    fn (array $item): ?Contributor => Contributor::fromArray($item),
+                    $contributorsData
+                ),
+                fn (?Contributor $contributor): bool => $contributor instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Contributor
+            )),
             dates: array_map(
                 fn (array $item): Date => Date::fromArray($item),
                 $datesData
@@ -264,10 +270,13 @@ final readonly class DOIData
                 fn (array $item): RightsList => RightsList::fromArray($item),
                 $rightsListData
             ),
-            descriptions: array_map(
-                fn (array $item): Description => Description::fromArray($item),
-                $descriptionsData
-            ),
+            descriptions: array_values(array_filter(
+                array_map(
+                    fn (array $item): ?Description => Description::fromArray($item),
+                    $descriptionsData
+                ),
+                fn (?Description $description): bool => $description instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Description
+            )),
             geoLocations: array_map(
                 fn (array $item): GeoLocation => GeoLocation::fromArray($item),
                 $geoLocationsData
@@ -297,7 +306,9 @@ final readonly class DOIData
             versionCount: (int) $attributes['versionCount'],
             versionOfCount: (int) $attributes['versionOfCount'],
             created: new DateTimeImmutable($attributes['created']),
-            registered: new DateTimeImmutable($attributes['registered']),
+            registered: empty($attributes['registered'])
+                ? null
+                : new DateTimeImmutable($attributes['registered']),
             published: $attributes['published'] ?? null,
             updated: new DateTimeImmutable($attributes['updated']),
             relationships: RelationshipData::fromArray($relationshipsData),

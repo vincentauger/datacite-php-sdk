@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use VincentAuger\DataCiteSdk\Enums\QueryField;
 use VincentAuger\DataCiteSdk\Enums\SortOption;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
@@ -68,6 +69,7 @@ it('can list dois with provider filter', function (): void {
     $client->withMockClient($mockClient);
 
     $request = new ListDOIs()
+        ->withDetail()
         ->withProviderId('cern')
         ->withSortDesc(SortOption::CREATED);
 
@@ -84,17 +86,69 @@ it('can list dois with provider filter', function (): void {
     // Verify at least one result is from the 'cern' provider (if provider data is available)
     $foundCernProvider = false;
     foreach ($dto->data as $doiData) {
-        if ($doiData->relationships?->provider?->data?->id === 'cern') {
+        if ($doiData->relationships?->provider?->id === 'cern') {
             $foundCernProvider = true;
             break;
         }
     }
     // Just verify we can access the provider relationship structure
     expect($dto->data[0]->relationships)->not->toBeNull();
+    expect($foundCernProvider)->toBe(true);
 
 });
 
-it('can list dois with query builder', function (): void {
+it('can list dois with query builder using enum fields', function (): void {
+
+    $mockClient = new MockClient([
+        ListDOIs::class => MockResponse::fixture('listdois.query_builder'),
+    ]);
+
+    $client = $this->getPublicApiClient(prodApi: true);
+    $client->withMockClient($mockClient);
+
+    $request = new ListDOIs()
+        ->withQuery(
+            (new QueryBuilder)
+                ->whereContains(QueryField::TITLES_TITLE, 'machine learning')
+                ->whereEquals(QueryField::PUBLICATION_YEAR, '2023')
+        )
+        ->withPageSize(25);
+
+    $response = $client->send($request);
+
+    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    $dto = $response->dto();
+
+    expect($response->status())->toBe(200);
+    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto->data)->toBeArray();
+    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+
+    // Verify at least some results match our query (API may return partial matches)
+    $found2023Year = 0;
+    $foundMachineLearning = 0;
+
+    foreach ($dto->data as $doiData) {
+        // Check publication year
+        if ($doiData->publicationYear === 2023) {
+            $found2023Year++;
+        }
+
+        // Check at least one title contains 'machine learning'
+        foreach ($doiData->titles as $title) {
+            if (stripos($title->title, 'machine learning') !== false) {
+                $foundMachineLearning++;
+                break;
+            }
+        }
+    }
+
+    expect($found2023Year)->toBeGreaterThan(0, 'Expected at least one DOI from 2023');
+    expect($foundMachineLearning)->toBeGreaterThan(0, 'Expected at least one DOI with "machine learning" in title');
+
+});
+
+it('can list dois with query builder using string fields', function (): void {
 
     $mockClient = new MockClient([
         ListDOIs::class => MockResponse::fixture('listdois.query_builder'),
@@ -157,7 +211,7 @@ it('can list dois with exact match search', function (): void {
     $request = new ListDOIs()
         ->withQuery(
             (new QueryBuilder)
-                ->whereExact('titles.title', 'CrowdoMeter Tweets')
+                ->whereExact(QueryField::TITLES_TITLE, 'CrowdoMeter Tweets')
         )
         ->withSortDesc(SortOption::RELEVANCE);
 
@@ -197,8 +251,8 @@ it('can list dois with wildcard search', function (): void {
     $request = new ListDOIs()
         ->withQuery(
             (new QueryBuilder)
-                ->whereStartsWithWildcard('creators.familyName', 'mil')
-                ->whereWildcard('creators.nameIdentifiers.nameIdentifier', '*')
+                ->whereStartsWithWildcard(QueryField::CREATORS_FAMILY_NAME, 'mil')
+                ->whereWildcard(QueryField::CREATORS_NAME_IDENTIFIER, '*')
         )
         ->withPageSize(20);
 
