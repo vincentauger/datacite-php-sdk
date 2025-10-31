@@ -10,6 +10,10 @@ The QueryBuilder accepts either `QueryField` enum values or string field names, 
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Enums\QueryField;
 use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
+use VincentAuger\DataCiteSdk\DataCite;
+
+// Initialize client
+$client = new DataCite();
 
 // Using QueryField enum (recommended for type safety and autocomplete)
 $query = (new QueryBuilder)
@@ -22,6 +26,8 @@ $query = (new QueryBuilder)
     ->whereContains('titles.title', 'climate');
 
 $request = (new ListDOIs)->withQuery($query);
+$response = $client->send($request);
+$results = $response->dto();
 ```
 
 ## Methods
@@ -333,10 +339,14 @@ The QueryBuilder automatically handles these DataCite search operators:
 ## Integration with ListDOIs
 
 ```php
+use VincentAuger\DataCiteSdk\DataCite;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Enums\QueryField;
 use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
 use VincentAuger\DataCiteSdk\Enums\SortOption;
+
+// Initialize client
+$client = new DataCite();
 
 // Complex query with sorting and pagination
 $request = (new ListDOIs)
@@ -353,6 +363,11 @@ $request = (new ListDOIs)
 // Execute the request
 $response = $client->send($request);
 $dois = $response->dto();
+
+// Access results
+foreach ($dois->data as $doi) {
+    echo "{$doi->id}: {$doi->attributes->titles[0]->title}\n";
+}
 ```
 
 ## Filter Parameters

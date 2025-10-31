@@ -1,0 +1,29 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Date": "Fri, 31 Oct 2025 17:59:13 GMT",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Status": "200 OK",
+        "X-Anonymous-Consumer": "true",
+        "Cache-Control": "max-age=0, private, must-revalidate",
+        "Vary": "Accept,Accept-Encoding",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "X-XSS-Protection": "0",
+        "X-Request-Id": "1ccf9fdd-1d8e-42a2-a498-45976bec1b06",
+        "ETag": "W\/\"d96d68b84ca0d8d29cee9915bdcceaa2\"",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Runtime": "0.038983",
+        "X-Content-Type-Options": "nosniff",
+        "X-Powered-By": "Phusion Passenger(R) 6.1.0",
+        "Server": "nginx\/1.24.0 + Phusion Passenger(R) 6.1.0",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Accept,Access-Control-Allow-Origin,Access-Control-Expose-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With",
+        "Access-Control-Expose-Headers": "Authorization"
+    },
+    "data": "{\"data\":{\"id\":\"d04a4c7a-2f19-4002-b8e7-06a844b5716f\",\"type\":\"events\",\"attributes\":{\"subj-id\":\"https:\/\/api.test.datacite.org\/reports\/a8025c2b-ae9f-48d8-8dc3-d1133fff1502\",\"obj-id\":\"https:\/\/doi.org\/10.6073\/pasta\/aec48ca27decb1fd2c2f454f1c5f88e4\",\"source-id\":\"datacite-usage\",\"relation-type-id\":\"total-dataset-requests-regular\",\"total\":349,\"message-action\":\"create\",\"source-token\":\"43ba99ae-5cf0-11e8-9c2d-fa7ae01bbebc\",\"license\":\"https:\/\/creativecommons.org\/publicdomain\/zero\/1.0\/\",\"occurred-at\":\"2018-05-22T00:00:00.000Z\",\"timestamp\":\"2018-09-05T18:20:15.842Z\"},\"relationships\":{\"subj\":{\"data\":{\"id\":\"https:\/\/api.test.datacite.org\/reports\/a8025c2b-ae9f-48d8-8dc3-d1133fff1502\",\"type\":\"objects\"}},\"obj\":{\"data\":{\"id\":\"https:\/\/doi.org\/10.6073\/pasta\/aec48ca27decb1fd2c2f454f1c5f88e4\",\"type\":\"objects\"}}}}}",
+    "context": []
+}

@@ -15,8 +15,8 @@ use VincentAuger\DataCiteSdk\Enums\SortOption;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
 
-// Create the client
-$client = DataCite::public();
+// Create the client (public API, no auth needed)
+$client = new DataCite();
 ```
 
 ## Sorting Examples
@@ -24,10 +24,11 @@ $client = DataCite::public();
 ### Sort by Name (Ascending)
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withSortAsc(SortOption::NAME);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -38,10 +39,11 @@ $response = $client->send($request);
 ### Sort by Created Date (Descending)
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -49,13 +51,14 @@ $response = $client->send($request);
 ?sort=-created
 ```
 
-### Sort by Relevance (Always Descending)
+### Sort by Relevance (Default)
 
 ```php
-$request = ListDOIs::new()
-    ->withSort(SortOption::RELEVANCE);
+$request = (new ListDOIs)
+    ->withSortDesc(SortOption::RELEVANCE);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -66,15 +69,16 @@ $response = $client->send($request);
 ### Sort with Explicit Direction
 
 ```php
-$request = ListDOIs::new()
-    ->withSort(SortOption::TITLE, SortDirection::ASC);
+$request = (new ListDOIs)
+    ->withSort(SortOption::NAME, SortDirection::ASC);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
 ```
-?sort=title
+?sort=name
 ```
 
 ## Filtering Examples
@@ -82,11 +86,12 @@ $response = $client->send($request);
 ### Filter by Provider
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withProviderId('cern')
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -97,11 +102,12 @@ $response = $client->send($request);
 ### Filter by Client
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withClientId('cern.zenodo')
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -112,15 +118,16 @@ $response = $client->send($request);
 ### Filter with QueryBuilder
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withClientId('cern.zenodo')
     ->withQuery(
-        QueryBuilder::new()
+        (new QueryBuilder)
             ->whereEquals('publicationYear', '2023')
     )
     ->withSortDesc(SortOption::PUBLISHED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -133,9 +140,9 @@ $response = $client->send($request);
 ### Multiple Filters and Sorting
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withQuery(
-        QueryBuilder::new()
+        (new QueryBuilder)
             ->whereContains('titles.title', 'climate')
     )
     ->withProviderId('cern')
@@ -148,6 +155,7 @@ $request = ListDOIs::new()
     ->withPublisher();
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -158,12 +166,13 @@ $response = $client->send($request);
 ### Date Range Filtering
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withCreated('2023-01-01,2023-12-31')
     ->withRegistered('2023-06-01,')
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -174,18 +183,18 @@ $response = $client->send($request);
 ### Include Additional Information
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withAffiliation()    // Include affiliation information
     ->withPublisher()      // Include publisher information
-    ->withDetail()         // Include all available fields
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
 ```
-?include=affiliation,publisher,detail&sort=-created
+?include=affiliation,publisher&sort=-created
 ```
 
 ### Wildcard and Exact Match Examples
@@ -193,31 +202,37 @@ $response = $client->send($request);
 #### Wildcard Searches
 
 ```php
-$request = ListDOIs::new()
+use VincentAuger\DataCiteSdk\Enums\QueryField;
+
+$request = (new ListDOIs)
     ->withQuery(
-        QueryBuilder::new()
-            ->whereWildcard('creators.nameIdentifiers.nameIdentifier', '*')
-            ->whereStartsWithWildcard('creators.familyName', 'mil')
+        (new QueryBuilder)
+            ->whereExists(QueryField::CREATORS_NAME_IDENTIFIER)
+            ->whereStartsWith(QueryField::CREATORS_FAMILY_NAME, 'Mil')
     );
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
 ```
-?query=creators.nameIdentifiers.nameIdentifier:* creators.familyName:mil*
+?query=creators.nameIdentifiers.nameIdentifier:* creators.familyName:Mil*
 ```
 
 #### Exact Match with Spaces
 
 ```php
-$request = ListDOIs::new()
+use VincentAuger\DataCiteSdk\Enums\QueryField;
+
+$request = (new ListDOIs)
     ->withQuery(
-        QueryBuilder::new()
-            ->whereExact('creators.affiliation.name', 'Oklahoma State University')
+        (new QueryBuilder)
+            ->whereExact(QueryField::CREATORS_AFFILIATION_NAME, 'Oklahoma State University')
     );
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
@@ -225,57 +240,24 @@ $response = $client->send($request);
 ?query=creators.affiliation.name:"Oklahoma State University"
 ```
 
-#### Exact Title Match (DataCite API Example)
+#### Exact Title Match
 
 ```php
-$request = ListDOIs::new()
+use VincentAuger\DataCiteSdk\Enums\QueryField;
+
+$request = (new ListDOIs)
     ->withQuery(
-        QueryBuilder::new()
-            ->whereExact('titles.title', 'CrowdoMeter Tweets')
+        (new QueryBuilder)
+            ->whereExact(QueryField::TITLES_TITLE, 'CrowdoMeter Tweets')
     );
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
 ```
 ?query=titles.title:"CrowdoMeter Tweets"
-```
-
-This matches the DataCite API example: `curl "https://api.datacite.org/dois?query=titles.title:%22CrowdoMeter%20Tweets%22"`
-
-#### Exact Match with Wildcard (Advanced)
-
-```php
-$request = ListDOIs::new()
-    ->withQuery(
-        QueryBuilder::new()
-            ->whereWildcardExact('creators.affiliation.name', 'Oklahoma State University', '*')
-    );
-
-$response = $client->send($request);
-```
-
-**Generated Query String:**
-```
-?query=creators.affiliation.name:Oklahoma\ State\ University*
-```
-
-#### Single Character Wildcard
-
-```php
-$request = ListDOIs::new()
-    ->withQuery(
-        QueryBuilder::new()
-            ->whereSingleCharacterWildcard('titles.title', 'learn?ng')
-    );
-
-$response = $client->send($request);
-```
-
-**Generated Query String:**
-```
-?query=titles.title:learn?ng
 ```
 
 ## Available Sort Options
@@ -299,49 +281,42 @@ The following sort directions are available via the `SortDirection` enum:
 ## Available Filter Methods
 
 ### Basic Filters
-- `withProviderId(string $providerId)` - Filter by provider ID
-- `withClientId(string $clientId)` - Filter by client ID
-- `withCreated(string $date)` - Filter by creation date
-- `withRegistered(string $date)` - Filter by registration date
-- `withUpdated(string $date)` - Filter by update date
+- `withProviderId(string|array $providerId)` - Filter by provider ID(s)
+- `withClientId(string|array $clientId)` - Filter by client ID(s)
+- `withConsortiumId(string|array $consortiumId)` - Filter by consortium ID(s)
+- `withCreated(string $date)` - Filter by creation date (year or date range)
+- `withRegistered(string $date)` - Filter by registration date (year or date range)
+- `withPrefix(string|array $prefix)` - Filter by DOI prefix(es)
+- `withSchemaVersion(string $schemaVersion)` - Filter by metadata schema version
 
 ### Boolean Filters
 - `withHasPerson(bool $hasPerson)` - Filter for DOIs with person information
+- `withHasAffiliation(bool $hasAffiliation)` - Filter for DOIs with affiliation information
 - `withHasFundingReference(bool $hasFundingReference)` - Filter for DOIs with funding references
-- `withHasFullText(bool $hasFullText)` - Filter for DOIs with full text
-- `withHasOrcid(bool $hasOrcid)` - Filter for DOIs with ORCID information
-- `withHasLicense(bool $hasLicense)` - Filter for DOIs with license information
-- `withIsActive(bool $isActive)` - Filter for active/inactive DOIs
+- `withHasRelatedIdentifier(bool $hasRelatedIdentifier)` - Filter for DOIs with related identifiers
+- `withHasAbstract(bool $hasAbstract)` - Filter for DOIs with abstracts
+- `withHasMetadata(bool $hasMetadata)` - Filter for DOIs with metadata
 
-### Content Filters
-- `withSchemaVersion(string $schemaVersion)` - Filter by schema version
-- `withPrefix(string $prefix)` - Filter by DOI prefix
-- `withSuffix(string $suffix)` - Filter by DOI suffix
-- `withNumber(string $number)` - Filter by DOI number
-- `withDoi(string $doi)` - Filter by specific DOI
-- `withUrl(string $url)` - Filter by URL
-- `withCreator(string $creator)` - Filter by creator name
-- `withTitle(string $title)` - Filter by title
-- `withDescription(string $description)` - Filter by description
-- `withPublisher(string $publisher)` - Filter by publisher name
-
-### Additional Information
-- `withAffiliation()` - Include affiliation information
-- `withPublisher()` - Include publisher information
-- `withDetail()` - Include all available fields
+### Additional Information (Include Parameters)
+- `withAffiliation()` - Include full affiliation information in response
+- `withPublisher()` - Include full publisher information in response
 
 ### Query Builder
-- `withQuery(QueryBuilder $queryBuilder)` - Use QueryBuilder for complex queries
+- `withQuery(QueryBuilder $queryBuilder)` - Use QueryBuilder for complex field searches
 
 ## Pagination
 
 ```php
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withPageSize(25)
     ->withPage(2)
     ->withSortDesc(SortOption::CREATED);
 
 $response = $client->send($request);
+$results = $response->dto();
+
+echo "Page {$results->meta->page} of {$results->meta->totalPages}\n";
+echo "Total results: {$results->meta->total}\n";
 ```
 
 **Generated Query String:**
@@ -352,16 +327,20 @@ $response = $client->send($request);
 ## Sampling
 
 ```php
-$request = ListDOIs::new()
+use VincentAuger\DataCiteSdk\Enums\SampleGroup;
+
+$request = (new ListDOIs)
     ->withSample(10)
-    ->withSort(SortOption::RELEVANCE);
+    ->withSampleGroup(SampleGroup::CLIENT)
+    ->withSortDesc(SortOption::RELEVANCE);
 
 $response = $client->send($request);
+$results = $response->dto();
 ```
 
 **Generated Query String:**
 ```
-?sample=10&sort=-relevance
+?sample=10&sample-group=client&sort=-relevance
 ```
 
 ## Complete Example
@@ -374,25 +353,24 @@ Here's a complete example that demonstrates multiple features:
 require_once 'vendor/autoload.php';
 
 use VincentAuger\DataCiteSdk\DataCite;
-use VincentAuger\DataCiteSdk\Enums\SortDirection;
-use VincentAuger\DataCiteSdk\Enums\SortOption;
+use VincentAuger\DataCiteSdk\Enums\{QueryField, SortOption};
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
 use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
 
 // Create the client
-$client = DataCite::public();
+$client = new DataCite();
 
 // Build a complex request with advanced query features
-$request = ListDOIs::new()
+$request = (new ListDOIs)
     ->withQuery(
-        QueryBuilder::new()
-            ->whereContains('titles.title', 'machine learning')
-            ->whereEquals('publicationYear', '2023')
-            ->whereWildcardExact('creators.affiliation.name', 'Massachusetts Institute of Technology', '*')
+        (new QueryBuilder)
+            ->whereContains(QueryField::TITLES_TITLE, 'machine learning')
+            ->whereEquals(QueryField::PUBLICATION_YEAR, '2023')
+            ->whereExists(QueryField::FUNDING_REFERENCES_FUNDER_NAME)
     )
     ->withProviderId('cern')
-    ->withHasOrcid(true)
-    ->withHasLicense(true)
+    ->withHasPerson(true)
+    ->withHasAffiliation(true)
     ->withCreated('2023-01-01,2023-12-31')
     ->withAffiliation()
     ->withPublisher()
@@ -407,19 +385,13 @@ $dois = $response->dto();
 
 foreach ($dois->data as $doi) {
     echo "DOI: {$doi->id}\n";
-    echo "Title: " . $doi->attributes->titles[0]->title . "\n";
-    echo "Created: " . $doi->attributes->created . "\n";
+    echo "Title: {$doi->attributes->titles[0]->title}\n";
+    echo "Created: {$doi->attributes->created}\n";
     echo "---\n";
 }
 
 echo "Total results: {$dois->meta->total}\n";
-echo "Page: {$dois->meta->page}\n";
-echo "Page size: {$dois->meta->pageSize}\n";
-```
-
-**Generated Query String:**
-```
-?query=titles.title:*machine learning* publicationYear:2023 creators.affiliation.name:Massachusetts\ Institute\ of\ Technology*&provider-id=cern&has-orcid=true&has-license=true&created=2023-01-01,2023-12-31&include=affiliation,publisher&page[size]=50&sort=-relevance
+echo "Page: {$dois->meta->page} of {$dois->meta->totalPages}\n";
 ```
 
 ## Query String Reference

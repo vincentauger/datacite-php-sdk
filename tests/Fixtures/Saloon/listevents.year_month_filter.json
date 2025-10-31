@@ -1,0 +1,29 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Date": "Fri, 31 Oct 2025 18:14:05 GMT",
+        "Content-Type": "application\/json; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Status": "200 OK",
+        "X-Anonymous-Consumer": "true",
+        "Cache-Control": "max-age=0, private, must-revalidate",
+        "Vary": "Accept,Accept-Encoding",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "X-XSS-Protection": "0",
+        "X-Request-Id": "b444b41b-6451-4e74-8c7a-c5df08737bcf",
+        "ETag": "W\/\"2e377db716820af8e105f9448fe9ffd1\"",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Runtime": "0.051480",
+        "X-Content-Type-Options": "nosniff",
+        "X-Powered-By": "Phusion Passenger(R) 6.1.0",
+        "Server": "nginx\/1.24.0 + Phusion Passenger(R) 6.1.0",
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Accept,Access-Control-Allow-Origin,Access-Control-Expose-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With",
+        "Access-Control-Expose-Headers": "Authorization"
+    },
+    "data": "{\"data\":[],\"meta\":{\"total\":0,\"total-pages\":0,\"page\":1},\"links\":{\"self\":\"https:\/\/api.test.datacite.org\/events?year-month=2024-01\\u0026page%5Bsize%5D=10\"}}",
+    "context": []
+}
