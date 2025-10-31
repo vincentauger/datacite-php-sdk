@@ -8,7 +8,7 @@ use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 use Saloon\Traits\Request\CreatesDtoFromResponse;
-use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Data\DOIActivitiesData;
 use VincentAuger\DataCiteSdk\Traits\Requests\HasAdditionalInformation;
 
 /**
@@ -28,11 +28,11 @@ final class GetDOIActivities extends Request
         return '/dois/'.$this->doi.'/activities';
     }
 
-    public function createDtoFromResponse(Response $response): DOIData
+    public function createDtoFromResponse(Response $response): DOIActivitiesData
     {
         /** @var array<string, mixed> $data */
-        $data = $response->json('data');
+        $data = $response->json();
 
-        return DOIData::fromArray($data);
+        return DOIActivitiesData::fromArray($data);
     }
 }
