@@ -59,17 +59,27 @@ $datacite = new DataCite(
 
 ### Get a Single DOI
 
-```php
-use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOI;
+**Quick way (convenience method):**
 
-$request = new GetDOI('10.5438/4k3m-nyvg');
-$response = $datacite->send($request);
+```php
+// Simple one-liner for basic operations
+$response = $datacite->getDOI('10.5438/4k3m-nyvg');
 $doi = $response->dto();
 
-// Access via fully typed DTO
 echo $doi->data->attributes->titles[0]->title;
 echo $doi->data->attributes->creators[0]->name;
 echo $doi->data->attributes->publicationYear;
+```
+
+**Advanced way (using request objects):**
+
+```php
+use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOI;
+
+// Use request objects when you need more control
+$request = new GetDOI('10.5438/4k3m-nyvg');
+$response = $datacite->send($request);
+$doi = $response->dto();
 ```
 
 ### List DOIs
@@ -112,10 +122,12 @@ $results = $response->dto();
 ### Create a DOI
 
 ```php
-use VincentAuger\DataCiteSdk\Requests\DOIs\CreateDOI;
 use VincentAuger\DataCiteSdk\Data\CreateDOIInput;
-use VincentAuger\DataCiteSdk\Data\Metadata\{Creator, Title, ResourceType};
-use VincentAuger\DataCiteSdk\Enums\{ResourceTypeGeneral, DOIEvent};
+use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
+use VincentAuger\DataCiteSdk\Data\Metadata\Title;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
+use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
+use VincentAuger\DataCiteSdk\Enums\DOIEvent;
 
 $input = new CreateDOIInput(
     doi: '10.5438/example-doi',
@@ -131,15 +143,18 @@ $input = new CreateDOIInput(
     event: DOIEvent::PUBLISH  // Optional: publish, register, or hide
 );
 
+// Quick way (convenience method)
+$response = $datacite->createDOI($input);
+$doi = $response->dto();
+
+// Or use request object for more control
 $request = new CreateDOI($input);
 $response = $datacite->send($request);
-$doi = $response->dto();
 ```
 
 ### Update a DOI
 
 ```php
-use VincentAuger\DataCiteSdk\Requests\DOIs\UpdateDOI;
 use VincentAuger\DataCiteSdk\Data\UpdateDOIInput;
 
 $input = new UpdateDOIInput(
@@ -148,6 +163,10 @@ $input = new UpdateDOIInput(
     // ... other updated fields
 );
 
+// Quick way (convenience method)
+$response = $datacite->updateDOI('10.5438/example-doi', $input);
+
+// Or use request object
 $request = new UpdateDOI('10.5438/example-doi', $input);
 $response = $datacite->send($request);
 ```
@@ -155,9 +174,10 @@ $response = $datacite->send($request);
 ### Delete a DOI
 
 ```php
-use VincentAuger\DataCiteSdk\Requests\DOIs\DeleteDOI;
-
 // Only works for draft DOIs
+$response = $datacite->deleteDOI('10.5438/draft-doi');
+
+// Or use request object
 $request = new DeleteDOI('10.5438/draft-doi');
 $response = $datacite->send($request);
 ```
@@ -165,22 +185,27 @@ $response = $datacite->send($request);
 ### Get DOI Activities
 
 ```php
-use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOIActivities;
-
-$request = new GetDOIActivities('10.5438/4k3m-nyvg');
-$response = $datacite->send($request);
+// Quick way (convenience method)
+$response = $datacite->getDOIActivities('10.5438/4k3m-nyvg');
 $activities = $response->dto();
 
 foreach ($activities->data as $activity) {
     echo "{$activity->attributes->action} at {$activity->attributes->createdAt}\n";
 }
+
+// Or use request object
+use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOIActivities;
+
+$request = new GetDOIActivities('10.5438/4k3m-nyvg');
+$response = $datacite->send($request);
 ```
 
 ### List Events
 
 ```php
 use VincentAuger\DataCiteSdk\Requests\Events\ListEvents;
-use VincentAuger\DataCiteSdk\Enums\{EventSortOption, EventSource};
+use VincentAuger\DataCiteSdk\Enums\EventSortOption;
+use VincentAuger\DataCiteSdk\Enums\EventSource;
 
 $request = (new ListEvents)
     ->withDoiId('10.5438/4k3m-nyvg')
@@ -200,12 +225,48 @@ foreach ($events->data as $event) {
 ### Get a Single Event
 
 ```php
+// Quick way (convenience method)
+$response = $datacite->getEvent('event-id-here');
+$event = $response->dto();
+
+// Or use request object
 use VincentAuger\DataCiteSdk\Requests\Events\GetEvent;
 
 $request = new GetEvent('event-id-here');
 $response = $datacite->send($request);
-$event = $response->dto();
 ```
+
+---
+
+## Convenience Methods
+
+The SDK provides convenient shorthand methods for common operations:
+
+```php
+// System
+$datacite->heartbeat(): bool
+
+// DOIs
+$datacite->getDOI(string $doi): Response
+$datacite->getDOIActivities(string $doi): Response
+$datacite->createDOI(CreateDOIInput $input): Response
+$datacite->updateDOI(string $doi, UpdateDOIInput $input): Response
+$datacite->deleteDOI(string $doi): Response
+
+// Events
+$datacite->getEvent(string $eventId): Response
+```
+
+**When to use convenience methods:**
+- ✅ Quick, simple operations
+- ✅ Getting started with the SDK
+- ✅ Straightforward single-resource retrieval
+
+**When to use request objects:**
+- ✅ Complex queries with filters
+- ✅ Pagination and sorting
+- ✅ Using the QueryBuilder
+- ✅ Need to customize request behavior
 
 ---
 
@@ -272,6 +333,68 @@ $request = (new ListDOIs)
 - `TOTAL` - Total occurrences
 - `CREATED` - Creation date
 - `UPDATED` - Last updated
+
+---
+
+## Working with DTOs and Type Hints
+
+All API responses return fully typed Data Transfer Objects (DTOs) for type safety and IDE autocomplete. However, due to how Saloon creates DTOs, you may lose type information when calling `->dto()`.
+
+### Getting Proper Type Hints
+
+**Option 1: Use PHPDoc annotation (Recommended)**
+
+```php
+use VincentAuger\DataCiteSdk\Data\DOIData;
+
+/** @var DOIData $doi */
+$doi = $response->dto();
+
+// Now you get full IDE autocomplete and type checking
+$title = $doi->data->attributes->titles[0]->title;
+```
+
+**Option 2: Use `createDtoFromResponse()` directly**
+
+```php
+$request = new GetDOI('10.5438/4k3m-nyvg');
+$response = $datacite->send($request);
+
+// This method returns the correct type automatically
+$doi = $request->createDtoFromResponse($response);
+```
+
+### Available DTOs
+
+| Request Type | DTO Class | Description |
+|-------------|-----------|-------------|
+| `GetDOI` | `DOIData` | Single DOI response |
+| `ListDOIs` | `ListDOIData` | Paginated DOI list |
+| `CreateDOI` | `DOIData` | Created DOI response |
+| `UpdateDOI` | `DOIData` | Updated DOI response |
+| `GetDOIActivities` | `DOIActivitiesData` | DOI activity log |
+| `GetEvent` | `EventData` | Single event response |
+| `ListEvents` | `ListEventData` | Paginated event list |
+
+**Example with proper typing:**
+
+```php
+use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Data\ListDOIData;
+
+// Single DOI
+/** @var DOIData $doi */
+$doi = $datacite->getDOI('10.5438/0012')->dto();
+
+// List of DOIs
+/** @var ListDOIData $results */
+$results = $datacite->send(new ListDOIs)->dto();
+
+foreach ($results->data as $doiItem) {
+    // Full autocomplete available
+    echo $doiItem->attributes->titles[0]->title;
+}
+```
 
 ---
 

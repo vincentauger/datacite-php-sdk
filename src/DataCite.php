@@ -67,6 +67,10 @@ final class DataCite extends Connector
         ];
     }
 
+    // =========================================================================
+    // Convenience Methods for Quick Operations
+    // =========================================================================
+
     /**
      * Check if the DataCite API is alive
      */
@@ -75,5 +79,68 @@ final class DataCite extends Connector
         $response = $this->send(new Requests\GetHeartbeat);
 
         return $response->status() === 200;
+    }
+
+    /**
+     * Get a DOI by ID
+     *
+     * @param  string  $doi  The DOI identifier (e.g., '10.5438/0012')
+     */
+    public function getDOI(string $doi): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\DOIs\GetDOI($doi));
+    }
+
+    /**
+     * Get activities/changes for a DOI
+     *
+     * @param  string  $doi  The DOI identifier
+     */
+    public function getDOIActivities(string $doi): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\DOIs\GetDOIActivities($doi));
+    }
+
+    /**
+     * Create a new DOI (requires member authentication)
+     *
+     * @param  Data\CreateDOIInput  $input  The DOI metadata
+     */
+    public function createDOI(Data\CreateDOIInput $input): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\DOIs\CreateDOI($input));
+    }
+
+    /**
+     * Update an existing DOI (requires member authentication)
+     *
+     * @param  string  $doi  The DOI identifier
+     * @param  Data\UpdateDOIInput  $input  The updated DOI metadata
+     */
+    public function updateDOI(string $doi, Data\UpdateDOIInput $input): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\DOIs\UpdateDOI($doi, $input));
+    }
+
+    /**
+     * Delete a DOI (requires member authentication)
+     *
+     * Note: Only DOIs in 'draft' state can be deleted.
+     *
+     * @param  string  $doi  The DOI identifier
+     */
+    public function deleteDOI(string $doi): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\DOIs\DeleteDOI($doi));
+    }
+
+    /**
+     * Get an event by ID
+     *
+     * @param  string  $eventId  The event identifier
+     */
+    public function getEvent(string $eventId): \Saloon\Http\Response
+    {
+        return $this->send(new Requests\Events\GetEvent($eventId));
     }
 }
