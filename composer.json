@@ -9,6 +9,7 @@
         "sdk",
         "open science"
     ],
+    "homepage": "https://github.com/vincentauger/datacite-php-sdk",
     "license": "MIT",
     "authors": [
         {
@@ -16,6 +17,10 @@
             "email": "vincent.auger@gmail.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/vincentauger/datacite-php-sdk/issues",
+        "source": "https://github.com/vincentauger/datacite-php-sdk"
+    },
     "require": {
         "php": "^8.4.0",
         "saloonphp/saloon": "^3.14"
