@@ -91,10 +91,18 @@ final class ListEvents extends Request
     /**
      * Filter by the year and month in which the event occurred.
      *
-     * @param  string  $yearMonth  Format: YYYY-MM
+     * @param  int  $year  Year (e.g., 2023)
+     * @param  int  $month  Month (1-12)
+     *
+     * @throws \InvalidArgumentException If month is not between 1 and 12
      */
-    public function withYearMonth(string $yearMonth): self
+    public function withYearMonth(int $year, int $month): self
     {
+        if ($month < 1 || $month > 12) {
+            throw new \InvalidArgumentException("Month must be between 1 and 12, got: {$month}");
+        }
+
+        $yearMonth = sprintf('%d-%02d', $year, $month);
         $this->query()->add('year-month', $yearMonth);
 
         return $this;

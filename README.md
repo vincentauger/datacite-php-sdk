@@ -213,7 +213,7 @@ use VincentAuger\DataCiteSdk\Enums\EventSource;
 $request = (new ListEvents)
     ->withDoiId('10.5438/4k3m-nyvg')
     ->withSource(EventSource::CROSSREF)
-    ->withYearMonth('2023-06')
+    ->withYearMonth(2023, 6)
     ->withSortDesc(EventSortOption::TOTAL)
     ->withPageSize(25);
 
