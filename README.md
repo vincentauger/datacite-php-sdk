@@ -3,6 +3,7 @@
 A modern PHP SDK for the [DataCite REST API](https://support.datacite.org/docs/api), built for maintainability and clarity using [Saloon](https://docs.saloon.dev) for HTTP integration.
 
 [![Tests](https://github.com/vincentauger/datacite-php-sdk/actions/workflows/tests.yml/badge.svg)](https://github.com/vincentauger/datacite-php-sdk/actions/workflows/tests.yml)
+[![DOI](https://zenodo.org/badge/1022220862.svg)](https://doi.org/10.5281/zenodo.17536592)
 
 ## Features
 
