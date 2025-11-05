@@ -65,7 +65,7 @@ final readonly class RelatedItem
             /** @var array<array<string, mixed>> $creatorsArray */
             $creatorsArray = $data['creators'];
             $creatorsData = array_map(
-                fn (array $item): RelatedItemCreator => RelatedItemCreator::fromArray($item),
+                RelatedItemCreator::fromArray(...),
                 $creatorsArray
             );
         }
@@ -75,14 +75,14 @@ final readonly class RelatedItem
             /** @var array<array<string, mixed>> $contributorsArray */
             $contributorsArray = $data['contributors'];
             $contributorsData = array_map(
-                fn (array $item): RelatedItemContributor => RelatedItemContributor::fromArray($item),
+                RelatedItemContributor::fromArray(...),
                 $contributorsArray
             );
         }
 
         return new self(
             titles: array_map(
-                fn (array $item): Title => Title::fromArray($item),
+                Title::fromArray(...),
                 $titlesData
             ),
             relationType: $data['relationType'] instanceof RelationType ? $data['relationType'] : RelationType::from($data['relationType']),

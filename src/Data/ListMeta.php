@@ -119,75 +119,75 @@ final readonly class ListMeta
             totalPages: (int) $data['totalPages'],
             page: (int) $data['page'],
             states: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $statesData
             ),
             resourceTypes: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $resourceTypesData
             ),
             created: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $createdData
             ),
             published: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $publishedData
             ),
             registered: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $registeredData
             ),
             providers: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $providersData
             ),
             clients: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $clientsData
             ),
             affiliations: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $affiliationsData
             ),
             prefixes: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $prefixesData
             ),
             certificates: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $certificatesData
             ),
             licenses: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $licensesData
             ),
             schemaVersions: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $schemaVersionsData
             ),
             linkChecksStatus: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $linkChecksStatusData
             ),
             subjects: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $subjectsData
             ),
             fieldsOfScience: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $fieldsOfScienceData
             ),
             citations: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $citationsData
             ),
             views: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $viewsData
             ),
             downloads: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $downloadsData
             ),
         );

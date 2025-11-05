@@ -58,27 +58,27 @@ final readonly class EventMeta
             totalPages: (int) $data['total-pages'],
             page: (int) $data['page'],
             sources: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $sourcesData
             ),
             occurred: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $occurredData
             ),
             prefixes: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $prefixesData
             ),
             citationTypes: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $citationTypesData
             ),
             relationTypes: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $relationTypesData
             ),
             registrants: array_map(
-                fn (array $item): MetaItem => MetaItem::fromArray($item),
+                MetaItem::fromArray(...),
                 $registrantsData
             ),
         );

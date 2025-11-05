@@ -40,7 +40,7 @@ final readonly class GeoLocation
             /** @var array<array<string, mixed>> $polygonArray */
             $polygonArray = $data['geoLocationPolygon'];
             $geoLocationPolygonData = array_map(
-                fn (array $item): GeoLocationPolygon => GeoLocationPolygon::fromArray($item),
+                GeoLocationPolygon::fromArray(...),
                 $polygonArray
             );
         }

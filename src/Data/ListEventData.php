@@ -38,7 +38,7 @@ final readonly class ListEventData
 
         return new self(
             data: array_map(
-                fn (array $item): EventData => EventData::fromArray($item),
+                EventData::fromArray(...),
                 $eventsData
             ),
             meta: EventMeta::fromArray($metaData),

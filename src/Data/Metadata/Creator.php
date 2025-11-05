@@ -65,7 +65,7 @@ final readonly class Creator
             familyName: isset($data['familyName']) && is_string($data['familyName']) ? $data['familyName'] : null,
             affiliation: $affiliations,
             nameIdentifiers: array_map(
-                fn (array $item): NameIdentifier => NameIdentifier::fromArray($item),
+                NameIdentifier::fromArray(...),
                 $nameIdentifiersData
             ),
         );

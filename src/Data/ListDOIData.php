@@ -39,7 +39,7 @@ final readonly class ListDOIData
 
         return new self(
             data: array_map(
-                fn (array $item): DOIData => DOIData::fromArray($item),
+                DOIData::fromArray(...),
                 $doisData
             ),
             meta: ListMeta::fromArray($metaData),

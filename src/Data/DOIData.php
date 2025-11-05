@@ -206,7 +206,7 @@ final readonly class DOIData
 
         $creators = array_values(array_filter(
             array_map(
-                fn (array $item): ?Creator => Creator::fromArray($item),
+                Creator::fromArray(...),
                 $creatorsData
             ),
             fn (?Creator $creator): bool => $creator instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Creator
@@ -214,7 +214,7 @@ final readonly class DOIData
         assert($creators !== [], 'At least one creator is required');
 
         $titles = array_map(
-            fn (array $item): Title => Title::fromArray($item),
+            Title::fromArray(...),
             $titlesData
         );
         assert($titles !== [], 'At least one title is required');
@@ -226,11 +226,11 @@ final readonly class DOIData
             prefix: $attributes['prefix'] ?? null,
             suffix: $attributes['suffix'] ?? null,
             identifiers: array_map(
-                fn (array $item): Identifier => Identifier::fromArray($item),
+                Identifier::fromArray(...),
                 $identifiersData
             ),
             alternateIdentifiers: array_map(
-                fn (array $item): AlternateIdentifier => AlternateIdentifier::fromArray($item),
+                AlternateIdentifier::fromArray(...),
                 $alternateIdentifiersData
             ),
             creators: $creators,
@@ -239,50 +239,50 @@ final readonly class DOIData
             container: ContainerData::fromArray($containerData),
             publicationYear: (int) $attributes['publicationYear'],
             subjects: array_map(
-                fn (array $item): Subject => Subject::fromArray($item),
+                Subject::fromArray(...),
                 $subjectsData
             ),
             contributors: array_values(array_filter(
                 array_map(
-                    fn (array $item): ?Contributor => Contributor::fromArray($item),
+                    Contributor::fromArray(...),
                     $contributorsData
                 ),
                 fn (?Contributor $contributor): bool => $contributor instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Contributor
             )),
             dates: array_map(
-                fn (array $item): Date => Date::fromArray($item),
+                Date::fromArray(...),
                 $datesData
             ),
             language: isset($attributes['language']) && is_string($attributes['language']) ? $attributes['language'] : null,
             types: ResourceType::fromArray($typesData),
             relatedIdentifiers: array_map(
-                fn (array $item): RelatedIdentifier => RelatedIdentifier::fromArray($item),
+                RelatedIdentifier::fromArray(...),
                 $relatedIdentifiersData
             ),
             relatedItems: array_map(
-                fn (array $item): RelatedItem => RelatedItem::fromArray($item),
+                RelatedItem::fromArray(...),
                 $relatedItemsData
             ),
             sizes: $sizesData,
             formats: $formatsData,
             version: isset($attributes['version']) && is_string($attributes['version']) ? $attributes['version'] : null,
             rightsList: array_map(
-                fn (array $item): RightsList => RightsList::fromArray($item),
+                RightsList::fromArray(...),
                 $rightsListData
             ),
             descriptions: array_values(array_filter(
                 array_map(
-                    fn (array $item): ?Description => Description::fromArray($item),
+                    Description::fromArray(...),
                     $descriptionsData
                 ),
                 fn (?Description $description): bool => $description instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Description
             )),
             geoLocations: array_map(
-                fn (array $item): GeoLocation => GeoLocation::fromArray($item),
+                GeoLocation::fromArray(...),
                 $geoLocationsData
             ),
             fundingReferences: array_map(
-                fn (array $item): FundingReference => FundingReference::fromArray($item),
+                FundingReference::fromArray(...),
                 $fundingReferencesData
             ),
             xml: $attributes['xml'] ?? null,

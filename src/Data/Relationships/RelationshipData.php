@@ -68,27 +68,27 @@ final readonly class RelationshipData
             provider: $providerData ? RelationshipProvider::fromArray($providerData) : null,
             media: $mediaData ? RelationshipMedia::fromArray($mediaData) : null,
             references: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $referencesData
             ),
             citations: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $citationsData
             ),
             parts: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $partsData
             ),
             partOf: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $partOfData
             ),
             versions: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $versionsData
             ),
             versionOf: array_map(
-                fn (array $item): \VincentAuger\DataCiteSdk\Data\Relationships\RelationshipItem => RelationshipItem::fromArray($item),
+                RelationshipItem::fromArray(...),
                 $versionOfData
             ),
         );

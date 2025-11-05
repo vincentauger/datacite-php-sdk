@@ -185,7 +185,6 @@ describe('FundingReference validation', function (): void {
         $funding = new FundingReference(
             funderName: 'European Commission',
             funderIdentifier: 'https://doi.org/10.13039/501100000780',
-            funderIdentifierType: null,
         );
 
         expect(fn (): array => $funding->toArray())
@@ -224,8 +223,6 @@ describe('FundingReference validation', function (): void {
     test('succeeds when neither funderIdentifier nor funderIdentifierType are provided', function (): void {
         $funding = new FundingReference(
             funderName: 'European Commission',
-            funderIdentifier: null,
-            funderIdentifierType: null,
         );
 
         $array = $funding->toArray();

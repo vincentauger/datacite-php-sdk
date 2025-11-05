@@ -39,7 +39,7 @@ final readonly class DOIActivitiesData
 
         return new self(
             data: array_map(
-                fn (array $item): ActivityData => ActivityData::fromArray($item),
+                ActivityData::fromArray(...),
                 $activitiesData
             ),
             meta: ActivityMeta::fromArray($metaData),
