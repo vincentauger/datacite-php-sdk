@@ -171,7 +171,7 @@ it('can list events with year-month filter', function (): void {
     $client->withMockClient($mockClient);
 
     $request = new ListEvents()
-        ->withYearMonth('2024-01')
+        ->withYearMonth(2024, 1)
         ->withPageSize(10);
 
     $response = $client->send($request);
