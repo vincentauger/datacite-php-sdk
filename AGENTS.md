@@ -66,6 +66,7 @@ The DataCite API has two access levels:
 ### When to Require Member Auth
 
 Add the `RequiresMemberAuth` trait to any request class that:
+
 - Uses POST, PUT, or DELETE methods
 - Accesses member-specific data
 - Modifies DOI records
@@ -88,6 +89,3 @@ final class CreateDOI extends Request
     // ...
 }
 ```
-
-See [docs/member-api-authentication.md](docs/member-api-authentication.md) for complete details.
-
