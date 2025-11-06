@@ -1,0 +1,31 @@
+{
+  "title": "DataCite PHP SDK",
+  "description": "A modern PHP SDK for the DataCite REST API platform. Built with Saloon for maintainable HTTP integration, this SDK provides type-safe access to DataCite's DOI registration, metadata management, and retrieval operations.",
+  "license": "MIT",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Auger, Vincent",
+      "orcid": "0000-0002-0595-6576"
+    }
+  ],
+  "keywords": [
+    "php",
+    "datacite",
+    "api",
+    "doi",
+    "digital-object-identifier",
+    "metadata",
+    "research-data",
+    "persistent-identifiers",
+    "sdk"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/vincentauger/datacite-php-sdk",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "language": "eng"
+}
