@@ -37,7 +37,7 @@ final readonly class Affiliation
      */
     public function toArray(): array
     {
-        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        // Validate conditional dependencies per DataCite Metadata Schema 4.7
         if ($this->affiliationIdentifier !== null && $this->affiliationIdentifierScheme === null) {
             throw new DataCiteValidationException(
                 'If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.'

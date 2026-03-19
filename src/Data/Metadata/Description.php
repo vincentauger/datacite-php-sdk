@@ -12,7 +12,7 @@ use VincentAuger\DataCiteSdk\Enums\DescriptionType;
  * All additional information that does not fit in any other categories.
  * May be used for technical information or detailed information associated with a scientific instrument.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/description/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/description/
  */
 final readonly class Description
 {

@@ -39,7 +39,7 @@ final readonly class PublisherData
      */
     public function toArray(): array
     {
-        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        // Validate conditional dependencies per DataCite Metadata Schema 4.7
         if ($this->publisherIdentifier !== null && $this->publisherIdentifierScheme === null) {
             throw new DataCiteValidationException(
                 'If publisherIdentifier is used, publisherIdentifierScheme is mandatory.'

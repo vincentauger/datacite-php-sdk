@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite DateType controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/appendices/appendix-1/dateType/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/dateType/
  */
 enum DateType: string
 {

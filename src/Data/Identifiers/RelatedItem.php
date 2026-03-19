@@ -14,7 +14,7 @@ use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
  * Note: The properties relatedMetadataScheme, schemeURI, and schemeType in RelatedItemIdentifier
  * should only be used when relationType is HasMetadata or IsMetadataFor.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/relateditem/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/relateditem/
  */
 final readonly class RelatedItem
 {
@@ -39,6 +39,7 @@ final readonly class RelatedItem
         public ?string $publisher = null,
         public ?string $edition = null,
         public array $contributors = [],
+        public ?string $relationTypeInformation = null,
     ) {}
 
     /**
@@ -99,6 +100,7 @@ final readonly class RelatedItem
             publisher: isset($data['publisher']) && is_string($data['publisher']) ? $data['publisher'] : null,
             edition: isset($data['edition']) && is_string($data['edition']) ? $data['edition'] : null,
             contributors: $contributorsData,
+            relationTypeInformation: isset($data['relationTypeInformation']) && is_string($data['relationTypeInformation']) ? $data['relationTypeInformation'] : null,
         );
     }
 
@@ -176,6 +178,10 @@ final readonly class RelatedItem
                 fn (RelatedItemContributor $contributor): array => $contributor->toArray(),
                 $this->contributors
             );
+        }
+
+        if ($this->relationTypeInformation !== null) {
+            $array['relationTypeInformation'] = $this->relationTypeInformation;
         }
 
         return $array;

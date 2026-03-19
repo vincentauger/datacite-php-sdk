@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite ResourceTypeGeneral controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/appendices/appendix-1/resourceTypeGeneral/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/resourceTypeGeneral/
  */
 enum ResourceTypeGeneral: string
 {
@@ -32,7 +32,9 @@ enum ResourceTypeGeneral: string
     case OUTPUT_MANAGEMENT_PLAN = 'OutputManagementPlan';
     case PEER_REVIEW = 'PeerReview';
     case PHYSICAL_OBJECT = 'PhysicalObject';
+    case POSTER = 'Poster';
     case PREPRINT = 'Preprint';
+    case PRESENTATION = 'Presentation';
     case PROJECT = 'Project';
     case REPORT = 'Report';
     case SERVICE = 'Service';

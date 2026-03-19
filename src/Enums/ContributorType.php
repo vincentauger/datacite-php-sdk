@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite ContributorType controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/appendices/appendix-1/contributorType/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/contributorType/
  */
 enum ContributorType: string
 {
