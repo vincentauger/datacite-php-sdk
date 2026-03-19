@@ -61,7 +61,7 @@ final readonly class RelatedIdentifier
             $array['schemeType'] = $this->schemeType;
         }
 
-        if ($this->resourceTypeGeneral instanceof \VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral) {
+        if ($this->resourceTypeGeneral instanceof ResourceTypeGeneral) {
             $array['resourceTypeGeneral'] = $this->resourceTypeGeneral->value;
         }
 

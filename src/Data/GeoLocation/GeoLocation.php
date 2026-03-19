@@ -64,11 +64,11 @@ final readonly class GeoLocation
             $array['geoLocationPlace'] = $this->geoLocationPlace;
         }
 
-        if ($this->geoLocationPoint instanceof \VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocationPoint) {
+        if ($this->geoLocationPoint instanceof GeoLocationPoint) {
             $array['geoLocationPoint'] = $this->geoLocationPoint->toArray();
         }
 
-        if ($this->geoLocationBox instanceof \VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocationBox) {
+        if ($this->geoLocationBox instanceof GeoLocationBox) {
             $array['geoLocationBox'] = $this->geoLocationBox->toArray();
         }
 

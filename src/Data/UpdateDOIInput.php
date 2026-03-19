@@ -86,7 +86,7 @@ final readonly class UpdateDOIInput
     {
         $data = [];
 
-        if ($this->event instanceof \VincentAuger\DataCiteSdk\Enums\DOIEvent) {
+        if ($this->event instanceof DOIEvent) {
             $data['event'] = $this->event->value;
         }
 
@@ -95,26 +95,26 @@ final readonly class UpdateDOIInput
         }
 
         if ($this->identifiers !== null) {
-            $data['identifiers'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Identifiers\Identifier $item): array => $item->toArray(), $this->identifiers);
+            $data['identifiers'] = array_map(fn (Identifier $item): array => $item->toArray(), $this->identifiers);
         }
 
         if ($this->alternateIdentifiers !== null) {
-            $data['alternateIdentifiers'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Identifiers\AlternateIdentifier $item): array => $item->toArray(), $this->alternateIdentifiers);
+            $data['alternateIdentifiers'] = array_map(fn (AlternateIdentifier $item): array => $item->toArray(), $this->alternateIdentifiers);
         }
 
         if ($this->creators !== null) {
-            $data['creators'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Creator $item): array => $item->toArray(), $this->creators);
+            $data['creators'] = array_map(fn (Creator $item): array => $item->toArray(), $this->creators);
         }
 
         if ($this->titles !== null) {
-            $data['titles'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Title $item): array => $item->toArray(), $this->titles);
+            $data['titles'] = array_map(fn (Title $item): array => $item->toArray(), $this->titles);
         }
 
         if ($this->publisher !== null) {
             $data['publisher'] = is_string($this->publisher) ? $this->publisher : $this->publisher->toArray();
         }
 
-        if ($this->container instanceof \VincentAuger\DataCiteSdk\Data\Metadata\ContainerData) {
+        if ($this->container instanceof ContainerData) {
             $data['container'] = $this->container->toArray();
         }
 
@@ -123,31 +123,31 @@ final readonly class UpdateDOIInput
         }
 
         if ($this->subjects !== null) {
-            $data['subjects'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Subject $item): array => $item->toArray(), $this->subjects);
+            $data['subjects'] = array_map(fn (Subject $item): array => $item->toArray(), $this->subjects);
         }
 
         if ($this->contributors !== null) {
-            $data['contributors'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Contributor $item): array => $item->toArray(), $this->contributors);
+            $data['contributors'] = array_map(fn (Contributor $item): array => $item->toArray(), $this->contributors);
         }
 
         if ($this->dates !== null) {
-            $data['dates'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Date $item): array => $item->toArray(), $this->dates);
+            $data['dates'] = array_map(fn (Date $item): array => $item->toArray(), $this->dates);
         }
 
         if ($this->language !== null) {
             $data['language'] = $this->language;
         }
 
-        if ($this->types instanceof \VincentAuger\DataCiteSdk\Data\Metadata\ResourceType) {
+        if ($this->types instanceof ResourceType) {
             $data['types'] = $this->types->toArray();
         }
 
         if ($this->relatedIdentifiers !== null) {
-            $data['relatedIdentifiers'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Identifiers\RelatedIdentifier $item): array => $item->toArray(), $this->relatedIdentifiers);
+            $data['relatedIdentifiers'] = array_map(fn (RelatedIdentifier $item): array => $item->toArray(), $this->relatedIdentifiers);
         }
 
         if ($this->relatedItems !== null) {
-            $data['relatedItems'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItem $item): array => $item->toArray(), $this->relatedItems);
+            $data['relatedItems'] = array_map(fn (RelatedItem $item): array => $item->toArray(), $this->relatedItems);
         }
 
         if ($this->sizes !== null) {
@@ -163,19 +163,19 @@ final readonly class UpdateDOIInput
         }
 
         if ($this->rightsList !== null) {
-            $data['rightsList'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\RightsList $item): array => $item->toArray(), $this->rightsList);
+            $data['rightsList'] = array_map(fn (RightsList $item): array => $item->toArray(), $this->rightsList);
         }
 
         if ($this->descriptions !== null) {
-            $data['descriptions'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\Description $item): array => $item->toArray(), $this->descriptions);
+            $data['descriptions'] = array_map(fn (Description $item): array => $item->toArray(), $this->descriptions);
         }
 
         if ($this->geoLocations !== null) {
-            $data['geoLocations'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocation $item): array => $item->toArray(), $this->geoLocations);
+            $data['geoLocations'] = array_map(fn (GeoLocation $item): array => $item->toArray(), $this->geoLocations);
         }
 
         if ($this->fundingReferences !== null) {
-            $data['fundingReferences'] = array_map(fn (\VincentAuger\DataCiteSdk\Data\Metadata\FundingReference $item): array => $item->toArray(), $this->fundingReferences);
+            $data['fundingReferences'] = array_map(fn (FundingReference $item): array => $item->toArray(), $this->fundingReferences);
         }
 
         if ($this->url !== null) {

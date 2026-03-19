@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use Saloon\Http\Response;
 use VincentAuger\DataCiteSdk\Data\DOIData;
 use VincentAuger\DataCiteSdk\Data\UpdateDOIInput;
 use VincentAuger\DataCiteSdk\DataCite;
@@ -21,9 +22,9 @@ it('throws exception when using public API for member-only endpoint', function (
 
     $request = new UpdateDOI('10.82785/pct3-b846', $doiInput);
 
-    expect(fn (): \Saloon\Http\Response => $publicClient->send($request))
+    expect(fn (): Response => $publicClient->send($request))
         ->toThrow(
-            \RuntimeException::class,
+            RuntimeException::class,
             'requires member API authentication'
         );
 });

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Data\ListDOIData;
+use VincentAuger\DataCiteSdk\Enums\NameType;
 use VincentAuger\DataCiteSdk\Enums\QueryField;
 use VincentAuger\DataCiteSdk\Enums\SortOption;
 use VincentAuger\DataCiteSdk\Query\QueryBuilder;
@@ -22,11 +25,11 @@ it('can list dois via the public API', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(25);
     expect($dto->meta->total)->toBeGreaterThan(0);
     expect($dto->links->self)->toBeString();
@@ -49,13 +52,13 @@ it('can list dois with sorting', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(10);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
 });
 
@@ -75,13 +78,13 @@ it('can list dois with provider filter', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least one result is from the 'cern' provider (if provider data is available)
     $foundCernProvider = false;
@@ -116,13 +119,13 @@ it('can list dois with query builder using enum fields', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least some results match our query (API may return partial matches)
     $found2023Year = 0;
@@ -167,13 +170,13 @@ it('can list dois with query builder using string fields', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least some results match our query (API may return partial matches)
     $found2023Year = 0;
@@ -217,13 +220,13 @@ it('can list dois with exact match search', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least one result has the exact title match
     $foundExactMatch = false;
@@ -258,13 +261,13 @@ it('can list dois with wildcard search', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(20);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least one result has creators with family names starting with 'mil' and name identifiers
     $foundMatchingCreator = false;
@@ -305,13 +308,13 @@ it('can list dois with boolean filters', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify at least some results have person creators and funding references
     $foundPerson = false;
@@ -320,7 +323,7 @@ it('can list dois with boolean filters', function (): void {
     foreach ($dto->data as $doiData) {
         // Check for person (creator with nameType='Personal')
         foreach ($doiData->creators as $creator) {
-            if ($creator->nameType === \VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL) {
+            if ($creator->nameType === NameType::PERSONAL) {
                 $foundPerson = true;
                 break;
             }
@@ -357,13 +360,13 @@ it('can list dois with affiliation and publisher info', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(5);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
 });
 
@@ -383,13 +386,13 @@ it('can list dois with pagination', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(15);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
     expect($dto->meta->page)->toBe(2);
 
 });
@@ -410,13 +413,13 @@ it('can list dois with date range filter', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray()->toHaveCount(10);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Verify all results were created in 2023 or 2024
     foreach ($dto->data as $doiData) {
@@ -441,13 +444,13 @@ it('can list dois with random sampling', function (): void {
 
     $response = $client->send($request);
 
-    /** @var \VincentAuger\DataCiteSdk\Data\ListDOIData $dto */
+    /** @var ListDOIData $dto */
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
     expect($dto->data)->toBeArray();
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
 });
 
@@ -468,12 +471,12 @@ it('can list dois with DTO and metadata', function (): void {
     $dto = $response->dto();
 
     expect($response->status())->toBe(200);
-    expect($dto)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\ListDOIData::class);
+    expect($dto)->toBeInstanceOf(ListDOIData::class);
 
     // Test data array
     expect($dto->data)->toBeArray();
     expect(count($dto->data))->toBeGreaterThan(0);
-    expect($dto->data[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\DOIData::class);
+    expect($dto->data[0])->toBeInstanceOf(DOIData::class);
 
     // Test metadata
     expect($dto->meta->total)->toBeGreaterThan(0);

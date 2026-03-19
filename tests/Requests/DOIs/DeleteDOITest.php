@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use Saloon\Http\Response;
 use VincentAuger\DataCiteSdk\DataCite;
 use VincentAuger\DataCiteSdk\Enums\ApiVersion;
 use VincentAuger\DataCiteSdk\Requests\DOIs\DeleteDOI;
@@ -15,9 +16,9 @@ it('throws exception when using public API for member-only endpoint', function (
 
     $request = new DeleteDOI('10.82785/pct3-b846');
 
-    expect(fn (): \Saloon\Http\Response => $publicClient->send($request))
+    expect(fn (): Response => $publicClient->send($request))
         ->toThrow(
-            \RuntimeException::class,
+            RuntimeException::class,
             'requires member API authentication'
         );
 });

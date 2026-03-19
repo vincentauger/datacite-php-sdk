@@ -78,7 +78,7 @@ final readonly class Creator
     {
         $array = ['name' => $this->name];
 
-        if ($this->nameType instanceof \VincentAuger\DataCiteSdk\Enums\NameType) {
+        if ($this->nameType instanceof NameType) {
             $array['nameType'] = $this->nameType->value;
         }
 

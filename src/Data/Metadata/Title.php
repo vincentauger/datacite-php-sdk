@@ -43,7 +43,7 @@ final readonly class Title
             $array['lang'] = $this->lang;
         }
 
-        if ($this->titleType instanceof \VincentAuger\DataCiteSdk\Enums\TitleType) {
+        if ($this->titleType instanceof TitleType) {
             $array['titleType'] = $this->titleType->value;
         }
 

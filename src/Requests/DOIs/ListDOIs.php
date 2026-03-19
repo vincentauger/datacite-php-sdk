@@ -506,7 +506,7 @@ final class ListDOIs extends Request
     {
         $query = [];
 
-        if ($this->queryBuilder instanceof \VincentAuger\DataCiteSdk\Query\QueryBuilder) {
+        if ($this->queryBuilder instanceof QueryBuilder) {
             $queryString = $this->queryBuilder->build();
             if ($queryString !== '') {
                 $query['query'] = $queryString;

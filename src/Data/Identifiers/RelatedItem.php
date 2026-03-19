@@ -115,7 +115,7 @@ final readonly class RelatedItem
             'relatedItemType' => $this->relatedItemType->value,
         ];
 
-        if ($this->relatedItemIdentifier instanceof \VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItemIdentifier) {
+        if ($this->relatedItemIdentifier instanceof RelatedItemIdentifier) {
             $identifierArray = $this->relatedItemIdentifier->toArray();
 
             // Validate that relatedMetadataScheme, schemeURI, and schemeType are only used with HasMetadata/IsMetadataFor
