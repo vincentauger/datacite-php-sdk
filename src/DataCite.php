@@ -7,6 +7,7 @@ namespace VincentAuger\DataCiteSdk;
 use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\BasicAuthenticator;
 use Saloon\Http\Connector;
+use Saloon\Http\Response;
 use VincentAuger\DataCiteSdk\Enums\ApiVersion;
 
 /**
@@ -86,7 +87,7 @@ final class DataCite extends Connector
      *
      * @param  string  $doi  The DOI identifier (e.g., '10.5438/0012')
      */
-    public function getDOI(string $doi): \Saloon\Http\Response
+    public function getDOI(string $doi): Response
     {
         return $this->send(new Requests\DOIs\GetDOI($doi));
     }
@@ -96,7 +97,7 @@ final class DataCite extends Connector
      *
      * @param  string  $doi  The DOI identifier
      */
-    public function getDOIActivities(string $doi): \Saloon\Http\Response
+    public function getDOIActivities(string $doi): Response
     {
         return $this->send(new Requests\DOIs\GetDOIActivities($doi));
     }
@@ -106,7 +107,7 @@ final class DataCite extends Connector
      *
      * @param  Data\CreateDOIInput  $input  The DOI metadata
      */
-    public function createDOI(Data\CreateDOIInput $input): \Saloon\Http\Response
+    public function createDOI(Data\CreateDOIInput $input): Response
     {
         return $this->send(new Requests\DOIs\CreateDOI($input));
     }
@@ -117,7 +118,7 @@ final class DataCite extends Connector
      * @param  string  $doi  The DOI identifier
      * @param  Data\UpdateDOIInput  $input  The updated DOI metadata
      */
-    public function updateDOI(string $doi, Data\UpdateDOIInput $input): \Saloon\Http\Response
+    public function updateDOI(string $doi, Data\UpdateDOIInput $input): Response
     {
         return $this->send(new Requests\DOIs\UpdateDOI($doi, $input));
     }
@@ -129,7 +130,7 @@ final class DataCite extends Connector
      *
      * @param  string  $doi  The DOI identifier
      */
-    public function deleteDOI(string $doi): \Saloon\Http\Response
+    public function deleteDOI(string $doi): Response
     {
         return $this->send(new Requests\DOIs\DeleteDOI($doi));
     }
@@ -139,7 +140,7 @@ final class DataCite extends Connector
      *
      * @param  string  $eventId  The event identifier
      */
-    public function getEvent(string $eventId): \Saloon\Http\Response
+    public function getEvent(string $eventId): Response
     {
         return $this->send(new Requests\Events\GetEvent($eventId));
     }

@@ -4,8 +4,27 @@ declare(strict_types=1);
 
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use VincentAuger\DataCiteSdk\Data\Affiliations\Affiliation;
+use VincentAuger\DataCiteSdk\Data\Affiliations\PublisherData;
 use VincentAuger\DataCiteSdk\Data\DOIData;
+use VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocation;
+use VincentAuger\DataCiteSdk\Data\Identifiers\RelatedIdentifier;
+use VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItem;
+use VincentAuger\DataCiteSdk\Data\Metadata\ContainerData;
+use VincentAuger\DataCiteSdk\Data\Metadata\Contributor;
+use VincentAuger\DataCiteSdk\Data\Metadata\Date;
+use VincentAuger\DataCiteSdk\Data\Metadata\Description;
+use VincentAuger\DataCiteSdk\Data\Metadata\FundingReference;
+use VincentAuger\DataCiteSdk\Data\Metadata\ResourceType;
+use VincentAuger\DataCiteSdk\Data\Metadata\RightsList;
+use VincentAuger\DataCiteSdk\Data\Metadata\Subject;
+use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipClient;
+use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipData;
+use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipMedia;
+use VincentAuger\DataCiteSdk\Data\Relationships\RelationshipProvider;
+use VincentAuger\DataCiteSdk\Enums\NameType;
 use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
+use VincentAuger\DataCiteSdk\Enums\TitleType;
 use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOI;
 
 it('can get a doi via the public API', function (): void {
@@ -24,7 +43,7 @@ it('can get a doi via the public API', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.5438/0012');
 
-    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
+    /** @var DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -38,13 +57,13 @@ it('can get a doi via the public API', function (): void {
     expect($doi->titles)->toHaveCount(1);
     expect($doi->titles[0]->title)->toContain('DataCite Metadata Schema Documentation');
 
-    expect($doi->relationships)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipData::class);
-    expect($doi->relationships->client)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipClient::class);
+    expect($doi->relationships)->toBeInstanceOf(RelationshipData::class);
+    expect($doi->relationships->client)->toBeInstanceOf(RelationshipClient::class);
     expect($doi->relationships->client->id)->toBe('datacite.datacite');
     expect($doi->relationships->client->type)->toBe('clients');
-    expect($doi->relationships->provider)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipProvider::class);
+    expect($doi->relationships->provider)->toBeInstanceOf(RelationshipProvider::class);
     expect($doi->relationships->provider->id)->toBe('datacite');
-    expect($doi->relationships->media)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipMedia::class);
+    expect($doi->relationships->media)->toBeInstanceOf(RelationshipMedia::class);
     expect($doi->relationships->media->id)->toBe('10.5438/0012');
     expect($doi->relationships->citations)->toBeArray();
     expect($doi->relationships->citations)->not->toBeEmpty();
@@ -66,7 +85,7 @@ it('can get a doi via the public API with email', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.5438/0012');
 
-    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
+    /** @var DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -89,7 +108,7 @@ it('cant get a doi via the member API', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.82785/1989de32-bc5d-c696-879c-54d422438e64');
 
-    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
+    /** @var DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -116,16 +135,16 @@ it('can get a doi with affiliation and publisher info via the public API', funct
     expect($response->json('data.id'))->toBe('10.60825/xd80-gb65');
     expect($response->json('data.attributes.publisher.publisherIdentifier'))->toBe('https://ror.org/02qa1x782');
 
-    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
+    /** @var DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
     expect($doi->doi)->toBe('10.60825/xd80-gb65');
-    expect($doi->publisher)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Affiliations\PublisherData::class);
+    expect($doi->publisher)->toBeInstanceOf(PublisherData::class);
     expect($doi->publisher->publisherIdentifier)->toBe('https://ror.org/02qa1x782');
     expect($doi->creators)->toHaveCount(7);
     expect($doi->creators[0]->affiliation)->toBeArray();
-    expect($doi->creators[0]->affiliation[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Affiliations\Affiliation::class);
+    expect($doi->creators[0]->affiliation[0])->toBeInstanceOf(Affiliation::class);
     expect($doi->creators[0]->affiliation[0]->affiliationIdentifier)->not->toBeNull();
 });
 
@@ -145,7 +164,7 @@ it('can parse a doi with all fields', function (): void {
     expect($response->status())->toBe(200);
     expect($response->json('data.id'))->toBe('10.82433/b09z-4k37');
 
-    /** @var VincentAuger\DataCiteSdk\Data\DOIData $doi */
+    /** @var DOIData $doi */
     $doi = $response->dto();
 
     expect($doi)->toBeInstanceOf(DOIData::class);
@@ -171,7 +190,7 @@ it('can parse a doi with all fields', function (): void {
     // Creators
     expect($doi->creators)->toHaveCount(2);
     expect($doi->creators[0]->name)->toBe('ExampleFamilyName, ExampleGivenName');
-    expect($doi->creators[0]->nameType)->toBe(\VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL);
+    expect($doi->creators[0]->nameType)->toBe(NameType::PERSONAL);
     expect($doi->creators[0]->givenName)->toBe('ExampleGivenName');
     expect($doi->creators[0]->familyName)->toBe('ExampleFamilyName');
     expect($doi->creators[0]->affiliation)->toHaveCount(1);
@@ -186,7 +205,7 @@ it('can parse a doi with all fields', function (): void {
 
     // Second creator (organizational)
     expect($doi->creators[1]->name)->toBe('ExampleOrganization');
-    expect($doi->creators[1]->nameType)->toBe(\VincentAuger\DataCiteSdk\Enums\NameType::ORGANIZATIONAL);
+    expect($doi->creators[1]->nameType)->toBe(NameType::ORGANIZATIONAL);
     expect($doi->creators[1]->affiliation)->toBeEmpty();
     expect($doi->creators[1]->nameIdentifiers)->toHaveCount(1);
     expect($doi->creators[1]->nameIdentifiers[0]->schemeUri)->toBe('https://ror.org');
@@ -198,15 +217,15 @@ it('can parse a doi with all fields', function (): void {
     expect($doi->titles[0]->title)->toBe('Example Title');
     expect($doi->titles[0]->lang)->toBe('en');
     expect($doi->titles[1]->title)->toBe('Example Subtitle');
-    expect($doi->titles[1]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::SUBTITLE);
+    expect($doi->titles[1]->titleType)->toBe(TitleType::SUBTITLE);
     expect($doi->titles[2]->title)->toBe('Example TranslatedTitle');
-    expect($doi->titles[2]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::TRANSLATED_TITLE);
+    expect($doi->titles[2]->titleType)->toBe(TitleType::TRANSLATED_TITLE);
     expect($doi->titles[2]->lang)->toBe('fr');
     expect($doi->titles[3]->title)->toBe('Example AlternativeTitle');
-    expect($doi->titles[3]->titleType)->toBe(\VincentAuger\DataCiteSdk\Enums\TitleType::ALTERNATIVE_TITLE);
+    expect($doi->titles[3]->titleType)->toBe(TitleType::ALTERNATIVE_TITLE);
 
     // Publisher
-    expect($doi->publisher)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Affiliations\PublisherData::class);
+    expect($doi->publisher)->toBeInstanceOf(PublisherData::class);
     expect($doi->publisher->name)->toBe('Example Publisher');
     expect($doi->publisher->lang)->toBe('en');
     expect($doi->publisher->schemeUri)->toBe('https://ror.org/');
@@ -214,36 +233,36 @@ it('can parse a doi with all fields', function (): void {
     expect($doi->publisher->publisherIdentifierScheme)->toBe('ROR');
 
     // Container
-    expect($doi->container)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\ContainerData::class);
+    expect($doi->container)->toBeInstanceOf(ContainerData::class);
     expect($doi->container->type)->toBe('DataRepository');
     expect($doi->container->title)->toBe('Example SeriesInformation');
     expect($doi->container->firstPage)->toBeNull();
 
     // Subjects
     expect($doi->subjects)->not->toBeEmpty();
-    expect($doi->subjects[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\Subject::class);
+    expect($doi->subjects[0])->toBeInstanceOf(Subject::class);
 
     // Contributors
     expect($doi->contributors)->not->toBeEmpty();
-    expect($doi->contributors[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\Contributor::class);
+    expect($doi->contributors[0])->toBeInstanceOf(Contributor::class);
 
     // Dates
     expect($doi->dates)->not->toBeEmpty();
-    expect($doi->dates[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\Date::class);
+    expect($doi->dates[0])->toBeInstanceOf(Date::class);
 
     // Language
     expect($doi->language)->toBeString();
 
     // Types
-    expect($doi->types)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\ResourceType::class);
+    expect($doi->types)->toBeInstanceOf(ResourceType::class);
 
     // Related identifiers
     expect($doi->relatedIdentifiers)->not->toBeEmpty();
-    expect($doi->relatedIdentifiers[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Identifiers\RelatedIdentifier::class);
+    expect($doi->relatedIdentifiers[0])->toBeInstanceOf(RelatedIdentifier::class);
 
     // Related items
     expect($doi->relatedItems)->not->toBeEmpty();
-    expect($doi->relatedItems[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItem::class);
+    expect($doi->relatedItems[0])->toBeInstanceOf(RelatedItem::class);
     expect($doi->relatedItems[0]->contributors)->not->toBeEmpty();
     expect($doi->relatedItems[0]->contributors[0]->name)->toBe('ExampleFamilyName, ExampleGivenName');
     expect($doi->relatedItems[0]->creators)->not->toBeEmpty();
@@ -258,20 +277,20 @@ it('can parse a doi with all fields', function (): void {
 
     // Rights list
     expect($doi->rightsList)->not->toBeEmpty();
-    expect($doi->rightsList[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\RightsList::class);
+    expect($doi->rightsList[0])->toBeInstanceOf(RightsList::class);
 
     // Descriptions
     expect($doi->descriptions)->not->toBeEmpty();
-    expect($doi->descriptions[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\Description::class);
+    expect($doi->descriptions[0])->toBeInstanceOf(Description::class);
 
     // Geo locations
     expect($doi->geoLocations)->not->toBeEmpty();
-    expect($doi->geoLocations[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocation::class);
+    expect($doi->geoLocations[0])->toBeInstanceOf(GeoLocation::class);
     expect($doi->geoLocations[0]->geoLocationPolygon)->not->toBeEmpty();
 
     // Funding references
     expect($doi->fundingReferences)->not->toBeEmpty();
-    expect($doi->fundingReferences[0])->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Metadata\FundingReference::class);
+    expect($doi->fundingReferences[0])->toBeInstanceOf(FundingReference::class);
 
     // XML and URLs
     expect($doi->xml)->toBeString();
@@ -302,16 +321,16 @@ it('can parse a doi with all fields', function (): void {
     expect($doi->versionOfCount)->toBeInt();
 
     // Dates
-    expect($doi->created)->toBeInstanceOf(\DateTimeImmutable::class);
-    expect($doi->registered)->toBeInstanceOf(\DateTimeImmutable::class);
+    expect($doi->created)->toBeInstanceOf(DateTimeImmutable::class);
+    expect($doi->registered)->toBeInstanceOf(DateTimeImmutable::class);
     expect($doi->published)->toBeString();
-    expect($doi->updated)->toBeInstanceOf(\DateTimeImmutable::class);
+    expect($doi->updated)->toBeInstanceOf(DateTimeImmutable::class);
 
     // Relationships
-    expect($doi->relationships)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipData::class);
-    expect($doi->relationships->client)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipClient::class);
-    expect($doi->relationships->provider)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipProvider::class);
-    expect($doi->relationships->media)->toBeInstanceOf(\VincentAuger\DataCiteSdk\Data\Relationships\RelationshipMedia::class);
+    expect($doi->relationships)->toBeInstanceOf(RelationshipData::class);
+    expect($doi->relationships->client)->toBeInstanceOf(RelationshipClient::class);
+    expect($doi->relationships->provider)->toBeInstanceOf(RelationshipProvider::class);
+    expect($doi->relationships->media)->toBeInstanceOf(RelationshipMedia::class);
     expect($doi->relationships->citations)->toBeArray();
 
 });

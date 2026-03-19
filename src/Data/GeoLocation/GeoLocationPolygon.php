@@ -49,7 +49,7 @@ final readonly class GeoLocationPolygon
             ),
         ];
 
-        if ($this->inPolygonPoint instanceof \VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocationPoint) {
+        if ($this->inPolygonPoint instanceof GeoLocationPoint) {
             $array['inPolygonPoint'] = $this->inPolygonPoint->toArray();
         }
 

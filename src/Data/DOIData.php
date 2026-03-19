@@ -140,11 +140,11 @@ final readonly class DOIData
         assert(is_bool($attributes['isActive']));
         assert(is_string($attributes['state']));
         assert(is_numeric($attributes['viewCount']));
-        assert(is_array($attributes['viewsOverTime']) || ! array_key_exists('viewsOverTime', $attributes));
+        assert(! isset($attributes['viewsOverTime']) || is_array($attributes['viewsOverTime']));
         assert(is_numeric($attributes['downloadCount']));
-        assert(is_array($attributes['downloadsOverTime']) || ! array_key_exists('downloadsOverTime', $attributes));
+        assert(! isset($attributes['downloadsOverTime']) || is_array($attributes['downloadsOverTime']));
         assert(is_numeric($attributes['referenceCount']));
-        assert(is_array($attributes['citationsOverTime']) || ! array_key_exists('citationsOverTime', $attributes));
+        assert(! isset($attributes['citationsOverTime']) || is_array($attributes['citationsOverTime']));
         assert(is_numeric($attributes['partCount']));
         assert(is_numeric($attributes['partOfCount']));
         assert(is_numeric($attributes['versionCount']));
@@ -209,7 +209,7 @@ final readonly class DOIData
                 Creator::fromArray(...),
                 $creatorsData
             ),
-            fn (?Creator $creator): bool => $creator instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Creator
+            fn (?Creator $creator): bool => $creator instanceof Creator
         ));
         assert($creators !== [], 'At least one creator is required');
 
@@ -247,7 +247,7 @@ final readonly class DOIData
                     Contributor::fromArray(...),
                     $contributorsData
                 ),
-                fn (?Contributor $contributor): bool => $contributor instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Contributor
+                fn (?Contributor $contributor): bool => $contributor instanceof Contributor
             )),
             dates: array_map(
                 Date::fromArray(...),
@@ -275,7 +275,7 @@ final readonly class DOIData
                     Description::fromArray(...),
                     $descriptionsData
                 ),
-                fn (?Description $description): bool => $description instanceof \VincentAuger\DataCiteSdk\Data\Metadata\Description
+                fn (?Description $description): bool => $description instanceof Description
             )),
             geoLocations: array_map(
                 GeoLocation::fromArray(...),

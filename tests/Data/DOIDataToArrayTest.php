@@ -7,6 +7,8 @@ use VincentAuger\DataCiteSdk\Data\DOIData;
 use VincentAuger\DataCiteSdk\Data\Identifiers\NameIdentifier;
 use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Title;
+use VincentAuger\DataCiteSdk\Enums\NameType;
+use VincentAuger\DataCiteSdk\Enums\TitleType;
 
 test('it can serialize a simple DOI to array', function (): void {
     $fixtureJson = file_get_contents(dirname(__DIR__).'/Fixtures/Saloon/getdoi.json');
@@ -45,7 +47,7 @@ test('Creator can be serialized to array', function (): void {
 
     $creator = new Creator(
         name: 'John Doe',
-        nameType: \VincentAuger\DataCiteSdk\Enums\NameType::PERSONAL,
+        nameType: NameType::PERSONAL,
         givenName: 'John',
         familyName: 'Doe',
         affiliation: [$affiliation],
@@ -81,7 +83,7 @@ test('Title can be serialized to array', function (): void {
     $title = new Title(
         title: 'Test Title',
         lang: 'en',
-        titleType: \VincentAuger\DataCiteSdk\Enums\TitleType::SUBTITLE
+        titleType: TitleType::SUBTITLE
     );
 
     $array = $title->toArray();

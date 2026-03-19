@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
+use VincentAuger\DataCiteSdk\DataCite;
+use VincentAuger\DataCiteSdk\Enums\ApiVersion;
 
 class BaseTest extends TestCase
 {
@@ -18,7 +21,7 @@ class BaseTest extends TestCase
 
         // load environment variables for testing against the test API
         if ($envExists) {
-            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+            $dotenv = Dotenv::createImmutable(__DIR__.'/../');
             $dotenv->load();
             echo "Loaded .env file\n";
             // fail test if the base url is not the test API
@@ -32,15 +35,15 @@ class BaseTest extends TestCase
 
     }
 
-    public function getPublicApiClient(?string $email = null, bool $prodApi = false): \VincentAuger\DataCiteSdk\DataCite
+    public function getPublicApiClient(?string $email = null, bool $prodApi = false): DataCite
     {
         $baseUrl = $_ENV['DATACITE_BASE_URL'] ?? 'https://api.test.datacite.org';
         $baseUrl = $prodApi ? 'https://api.datacite.org' : $baseUrl;
 
-        return new \VincentAuger\DataCiteSdk\DataCite(baseUrl: $baseUrl, mailto: $email);
+        return new DataCite(baseUrl: $baseUrl, mailto: $email);
     }
 
-    public function getMemberApiClient(): \VincentAuger\DataCiteSdk\DataCite
+    public function getMemberApiClient(): DataCite
     {
         $baseUrl = $_ENV['DATACITE_BASE_URL'] ?? 'https://api.test.datacite.org';
         $username = $_ENV['DATACITE_USERNAME'] ?? 'username';
@@ -51,9 +54,9 @@ class BaseTest extends TestCase
             self::fail('DATACITE_USERNAME and DATACITE_PASSWORD must be set in the .env file for member API tests.');
         }
 
-        return new \VincentAuger\DataCiteSdk\DataCite(
+        return new DataCite(
             baseUrl: $baseUrl,
-            apiVersion: \VincentAuger\DataCiteSdk\Enums\ApiVersion::MEMBER,
+            apiVersion: ApiVersion::MEMBER,
             username: $username,
             password: $password,
             mailto: $mailto
