@@ -12,7 +12,7 @@ use VincentAuger\DataCiteSdk\Enums\ResourceTypeGeneral;
  * A description of the resource. The recommended content is a single term
  * paired with resourceTypeGeneral (e.g., "Census Data" + "Dataset" = "Dataset/Census Data").
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/resourcetype/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/resourcetype/
  */
 final readonly class ResourceType
 {

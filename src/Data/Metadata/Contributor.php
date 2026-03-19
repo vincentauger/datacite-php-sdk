@@ -19,7 +19,7 @@ final readonly class Contributor
      * @param  Affiliation[]|null  $affiliation  The organizational or institutional affiliation(s) of the contributor.
      * @param  NameIdentifier[]|null  $nameIdentifiers  Unique identifier(s) for the contributor (e.g., ORCID, ISNI, ROR).
      *
-     * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/contributor/
+     * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/contributor/
      * @see https://www.loc.gov/catdir/cpso/roman.html ALA-LC Romanization Tables
      */
     public function __construct(

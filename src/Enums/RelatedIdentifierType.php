@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite RelatedIdentifierType controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/relatedidentifier/#a-relatedidentifiertype
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/relatedidentifier/#a-relatedidentifiertype
  */
 enum RelatedIdentifierType: string
 {
@@ -27,7 +27,9 @@ enum RelatedIdentifierType: string
     case LSID = 'LSID';
     case PMID = 'PMID';
     case PURL = 'PURL';
+    case RAID = 'RAiD';
     case RRID = 'RRID';
+    case SWHID = 'SWHID';
     case UPC = 'UPC';
     case URL = 'URL';
     case URN = 'URN';

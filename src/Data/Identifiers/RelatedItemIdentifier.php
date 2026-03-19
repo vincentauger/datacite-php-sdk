@@ -10,7 +10,7 @@ namespace VincentAuger\DataCiteSdk\Data\Identifiers;
  * The properties relatedMetadataScheme, schemeURI, and schemeType should only be used
  * when the relationType is 'HasMetadata' or 'IsMetadataFor'.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/relateditem/#relateditemidentifier
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/relateditem/#relateditemidentifier
  */
 final readonly class RelatedItemIdentifier
 {

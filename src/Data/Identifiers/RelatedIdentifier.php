@@ -18,6 +18,7 @@ final readonly class RelatedIdentifier
         public ?ResourceTypeGeneral $resourceTypeGeneral,
         public RelatedIdentifierType $relatedIdentifierType,
         public ?string $relatedMetadataScheme,
+        public ?string $relationTypeInformation = null,
     ) {}
 
     /**
@@ -37,6 +38,7 @@ final readonly class RelatedIdentifier
             resourceTypeGeneral: isset($data['resourceTypeGeneral']) && is_string($data['resourceTypeGeneral']) ? ResourceTypeGeneral::from($data['resourceTypeGeneral']) : null,
             relatedIdentifierType: RelatedIdentifierType::from($data['relatedIdentifierType']),
             relatedMetadataScheme: isset($data['relatedMetadataScheme']) && is_string($data['relatedMetadataScheme']) ? $data['relatedMetadataScheme'] : null,
+            relationTypeInformation: isset($data['relationTypeInformation']) && is_string($data['relationTypeInformation']) ? $data['relationTypeInformation'] : null,
         );
     }
 
@@ -65,6 +67,10 @@ final readonly class RelatedIdentifier
 
         if ($this->relatedMetadataScheme !== null) {
             $array['relatedMetadataScheme'] = $this->relatedMetadataScheme;
+        }
+
+        if ($this->relationTypeInformation !== null) {
+            $array['relationTypeInformation'] = $this->relationTypeInformation;
         }
 
         return $array;

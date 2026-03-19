@@ -41,7 +41,7 @@ final readonly class FundingReference
      */
     public function toArray(): array
     {
-        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        // Validate conditional dependencies per DataCite Metadata Schema 4.7
         if ($this->funderIdentifier !== null && $this->funderIdentifierType === null) {
             throw new DataCiteValidationException(
                 'If funderIdentifier is used, funderIdentifierType is mandatory.'

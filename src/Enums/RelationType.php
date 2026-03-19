@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite RelationType controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/relatedidentifier/#b-relationtype
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/relatedidentifier/#b-relationtype
  */
 enum RelationType: string
 {
@@ -49,4 +49,5 @@ enum RelationType: string
     case COLLECTS = 'Collects';
     case IS_TRANSLATION_OF = 'IsTranslationOf';
     case HAS_TRANSLATION = 'HasTranslation';
+    case OTHER = 'Other';
 }

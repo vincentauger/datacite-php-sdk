@@ -13,7 +13,7 @@ final readonly class Date
      * @param  DateType  $dateType  The type of date (mandatory when Date is used).
      * @param  string|null  $dateInformation  Specific information about the date. May clarify publication, release, collection details, or dates in ancient history (e.g., "55 BC").
      *
-     * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/properties/date/
+     * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/date/
      * @see https://www.w3.org/TR/NOTE-datetime W3CDTF Date Format
      * @see http://www.ukoln.ac.uk/metadata/dcmi/collection-RKMS-ISO8601/ RKMS-ISO8601 Date Ranges
      */

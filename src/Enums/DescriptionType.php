@@ -7,7 +7,7 @@ namespace VincentAuger\DataCiteSdk\Enums;
 /**
  * DataCite DescriptionType controlled vocabulary.
  *
- * @see https://datacite-metadata-schema.readthedocs.io/en/4.6/appendices/appendix-1/descriptionType/
+ * @see https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/descriptionType/
  */
 enum DescriptionType: string
 {

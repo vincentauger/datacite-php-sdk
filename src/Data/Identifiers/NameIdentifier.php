@@ -36,7 +36,7 @@ final readonly class NameIdentifier
      */
     public function toArray(): array
     {
-        // Validate conditional dependencies per DataCite Metadata Schema 4.6
+        // Validate conditional dependencies per DataCite Metadata Schema 4.7
         if ($this->nameIdentifier !== null && $this->nameIdentifierScheme === null) {
             throw new DataCiteValidationException(
                 'If nameIdentifier is used, nameIdentifierScheme is mandatory.'
