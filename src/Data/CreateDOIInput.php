@@ -7,10 +7,8 @@ namespace VincentAuger\DataCiteSdk\Data;
 use VincentAuger\DataCiteSdk\Data\Affiliations\PublisherData;
 use VincentAuger\DataCiteSdk\Data\GeoLocation\GeoLocation;
 use VincentAuger\DataCiteSdk\Data\Identifiers\AlternateIdentifier;
-use VincentAuger\DataCiteSdk\Data\Identifiers\Identifier;
 use VincentAuger\DataCiteSdk\Data\Identifiers\RelatedIdentifier;
 use VincentAuger\DataCiteSdk\Data\Identifiers\RelatedItem;
-use VincentAuger\DataCiteSdk\Data\Metadata\ContainerData;
 use VincentAuger\DataCiteSdk\Data\Metadata\Contributor;
 use VincentAuger\DataCiteSdk\Data\Metadata\Creator;
 use VincentAuger\DataCiteSdk\Data\Metadata\Date;
@@ -32,7 +30,6 @@ final readonly class CreateDOIInput
     /**
      * @param  array<Creator>  $creators
      * @param  array<Title>  $titles
-     * @param  array<Identifier>|null  $identifiers
      * @param  array<AlternateIdentifier>|null  $alternateIdentifiers
      * @param  array<Subject>|null  $subjects
      * @param  array<Contributor>|null  $contributors
@@ -56,9 +53,7 @@ final readonly class CreateDOIInput
         public string $url,
         public ?DOIEvent $event = null, // when not set, a draft DOI is created
         public ?string $doi = null,
-        public ?array $identifiers = null,
         public ?array $alternateIdentifiers = null,
-        public ?ContainerData $container = null,
         public ?array $subjects = null,
         public ?array $contributors = null,
         public ?array $dates = null,
@@ -73,7 +68,6 @@ final readonly class CreateDOIInput
         public ?array $geoLocations = null,
         public ?array $fundingReferences = null,
         public ?string $contentUrl = null,
-        public ?string $schemaVersion = null,
     ) {}
 
     /**
@@ -95,10 +89,6 @@ final readonly class CreateDOIInput
             $data['doi'] = $this->doi;
         }
 
-        if ($this->identifiers !== null) {
-            $data['identifiers'] = array_map(fn (Identifier $item): array => $item->toArray(), $this->identifiers);
-        }
-
         if ($this->alternateIdentifiers !== null) {
             $data['alternateIdentifiers'] = array_map(fn (AlternateIdentifier $item): array => $item->toArray(), $this->alternateIdentifiers);
         }
@@ -108,10 +98,6 @@ final readonly class CreateDOIInput
         $data['titles'] = array_map(fn (Title $item): array => $item->toArray(), $this->titles);
 
         $data['publisher'] = is_string($this->publisher) ? $this->publisher : $this->publisher->toArray();
-
-        if ($this->container instanceof ContainerData) {
-            $data['container'] = $this->container->toArray();
-        }
 
         $data['publicationYear'] = $this->publicationYear;
 
@@ -173,10 +159,6 @@ final readonly class CreateDOIInput
 
         if ($this->contentUrl !== null) {
             $data['contentUrl'] = $this->contentUrl;
-        }
-
-        if ($this->schemaVersion !== null) {
-            $data['schemaVersion'] = $this->schemaVersion;
         }
 
         return $data;
