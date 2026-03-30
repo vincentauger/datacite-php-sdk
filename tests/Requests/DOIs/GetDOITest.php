@@ -72,7 +72,7 @@ it('can get a doi via the public API', function (): void {
 it('can get a doi via the public API with email', function (): void {
 
     $mockClient = new MockClient([
-        GetDOI::class => MockResponse::fixture('getdoi.public_email'),
+        GetDOI::class => MockResponse::fixture('getdoi/public_email'),
     ]);
 
     $client = $this->getPublicApiClient('vincent.auger@gmai.com', true);
@@ -95,7 +95,7 @@ it('can get a doi via the public API with email', function (): void {
 it('cant get a doi via the member API', function (): void {
 
     $mockClient = new MockClient([
-        GetDOI::class => MockResponse::fixture('member.getdoi'),
+        GetDOI::class => MockResponse::fixture('member/getdoi'),
     ]);
 
     $client = $this->getMemberApiClient();
@@ -119,7 +119,7 @@ it('cant get a doi via the member API', function (): void {
 it('can get a doi with affiliation and publisher info via the public API', function (): void {
 
     $mockClient = new MockClient([
-        GetDOI::class => MockResponse::fixture('public.getdoi.affiliation_publisher'),
+        GetDOI::class => MockResponse::fixture('public/getdoi/affiliation_publisher'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -151,7 +151,7 @@ it('can get a doi with affiliation and publisher info via the public API', funct
 it('can parse a doi with all fields', function (): void {
 
     $mockClient = new MockClient([
-        GetDOI::class => MockResponse::fixture('getdoi.all_fields'),
+        GetDOI::class => MockResponse::fixture('getdoi/all_fields'),
     ]);
 
     $client = $this->getPublicApiClient();

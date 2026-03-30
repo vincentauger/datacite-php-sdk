@@ -46,7 +46,7 @@ it('throws exception when using public API for member-only endpoint', function (
 it('can create a doi via the member API endpoint', function (): void {
 
     $mockClient = new MockClient([
-        CreateDOI::class => MockResponse::fixture('member.createdoi'),
+        CreateDOI::class => MockResponse::fixture('member/createdoi'),
     ]);
 
     $client = $this->getMemberApiClient();

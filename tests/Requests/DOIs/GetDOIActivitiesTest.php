@@ -11,7 +11,7 @@ use VincentAuger\DataCiteSdk\Requests\DOIs\GetDOIActivities;
 it('can get a dois activities via the public API', function (): void {
 
     $mockClient = new MockClient([
-        GetDOIActivities::class => MockResponse::fixture('getdoi.activities'),
+        GetDOIActivities::class => MockResponse::fixture('getdoi/activities'),
     ]);
 
     $client = $this->getPublicApiClient();

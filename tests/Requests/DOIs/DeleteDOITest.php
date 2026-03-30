@@ -26,7 +26,7 @@ it('throws exception when using public API for member-only endpoint', function (
 it('cannot delete a findable doi via the member API endpoint', function (): void {
 
     $mockClient = new MockClient([
-        DeleteDOI::class => MockResponse::fixture('member.deleteNonDraftDoi'),
+        DeleteDOI::class => MockResponse::fixture('member/deleteNonDraftDoi'),
     ]);
 
     $client = $this->getMemberApiClient();
@@ -42,7 +42,7 @@ it('cannot delete a findable doi via the member API endpoint', function (): void
 it('can delete a draft doi via the member API endpoint', function (): void {
 
     $mockClient = new MockClient([
-        DeleteDOI::class => MockResponse::fixture('member.deleteDraftDoi'),
+        DeleteDOI::class => MockResponse::fixture('member/deleteDraftDoi'),
     ]);
 
     $client = $this->getMemberApiClient();
