@@ -15,7 +15,7 @@ use VincentAuger\DataCiteSdk\Requests\DOIs\ListDOIs;
 it('can list dois via the public API', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.basic'),
+        ListDOIs::class => MockResponse::fixture('listdois/basic'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -40,7 +40,7 @@ it('can list dois via the public API', function (): void {
 it('can list dois with sorting', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.sorting'),
+        ListDOIs::class => MockResponse::fixture('listdois/sorting'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -65,7 +65,7 @@ it('can list dois with sorting', function (): void {
 it('can list dois with provider filter', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.provider_filter'),
+        ListDOIs::class => MockResponse::fixture('listdois/provider_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -103,7 +103,7 @@ it('can list dois with provider filter', function (): void {
 it('can list dois with query builder using enum fields', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.query_builder'),
+        ListDOIs::class => MockResponse::fixture('listdois/query_builder'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -154,7 +154,7 @@ it('can list dois with query builder using enum fields', function (): void {
 it('can list dois with query builder using string fields', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.query_builder'),
+        ListDOIs::class => MockResponse::fixture('listdois/query_builder'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -205,7 +205,7 @@ it('can list dois with query builder using string fields', function (): void {
 it('can list dois with exact match search', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.exact_match'),
+        ListDOIs::class => MockResponse::fixture('listdois/exact_match'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -245,7 +245,7 @@ it('can list dois with exact match search', function (): void {
 it('can list dois with wildcard search', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.wildcard_search'),
+        ListDOIs::class => MockResponse::fixture('listdois/wildcard_search'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -294,7 +294,7 @@ it('can list dois with wildcard search', function (): void {
 it('can list dois with boolean filters', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.boolean_filters'),
+        ListDOIs::class => MockResponse::fixture('listdois/boolean_filters'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -347,7 +347,7 @@ it('can list dois with boolean filters', function (): void {
 it('can list dois with affiliation and publisher info', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.affiliation_publisher'),
+        ListDOIs::class => MockResponse::fixture('listdois/affiliation_publisher'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -373,7 +373,7 @@ it('can list dois with affiliation and publisher info', function (): void {
 it('can list dois with pagination', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.pagination'),
+        ListDOIs::class => MockResponse::fixture('listdois/pagination'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -400,7 +400,7 @@ it('can list dois with pagination', function (): void {
 it('can list dois with date range filter', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.date_range'),
+        ListDOIs::class => MockResponse::fixture('listdois/date_range'),
     ]);
 
     $client = $this->getPublicApiClient(prodApi: true);
@@ -432,7 +432,7 @@ it('can list dois with date range filter', function (): void {
 it('can list dois with random sampling', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.random_sampling'),
+        ListDOIs::class => MockResponse::fixture('listdois/random_sampling'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -457,7 +457,7 @@ it('can list dois with random sampling', function (): void {
 it('can list dois with DTO and metadata', function (): void {
 
     $mockClient = new MockClient([
-        ListDOIs::class => MockResponse::fixture('listdois.sorting'),
+        ListDOIs::class => MockResponse::fixture('listdois/sorting'),
     ]);
 
     $client = $this->getPublicApiClient();

@@ -12,7 +12,7 @@ use VincentAuger\DataCiteSdk\Requests\Events\ListEvents;
 it('can list events via the public API', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.basic'),
+        ListEvents::class => MockResponse::fixture('listevents/basic'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -44,7 +44,7 @@ it('can list events via the public API', function (): void {
 it('can list events with DOI filter', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.doi_filter'),
+        ListEvents::class => MockResponse::fixture('listevents/doi_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -72,7 +72,7 @@ it('can list events with DOI filter', function (): void {
 it('can list events with source filter', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.source_filter'),
+        ListEvents::class => MockResponse::fixture('listevents/source_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -95,7 +95,7 @@ it('can list events with source filter', function (): void {
 it('can list events with relation type filter', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.relation_type_filter'),
+        ListEvents::class => MockResponse::fixture('listevents/relation_type_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -118,7 +118,7 @@ it('can list events with relation type filter', function (): void {
 it('can list events with sorting', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.sorting'),
+        ListEvents::class => MockResponse::fixture('listevents/sorting'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -141,7 +141,7 @@ it('can list events with sorting', function (): void {
 it('can list events with prefix filter', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.prefix_filter'),
+        ListEvents::class => MockResponse::fixture('listevents/prefix_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -164,7 +164,7 @@ it('can list events with prefix filter', function (): void {
 it('can list events with year-month filter', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.year_month_filter'),
+        ListEvents::class => MockResponse::fixture('listevents/year_month_filter'),
     ]);
 
     $client = $this->getPublicApiClient();
@@ -187,7 +187,7 @@ it('can list events with year-month filter', function (): void {
 it('can list events with pagination', function (): void {
 
     $mockClient = new MockClient([
-        ListEvents::class => MockResponse::fixture('listevents.pagination'),
+        ListEvents::class => MockResponse::fixture('listevents/pagination'),
     ]);
 
     $client = $this->getPublicApiClient();

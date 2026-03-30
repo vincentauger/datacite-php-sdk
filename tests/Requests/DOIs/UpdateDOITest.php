@@ -32,7 +32,7 @@ it('throws exception when using public API for member-only endpoint', function (
 it('can update a doi via the member API endpoint', function (): void {
 
     $mockClient = new MockClient([
-        UpdateDOI::class => MockResponse::fixture('member.updatedoi'),
+        UpdateDOI::class => MockResponse::fixture('member/updatedoi'),
     ]);
 
     $client = $this->getMemberApiClient();
