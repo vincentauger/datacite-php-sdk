@@ -194,7 +194,6 @@ describe('FundingReference validation', function (): void {
     test('throws exception when funderIdentifierType is provided without funderIdentifier', function (): void {
         $funding = new FundingReference(
             funderName: 'European Commission',
-            funderIdentifier: null,
             funderIdentifierType: 'Crossref Funder ID',
         );
 
